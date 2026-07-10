@@ -6,4 +6,4 @@ The website is a self-contained, responsive HTML page with English, Chinese, and
 
 ## Publishing
 
-GitHub Pages serves `index.html` from the `main` branch. Future updates only require replacing `index.html` and committing the change to `main`.
+GitHub Pages serves the files in the `main` branch root. Future updates normally require replacing `index.html`; visual asset changes may also update `cloud-background.png` or `og.png`.
