@@ -1,0 +1,1351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Chongzhi Yin — cloud microphysics, particle-based numerical modelling, SCALE-SDM, publications, academic experience, and contact information.">
+  <meta property="og:title" content="Chongzhi Yin — Cloud Microphysics">
+  <meta property="og:description" content="Trilingual academic profile in English, Chinese, and Japanese.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wangyouyue.github.io/">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://wangyouyue.github.io/">
+  <title>Chongzhi Yin — Cloud Microphysics</title>
+  <style>
+    :root {
+      --paper: #f7fafb;
+      --cloud: #ffffff;
+      --mist: #e8f1f4;
+      --sky: #c6dce4;
+      --blue: #7ba5b6;
+      --ink: #0d2738;
+      --ink-soft: #3d5868;
+      --line: rgba(13, 39, 56, .13);
+      --line-light: rgba(84, 132, 151, .18);
+      --serif: Iowan Old Style, Baskerville, "Times New Roman", Times, serif;
+      --sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 118px;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, #f9fbfc 0%, #f4f8f9 64%, #eef5f7 100%);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    .skip-link {
+      position: fixed;
+      z-index: 100;
+      top: 12px;
+      left: 12px;
+      padding: 10px 14px;
+      border-radius: 4px;
+      color: white;
+      background: var(--ink);
+      font-size: 12px;
+      font-weight: 700;
+      transform: translateY(-180%);
+    }
+
+    .skip-link:focus { transform: translateY(0); }
+
+    #research,
+    #profile,
+    #contact,
+    #profiles {
+      scroll-margin-top: 118px;
+    }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      overflow-x: clip;
+      isolation: isolate;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      z-index: -3;
+      inset: 0;
+      background:
+        radial-gradient(circle at 84% 9%, rgba(181, 215, 226, .45), transparent 27%),
+        radial-gradient(circle at 12% 45%, rgba(255, 255, 255, .92), transparent 31%),
+        linear-gradient(116deg, transparent 0 61%, rgba(216, 233, 238, .27) 61% 100%);
+    }
+
+    .shell {
+      width: min(1416px, calc(100% - 96px));
+      margin: 0 auto;
+    }
+
+    /* Fine editorial masthead */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 92px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      background: rgba(247, 250, 251, .88);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .identity {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      width: max-content;
+    }
+
+    .monogram {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(13, 39, 56, .7);
+      border-radius: 50%;
+      font-family: var(--serif);
+      font-size: 13px;
+      letter-spacing: .04em;
+    }
+
+    .identity-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .identity-copy strong {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .identity-copy span {
+      color: var(--ink-soft);
+      font-size: 9px;
+      font-weight: 650;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 38px;
+      color: #365264;
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 11px 0;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: 4px;
+      height: 1px;
+      background: var(--ink);
+      transition: right .25s ease;
+    }
+
+    .nav-links a:hover::after { right: 0; }
+
+    .language-switcher {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px;
+      border: 1px solid rgba(13, 39, 56, .12);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .52);
+      backdrop-filter: blur(8px);
+    }
+
+    .language-switcher button {
+      min-width: 44px;
+      height: 28px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 999px;
+      color: #567180;
+      background: transparent;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      transition: color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .language-switcher button.active {
+      color: #f8fbfc;
+      background: var(--ink);
+      box-shadow: 0 4px 12px rgba(13, 39, 56, .16);
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 570px;
+      display: grid;
+      grid-template-columns: minmax(640px, 1.12fr) minmax(450px, .88fr);
+      align-items: center;
+      gap: 72px;
+      padding: 66px 0 54px;
+    }
+
+    .hero-copy { position: relative; z-index: 2; }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 25px;
+      color: #4d7183;
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: #6e9aaa;
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(67px, 5.2vw, 86px);
+      font-weight: 400;
+      line-height: .94;
+      letter-spacing: -.045em;
+    }
+
+    .native-name {
+      display: inline-block;
+      margin-left: 15px;
+      color: #4d6875;
+      font-family: var(--sans);
+      font-size: .25em;
+      font-weight: 500;
+      letter-spacing: .08em;
+      vertical-align: .38em;
+    }
+
+    .degree {
+      color: #547181;
+      font-family: var(--sans);
+      font-size: .21em;
+      font-weight: 650;
+      letter-spacing: .11em;
+      vertical-align: 1.28em;
+    }
+
+    .role {
+      margin: 26px 0 0;
+      color: #284657;
+      font-family: var(--serif);
+      font-size: 20px;
+      line-height: 1.45;
+    }
+
+    .role span { color: #506d79; }
+
+    .intro {
+      max-width: 650px;
+      margin: 18px 0 0;
+      color: #526c7a;
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 31px;
+    }
+
+    .primary-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      min-height: 46px;
+      padding: 0 20px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .09em;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .primary-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(13, 39, 56, .18);
+    }
+
+    .arrow { font-size: 16px; font-weight: 400; }
+
+    .text-action {
+      color: #466575;
+      border-bottom: 1px solid #9bb5c0;
+      padding: 10px 0 7px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    /* Atmospheric research plate */
+    .atmosphere {
+      position: relative;
+      height: 438px;
+      margin-right: 10px;
+    }
+
+    .halo {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      top: 4px;
+      right: 16px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 47% 44%, rgba(255,255,255,.95) 0 16%, rgba(223,238,243,.74) 17% 34%, rgba(195,219,228,.39) 35% 52%, rgba(239,246,248,.16) 53% 68%, transparent 69%),
+        linear-gradient(155deg, rgba(255,255,255,.74), rgba(183,214,224,.18));
+      box-shadow:
+        inset 0 0 0 1px rgba(67, 116, 135, .12),
+        0 36px 80px rgba(104, 148, 163, .16);
+    }
+
+    .halo::before,
+    .halo::after {
+      content: "";
+      position: absolute;
+      border-radius: 47% 53% 49% 51% / 55% 48% 52% 45%;
+      border: 1px solid rgba(79, 130, 148, .22);
+      transform: rotate(-9deg);
+    }
+
+    .halo::before { inset: 31px 38px 35px 28px; }
+    .halo::after { inset: 70px 65px 63px 74px; transform: rotate(12deg); }
+
+    .contour {
+      position: absolute;
+      border: 1px solid rgba(77, 127, 145, .24);
+      border-radius: 52% 48% 61% 39% / 51% 43% 57% 49%;
+      pointer-events: none;
+    }
+
+    .c1 { width: 294px; height: 183px; right: 83px; top: 115px; transform: rotate(-8deg); }
+    .c2 { width: 244px; height: 143px; right: 105px; top: 137px; transform: rotate(4deg); }
+    .c3 { width: 190px; height: 99px; right: 131px; top: 158px; transform: rotate(-7deg); }
+    .c4 { width: 126px; height: 59px; right: 157px; top: 177px; transform: rotate(8deg); }
+
+    .microdots {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 43% 28%, rgba(41,94,113,.65) 0 1.5px, transparent 2px),
+        radial-gradient(circle at 63% 38%, rgba(41,94,113,.58) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 54% 57%, rgba(41,94,113,.55) 0 2px, transparent 2.5px),
+        radial-gradient(circle at 73% 63%, rgba(41,94,113,.48) 0 1.5px, transparent 2px),
+        radial-gradient(circle at 33% 68%, rgba(41,94,113,.54) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 67% 22%, rgba(41,94,113,.54) 0 1px, transparent 1.7px);
+    }
+
+    .field-label {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #527482;
+      font-size: 9px;
+      font-weight: 750;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .field-label::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #628fa0;
+      box-shadow: 0 0 0 4px rgba(98, 143, 160, .12);
+    }
+
+    .label-a { left: 34px; top: 88px; }
+    .label-b { right: 2px; top: 212px; }
+    .label-c { left: 57px; bottom: 132px; }
+
+    .plate-note {
+      position: absolute;
+      left: 5px;
+      bottom: 3px;
+      width: 245px;
+      padding: 17px 18px 16px;
+      border-top: 1px solid rgba(13, 39, 56, .28);
+      background: rgba(248, 251, 252, .74);
+      backdrop-filter: blur(10px);
+    }
+
+    .plate-note .number {
+      float: right;
+      color: #536f7b;
+      font-family: var(--serif);
+      font-size: 29px;
+      line-height: .8;
+    }
+
+    .plate-note strong {
+      display: block;
+      margin-bottom: 7px;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .plate-note p {
+      margin: 0;
+      color: #4d6875;
+      font-size: 10px;
+      line-height: 1.55;
+      letter-spacing: .04em;
+    }
+
+    /* Research index */
+    .research {
+      position: relative;
+      padding: 31px 0 72px;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 23px;
+    }
+
+    .section-kicker {
+      margin: 0 0 7px;
+      color: #4a6673;
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: -.02em;
+    }
+
+    .social-links {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .social-links a {
+      min-height: 29px;
+      padding: 8px 13px 7px;
+      border: 1px solid rgba(13, 39, 56, .14);
+      border-radius: 999px;
+      color: #415f6f;
+      background: rgba(255, 255, 255, .45);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      transition: background .2s ease, border-color .2s ease;
+    }
+
+    .social-links a:hover { background: white; border-color: rgba(13, 39, 56, .35); }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .research-card {
+      position: relative;
+      display: flex;
+      min-height: 322px;
+      flex-direction: column;
+      padding: 23px 31px 25px 0;
+      border-right: 1px solid var(--line);
+      transition: background .25s ease, padding-left .25s ease;
+    }
+
+    .research-card + .research-card { padding-left: 31px; }
+    .research-card:last-child { border-right: 0; }
+    .research-card:hover { background: rgba(255,255,255,.58); }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      color: #506d79;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .card-index {
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(13, 39, 56, .19);
+      border-radius: 50%;
+      color: #416273;
+      font-family: var(--serif);
+      font-size: 11px;
+      letter-spacing: 0;
+    }
+
+    .research-card h3 {
+      max-width: 390px;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.38;
+      letter-spacing: -.005em;
+    }
+
+    .card-link {
+      display: block;
+    }
+
+    .card-link:focus-visible,
+    .social-links a:focus-visible,
+    .contact-link:focus-visible,
+    .language-switcher button:focus-visible,
+    .nav-links a:focus-visible,
+    .identity:focus-visible,
+    .primary-action:focus-visible,
+    .text-action:focus-visible {
+      outline: 2px solid #527482;
+      outline-offset: 4px;
+    }
+
+    .card-authors {
+      margin: 18px 0 0;
+      color: #516f7e;
+      font-size: 10px;
+      line-height: 1.58;
+    }
+
+    .card-topic {
+      margin-top: auto;
+      padding-top: 22px;
+      color: #506d79;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.55;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .footer-note {
+      display: flex;
+      justify-content: space-between;
+      padding: 21px 0 34px;
+      color: #526e7a;
+      font-size: 10px;
+      letter-spacing: .08em;
+    }
+
+    /* Full-profile detail for the offline preview */
+    .details {
+      padding: 82px 0;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, .36);
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(64px, 8vw, 118px);
+    }
+
+    .details h2 {
+      max-width: 560px;
+      margin-top: 8px;
+      font-size: clamp(32px, 3.2vw, 48px);
+      line-height: 1.08;
+    }
+
+    .body-copy {
+      max-width: 650px;
+      margin: 26px 0 0;
+      color: #496675;
+      font-size: 15px;
+      line-height: 1.82;
+    }
+
+    .interest-list {
+      margin-top: 34px;
+      border-top: 1px solid var(--line);
+    }
+
+    .interest-list p {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 15px;
+      margin: 0;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      color: #345364;
+      font-size: 13px;
+    }
+
+    .interest-copy strong {
+      display: block;
+      color: #274858;
+      font-family: var(--serif);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .interest-copy small {
+      display: block;
+      margin-top: 5px;
+      color: #4d6875;
+      font-size: 11px;
+      line-height: 1.62;
+    }
+
+    .interest-list p span:first-child {
+      color: #536f7b;
+      font-family: var(--serif);
+    }
+
+    .timeline {
+      margin-top: 33px;
+      border-top: 1px solid var(--line);
+    }
+
+    .timeline article {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 22px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline time {
+      color: #506d79;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .timeline h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.28;
+    }
+
+    .timeline .place {
+      margin: 5px 0 0;
+      color: #526e7a;
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .timeline .detail {
+      margin: 8px 0 0;
+      color: #4d6875;
+      font-size: 11px;
+      line-height: 1.65;
+    }
+
+    .honors-panel {
+      display: grid;
+      grid-template-columns: minmax(210px, .55fr) minmax(0, 1.45fr);
+      gap: clamp(50px, 7vw, 100px);
+      margin-top: 74px;
+      padding-top: 42px;
+      border-top: 1px solid var(--line);
+    }
+
+    .honors-panel h2 {
+      margin-top: 8px;
+      font-size: clamp(29px, 2.8vw, 42px);
+    }
+
+    .honors-list {
+      border-top: 1px solid var(--line);
+    }
+
+    .honors-list article {
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 22px;
+      padding: 19px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .honors-list time {
+      color: #506d79;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .09em;
+    }
+
+    .honors-list h3 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .honors-list p {
+      margin: 6px 0 0;
+      color: #4d6875;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .contact {
+      color: #f7fafb;
+      background: var(--ink);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 70px;
+      align-items: end;
+      padding: 72px 0 38px;
+    }
+
+    .contact .section-kicker { color: #a7c1cc; }
+
+    .contact h2 {
+      max-width: 660px;
+      font-size: clamp(34px, 3.6vw, 54px);
+    }
+
+    .contact .body-copy {
+      max-width: 610px;
+      color: #bed0d7;
+    }
+
+    .contact-details {
+      border-top: 1px solid rgba(255, 255, 255, .22);
+    }
+
+    .contact-link,
+    .contact-location {
+      display: block;
+      margin: 0;
+      padding: 17px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .18);
+      color: #f5f9fa;
+      font-family: var(--serif);
+      font-size: 17px;
+      overflow-wrap: anywhere;
+    }
+
+    .contact-link span,
+    .contact-location span {
+      display: block;
+      margin-bottom: 4px;
+      color: #8faeba;
+      font-family: var(--sans);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .contact-location strong {
+      display: block;
+      color: #f5f9fa;
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 400;
+    }
+
+    .offline-note {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 0 26px;
+      border-top: 1px solid rgba(255, 255, 255, .14);
+      color: #8faeba;
+      font-size: 9px;
+      letter-spacing: .08em;
+    }
+
+    [data-copy] { transition: opacity .13s ease, transform .13s ease; }
+    body.switching [data-copy] { opacity: 0; transform: translateY(3px); }
+
+    @media (max-width: 1260px) {
+      .shell { width: calc(100% - 68px); }
+      .hero { grid-template-columns: 1.15fr .85fr; gap: 34px; }
+      .halo { transform: scale(.88); transform-origin: right center; }
+      .contour, .microdots { transform-origin: right center; }
+      h1 { font-size: 67px; }
+    }
+
+    @media (max-width: 900px) {
+      html { scroll-padding-top: 132px; }
+
+      #research,
+      #profile,
+      #contact,
+      #profiles {
+        scroll-margin-top: 132px;
+      }
+
+      .shell { width: calc(100% - 36px); }
+
+      header {
+        height: auto;
+        padding: 11px 0 10px;
+      }
+
+      .nav {
+        grid-template-columns: 1fr auto;
+        gap: 10px 18px;
+      }
+
+      .identity-copy { display: none; }
+
+      .nav-links {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-content: space-between;
+        gap: 12px;
+        padding-top: 5px;
+        font-size: 10px;
+      }
+
+      .language-switcher { grid-column: 2; grid-row: 1; }
+      .language-switcher button { min-width: 34px; padding: 0 7px; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 52px 0 34px;
+      }
+
+      h1 { font-size: clamp(50px, 15vw, 72px); }
+      .native-name { display: block; margin: 14px 0 0; font-size: .32em; vertical-align: baseline; }
+      .degree { font-size: .24em; vertical-align: .6em; }
+      .role { font-size: 18px; }
+
+      .actions {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .atmosphere { height: 350px; margin-right: 0; }
+      .halo { right: 50%; transform: translateX(50%) scale(.78); transform-origin: center; }
+      .label-b { right: 5px; }
+      .plate-note { left: auto; right: 0; }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .social-links { flex-wrap: wrap; }
+
+      .research-grid { grid-template-columns: 1fr; }
+      .research-card,
+      .research-card + .research-card {
+        min-height: 0;
+        padding: 24px 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .research-card:last-child { border-bottom: 0; }
+      .card-topic { margin-top: 22px; padding-top: 0; }
+
+      .details-grid,
+      .contact-grid { grid-template-columns: 1fr; }
+      .details-grid { gap: 70px; }
+      .contact-grid { gap: 45px; }
+      .timeline article { grid-template-columns: 1fr; gap: 8px; }
+      .honors-panel { grid-template-columns: 1fr; gap: 28px; }
+      .offline-note { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      body.switching [data-copy] {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .halo { animation: atmosphere-drift 8s ease-in-out infinite alternate; }
+      .microdots { animation: particle-breathe 5s ease-in-out infinite alternate; }
+      @keyframes atmosphere-drift {
+        from { translate: 0 -2px; rotate: -.5deg; }
+        to { translate: -5px 5px; rotate: .6deg; }
+      }
+      @keyframes particle-breathe {
+        from { opacity: .64; }
+        to { opacity: 1; }
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content" data-copy="skipLink">Skip to main content</a>
+  <div class="page" id="top">
+    <header>
+      <div class="shell nav">
+        <a class="identity" href="#top" aria-label="Chongzhi Yin, home" data-copy-aria="identityAria">
+          <span class="monogram">CY</span>
+          <span class="identity-copy">
+            <strong>Chongzhi Yin</strong>
+            <span data-copy="identitySubtitle">Cloud microphysics</span>
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Primary navigation" data-copy-aria="navAria">
+          <a href="#research" data-copy="navResearch">Research</a>
+          <a href="#profile" data-copy="navAbout">Profile</a>
+          <a href="#contact" data-copy="navConnect">Contact</a>
+        </nav>
+
+        <div class="language-switcher" role="group" aria-label="Language" data-copy-aria="languageAria">
+          <button type="button" data-lang="zh" aria-label="中文" aria-pressed="false">中</button>
+          <button type="button" class="active" data-lang="en" aria-label="English" aria-pressed="true">EN</button>
+          <button type="button" data-lang="ja" aria-label="日本語" aria-pressed="false">日本語</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <section class="shell hero" id="about">
+        <div class="hero-copy">
+          <div class="eyebrow" data-copy="eyebrow">Atmospheric Science · Numerical Modelling</div>
+          <h1>Chongzhi YIN <span class="native-name">殷翀之</span> <span class="degree">Ph.D.</span></h1>
+          <p class="role" data-copy="role">Specially Appointed Assistant Professor <span>— Graduate School of Information Science, University of Hyogo</span></p>
+          <p class="intro" data-copy="intro">I investigate how cloud-scale turbulence and microscopic droplets shape one another. Using particle-based numerical methods, I seek to make the hidden life histories of clouds measurable.</p>
+          <div class="actions">
+            <a class="primary-action" href="#research"><span data-copy="explore">Explore selected research</span><span class="arrow" aria-hidden="true">↘</span></a>
+            <a class="text-action" href="#profiles" data-copy="profile">View academic profiles</a>
+          </div>
+        </div>
+
+        <div class="atmosphere" role="img" aria-label="Abstract cloud microphysics field illustration" data-copy-aria="fieldAria">
+          <div class="halo"></div>
+          <div class="contour c1"></div>
+          <div class="contour c2"></div>
+          <div class="contour c3"></div>
+          <div class="contour c4"></div>
+          <div class="microdots"></div>
+          <span class="field-label label-a" data-copy="fieldLabelA">LES field</span>
+          <span class="field-label label-b" data-copy="fieldLabelB">Droplet ensemble</span>
+          <span class="field-label label-c" data-copy="fieldLabelC">Lagrangian path</span>
+          <div class="plate-note">
+            <span class="number" aria-hidden="true">∞</span>
+            <strong data-copy="plateTitle">Clouds across scales</strong>
+            <p data-copy="plateText">From individual super-droplets to turbulent cloud systems.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="research" id="research">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker" data-copy="sectionKicker">Current &amp; recent work</p>
+              <h2 data-copy="sectionTitle">Selected Research</h2>
+            </div>
+            <div class="social-links" id="profiles" aria-label="Academic profiles" data-copy-aria="profilesAria">
+              <a href="https://orcid.org/0000-0002-0105-0144" target="_blank" rel="noreferrer" aria-label="ORCID profile" data-copy-aria="orcidAria">ORCID</a>
+              <a href="https://scholar.google.com/citations?user=8Tz-CxQAAAAJ" target="_blank" rel="noreferrer" aria-label="Google Scholar profile" data-copy-aria="scholarAria">Google Scholar</a>
+              <a href="https://www.researchgate.net/profile/Chongzhi-Yin?ev=hdr_xprf" target="_blank" rel="noreferrer" aria-label="ResearchGate profile" data-copy-aria="researchGateAria">ResearchGate</a>
+              <a href="https://github.com/wangyouyue" target="_blank" rel="noreferrer" aria-label="GitHub profile" data-copy-aria="githubAria">GitHub</a>
+              <a href="https://drive.google.com/file/d/1t3fLoglDvxGlKiySTlRNXRBcJMQ4ukpr/view?usp=sharing" target="_blank" rel="noreferrer" aria-label="Curriculum vitae on Google Drive" data-copy-aria="cvAria">CV</a>
+            </div>
+          </div>
+
+          <div class="research-grid">
+            <article class="research-card" lang="en">
+              <div class="card-meta"><span>2026 · Article</span><span class="card-index">01</span></div>
+              <a class="card-link" href="https://doi.org/10.1007/s00376-025-5043-z" target="_blank" rel="noreferrer">
+                <h3>Resolving Entrainment–Mixing in Marine Stratocumulus: The Role of LES Grid Resolution and Super-Droplet Number</h3>
+              </a>
+              <p class="card-authors">Yin, C., Shima, S., Lu, C., Gao, S., &amp; Xu, X.</p>
+              <div class="card-topic">Advances in Atmospheric Sciences · 43(4), 845–860</div>
+            </article>
+            <article class="research-card" lang="en">
+              <div class="card-meta"><span>2024 · Article</span><span class="card-index">02</span></div>
+              <a class="card-link" href="https://doi.org/10.5194/gmd-17-5167-2024" target="_blank" rel="noreferrer">
+                <h3>Simulation of marine stratocumulus using the super-droplet method: numerical convergence and comparison to a double-moment bulk scheme using SCALE-SDM 5.2.6-2.3.1</h3>
+              </a>
+              <p class="card-authors">Yin, C., Shima, S., Xue, L., &amp; Lu, C.</p>
+              <div class="card-topic">Geoscientific Model Development · 17(13), 5167–5189</div>
+            </article>
+            <article class="research-card" lang="en">
+              <div class="card-meta"><span>2025 · Preprint</span><span class="card-index">03</span></div>
+              <a class="card-link" href="https://doi.org/10.5194/egusphere-2025-6221" target="_blank" rel="noreferrer">
+                <h3>A Lagrangian Particle Tracking Framework for the Super-Droplet Method: Development, Implementation, and Application of Backward and Forward Algorithms in SCALE-SDM 5.2.6-2.3.1</h3>
+              </a>
+              <p class="card-authors">Yin, C., Shima, S.-I., &amp; Lu, C.</p>
+              <div class="card-topic">EGUsphere preprint</div>
+            </article>
+          </div>
+
+          <div class="footer-note">
+            <span data-copy="footerLeft">Computational cloud physics · Open science</span>
+            <span>© 2026 Chongzhi Yin</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="details" id="profile">
+        <div class="shell details-grid">
+          <div>
+            <p class="section-kicker" data-copy="profileKicker">Research profile</p>
+            <h2 data-copy="profileTitle">Cloud physics, resolved particle by particle.</h2>
+            <p class="body-copy" data-copy="profileBody">My work sits at the intersection of cloud microphysics, turbulence, and computational science. I develop particle-based methods for SCALE-SDM and use high-resolution simulations to understand entrainment-mixing, precipitation initiation, and the lifecycle of individual hydrometeors.</p>
+            <div class="interest-list">
+              <p><span>01</span><span class="interest-copy"><strong data-copy="interest1">Lagrangian particle-based microphysics</strong><small data-copy="interest1Detail">Super-Droplet Method development, numerical convergence, and cloud microphysics parameterization.</small></span></p>
+              <p><span>02</span><span class="interest-copy"><strong data-copy="interest2">Turbulence–microphysics interactions</strong><small data-copy="interest2Detail">Large-eddy and direct numerical simulations of entrainment, mixing, and precipitation initiation.</small></span></p>
+              <p><span>03</span><span class="interest-copy"><strong data-copy="interest3">Lagrangian particle tracking</strong><small data-copy="interest3Detail">Forward and backward Lagrangian tracking for reconstructing complete hydrometeor life histories.</small></span></p>
+              <p><span>04</span><span class="interest-copy"><strong data-copy="interest4">Scalable cloud simulation</strong><small data-copy="interest4Detail">High-performance computing with SCALE-SDM, MPI, OpenMP, Fortran, and Python workflows.</small></span></p>
+            </div>
+          </div>
+
+          <div>
+            <p class="section-kicker" data-copy="pathKicker">Academic path</p>
+            <h2 data-copy="pathTitle">Appointments &amp; education</h2>
+            <div class="timeline">
+              <article>
+                <time data-copy="exp1Period">Mar. 2026 — present</time>
+                <div>
+                  <h3 data-copy="exp1Role">Specially Appointed Assistant Professor</h3>
+                  <p class="place" data-copy="exp1Place">University of Hyogo · Kobe, Japan</p>
+                  <p class="detail" data-copy="exp1Detail">Cloud microphysics research within the UAE Research Program for Rain Enhancement Science (UAEREP).</p>
+                </div>
+              </article>
+              <article>
+                <time data-copy="exp2Period">2019 — 2025</time>
+                <div>
+                  <h3 data-copy="exp2Role">Ph.D. in Atmospheric Physics and Atmospheric Environment</h3>
+                  <p class="place" data-copy="exp2Place">Nanjing University of Information Science &amp; Technology</p>
+                  <p class="detail" data-copy="exp2Detail">Numerical convergence of the Super-Droplet Method and stratocumulus cloud physics.</p>
+                </div>
+              </article>
+              <article>
+                <time data-copy="exp3Period">2020 — 2022</time>
+                <div>
+                  <h3 data-copy="exp3Role">Research Student</h3>
+                  <p class="place" data-copy="exp3Place">University of Hyogo · Kobe, Japan</p>
+                  <p class="detail" data-copy="exp3Detail">Development and application of Lagrangian cloud microphysics schemes.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div class="shell honors-panel">
+          <div>
+            <p class="section-kicker" data-copy="honorsKicker">Recognition</p>
+            <h2 data-copy="honorsTitle">Selected honors</h2>
+          </div>
+          <div class="honors-list">
+            <article>
+              <time>2024</time>
+              <div>
+                <h3 data-copy="honor1Title">China's Top 10 Advances in Meteorological Science and Technology</h3>
+                <p data-copy="honor1Detail">Team member, 13th contributor.</p>
+              </div>
+            </article>
+            <article>
+              <time>2025</time>
+              <div>
+                <h3 data-copy="honor2Title">Excellent Oral Presentation Award</h3>
+                <p data-copy="honor2Detail">7th Chinese Symposium on Mesoscale Meteorology.</p>
+              </div>
+            </article>
+            <article>
+              <time>2020</time>
+              <div>
+                <h3 data-copy="honor3Title">China Scholarship Council Scholarship</h3>
+                <p data-copy="honor3Detail">State-Sponsored Graduate Program for joint Ph.D. study in Japan.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="shell contact-grid">
+          <div>
+            <p class="section-kicker" data-copy="contactKicker">Contact</p>
+            <h2 data-copy="contactTitle">Research conversations are welcome.</h2>
+            <p class="body-copy" data-copy="contactBody">For collaboration, seminars, or questions about SCALE-SDM and particle tracking, please get in touch by email.</p>
+          </div>
+          <div class="contact-details">
+            <a class="contact-link" href="mailto:chongzhi.yin@gsis.u-hyogo.ac.jp"><span data-copy="emailLabel">Institutional email</span>chongzhi.yin@gsis.u-hyogo.ac.jp</a>
+            <p class="contact-location"><span data-copy="locationLabel">Based in</span><strong data-copy="locationValue">Kobe, Japan</strong></p>
+          </div>
+        </div>
+        <div class="shell offline-note">
+          <span data-copy="offlineLabel">Academic profile · Updated July 2026</span>
+          <span>© 2026 Chongzhi Yin</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        pageTitle: 'Chongzhi Yin — Cloud Microphysics',
+        skipLink: 'Skip to main content', identitySubtitle: 'Cloud microphysics',
+        identityAria: 'Chongzhi Yin, home', navAria: 'Primary navigation', languageAria: 'Language selection',
+        profilesAria: 'Academic profiles and CV', orcidAria: 'ORCID profile', scholarAria: 'Google Scholar profile', researchGateAria: 'ResearchGate profile', githubAria: 'GitHub profile', cvAria: 'Curriculum vitae on Google Drive',
+        fieldAria: 'Abstract cloud microphysics field across droplet and cloud scales',
+        navResearch: 'Research', navAbout: 'Profile', navConnect: 'Contact',
+        eyebrow: 'Atmospheric Science · Cloud Microphysics',
+        role: 'Specially Appointed Assistant Professor <span>— Graduate School of Information Science, University of Hyogo</span>',
+        intro: 'I investigate how cloud-scale turbulence and microscopic droplets shape one another. Using particle-based numerical methods, I seek to make the hidden life histories of clouds measurable.',
+        explore: 'Explore selected research', profile: 'View academic profiles',
+        fieldLabelA: 'LES field', fieldLabelB: 'Droplet ensemble', fieldLabelC: 'Lagrangian path',
+        plateTitle: 'Clouds across scales', plateText: 'From individual super-droplets to turbulent cloud systems.',
+        sectionKicker: 'Current & recent work', sectionTitle: 'Selected Research',
+        footerLeft: 'Computational cloud physics · Open science',
+        profileKicker: 'Research profile', profileTitle: 'Cloud physics, resolved particle by particle.',
+        profileBody: 'My work sits at the intersection of cloud microphysics, turbulence, and computational science. I develop particle-based methods for SCALE-SDM and use high-resolution simulations to understand entrainment-mixing, precipitation initiation, and the lifecycle of individual hydrometeors.',
+        interest1: 'Lagrangian particle-based microphysics',
+        interest1Detail: 'Super-Droplet Method development, numerical convergence, and cloud microphysics parameterization.',
+        interest2: 'Turbulence–microphysics interactions',
+        interest2Detail: 'Large-eddy and direct numerical simulations of entrainment, mixing, and precipitation initiation.',
+        interest3: 'Lagrangian particle tracking',
+        interest3Detail: 'Forward and backward Lagrangian tracking for reconstructing complete hydrometeor life histories.',
+        interest4: 'Scalable cloud simulation',
+        interest4Detail: 'High-performance computing with SCALE-SDM, MPI, OpenMP, Fortran, and Python workflows.',
+        pathKicker: 'Academic path', pathTitle: 'Appointments & education',
+        exp1Period: 'Mar. 2026 — present', exp1Role: 'Specially Appointed Assistant Professor', exp1Place: 'University of Hyogo · Kobe, Japan', exp1Detail: 'Cloud microphysics research within the UAE Research Program for Rain Enhancement Science (UAEREP).',
+        exp2Period: '2019 — 2025', exp2Role: 'Ph.D. in Atmospheric Physics and Atmospheric Environment', exp2Place: 'Nanjing University of Information Science & Technology', exp2Detail: 'Numerical convergence of the Super-Droplet Method and stratocumulus cloud physics.',
+        exp3Period: '2020 — 2022', exp3Role: 'Research Student', exp3Place: 'University of Hyogo · Kobe, Japan', exp3Detail: 'Development and application of Lagrangian cloud microphysics schemes.',
+        honorsKicker: 'Recognition', honorsTitle: 'Selected honors',
+        honor1Title: "China's Top 10 Advances in Meteorological Science and Technology", honor1Detail: 'Team member, 13th contributor.',
+        honor2Title: 'Excellent Oral Presentation Award', honor2Detail: '7th Chinese Symposium on Mesoscale Meteorology.',
+        honor3Title: 'China Scholarship Council Scholarship', honor3Detail: 'State-Sponsored Graduate Program for joint Ph.D. study in Japan.',
+        contactKicker: 'Contact', contactTitle: 'Research conversations are welcome.', contactBody: 'For collaboration, seminars, or questions about SCALE-SDM and particle tracking, please get in touch by email.',
+        emailLabel: 'Institutional email', locationLabel: 'Based in', locationValue: 'Kobe, Japan',
+        offlineLabel: 'Academic profile · Updated July 2026'
+      },
+      zh: {
+        pageTitle: '殷翀之 — 云微物理',
+        skipLink: '跳到主要内容', identitySubtitle: '云微物理',
+        identityAria: '殷翀之，返回页面顶部', navAria: '主导航', languageAria: '语言选择',
+        profilesAria: '学术主页与个人简历', orcidAria: 'ORCID 主页', scholarAria: 'Google Scholar 主页', researchGateAria: 'ResearchGate 主页', githubAria: 'GitHub 主页', cvAria: 'Google Drive 上的个人简历',
+        fieldAria: '展示云滴到云尺度过程的抽象云微物理场示意图',
+        navResearch: '研究', navAbout: '简介', navConnect: '联系',
+        eyebrow: '大气科学 · 云微物理',
+        role: '特任助教 <span>— 兵库县立大学 大学院信息科学研究科</span>',
+        intro: '我研究云尺度湍流与微观云滴如何相互影响，并通过基于粒子的数值方法，试图让云中难以观测的粒子生命史变得可解析、可度量。',
+        explore: '浏览代表研究', profile: '查看学术主页',
+        fieldLabelA: 'LES 云场', fieldLabelB: '云滴集合', fieldLabelC: '拉格朗日路径',
+        plateTitle: '跨尺度理解云', plateText: '从单个超级水滴到湍流云系统。',
+        sectionKicker: '当前与近期工作', sectionTitle: '代表研究',
+        footerLeft: '计算云物理 · 开放科学',
+        profileKicker: '个人简介', profileTitle: '逐粒子解析云物理过程。',
+        profileBody: '我的研究位于云微物理、湍流与计算科学的交叉地带。我开发 SCALE-SDM 的粒子方法，并使用高分辨率模拟研究卷入混合、降水起始以及单个水凝物粒子的完整生命史。',
+        interest1: '拉格朗日粒子云微物理',
+        interest1Detail: '超级水滴法（SDM）开发、数值收敛与云微物理参数化。',
+        interest2: '湍流—微物理相互作用',
+        interest2Detail: '通过大涡模拟与直接数值模拟研究卷入、混合和降水起始。',
+        interest3: '拉格朗日粒子追踪',
+        interest3Detail: '利用前向与后向拉格朗日追踪，重建水凝物粒子的完整生命史。',
+        interest4: '可扩展云模拟',
+        interest4Detail: '基于 SCALE-SDM、MPI、OpenMP、Fortran 与 Python 的高性能计算。',
+        pathKicker: '学术路径', pathTitle: '任职与教育经历',
+        exp1Period: '2026年3月 — 至今', exp1Role: '特任助教', exp1Place: '兵库县立大学 · 日本神户', exp1Detail: '参与阿联酋降雨增强科学研究计划（UAEREP），开展云微物理研究。',
+        exp2Period: '2019 — 2025', exp2Role: '大气物理学与大气环境博士', exp2Place: '南京信息工程大学', exp2Detail: '研究超级水滴法的数值收敛性与层积云的宏观特征和微物理特征。',
+        exp3Period: '2020 — 2022', exp3Role: '研究生（Research Student）', exp3Place: '兵库县立大学 · 日本神户', exp3Detail: '开发并应用拉格朗日云微物理方案。',
+        honorsKicker: '荣誉', honorsTitle: '代表荣誉',
+        honor1Title: '中国气象科技十大进展', honor1Detail: '团队成员，第 13 完成人。',
+        honor2Title: '优秀口头报告奖', honor2Detail: '第七届全国中尺度气象学术研讨会。',
+        honor3Title: '国家留学基金委奖学金', honor3Detail: '国家建设高水平大学公派研究生项目，赴日联合培养。',
+        contactKicker: '联系', contactTitle: '欢迎交流云物理与数值模拟研究。', contactBody: '如需合作、邀请报告，或讨论 SCALE-SDM 与粒子追踪方法，欢迎通过机构邮箱联系。',
+        emailLabel: '机构邮箱', locationLabel: '所在地', locationValue: '日本神户',
+        offlineLabel: '个人学术主页 · 2026 年 7 月更新'
+      },
+      ja: {
+        pageTitle: '殷翀之 — 雲微物理',
+        skipLink: 'メインコンテンツへ移動', identitySubtitle: '雲微物理',
+        identityAria: '殷翀之、ページ上部へ', navAria: 'メインナビゲーション', languageAria: '言語選択',
+        profilesAria: '研究者プロフィールと履歴書', orcidAria: 'ORCID プロフィール', scholarAria: 'Google Scholar プロフィール', researchGateAria: 'ResearchGate プロフィール', githubAria: 'GitHub プロフィール', cvAria: 'Google Drive 上の履歴書',
+        fieldAria: '雲粒から雲スケールまでを表す雲微物理場の抽象図',
+        navResearch: '研究', navAbout: 'プロフィール', navConnect: '連絡先',
+        eyebrow: '大気科学・雲微物理',
+        role: '特任助教 <span>— 兵庫県立大学 大学院情報科学研究科</span>',
+        intro: '雲スケールの乱流と微小な雲粒がどのように影響し合うかを研究しています。粒子ベースの数値手法を用い、雲の中に隠れた粒子の履歴を定量的に明らかにすることを目指します。',
+        explore: '主な研究を見る', profile: '研究者プロフィール',
+        fieldLabelA: 'LES 雲場', fieldLabelB: '雲粒集団', fieldLabelC: 'ラグランジュ経路',
+        plateTitle: 'スケールを越えて雲を捉える', plateText: '個々の超水滴から乱流雲システムまで。',
+        sectionKicker: '現在および最近の研究', sectionTitle: '主な研究',
+        footerLeft: '計算雲物理 · オープンサイエンス',
+        profileKicker: 'プロフィール', profileTitle: '雲物理を一粒ずつ解き明かす。',
+        profileBody: '雲微物理、乱流、計算科学の接点で研究を進めています。SCALE-SDM の粒子ベース手法を開発し、高解像度シミュレーションにより、エントレインメント・混合、降水形成の初期過程、個々の水成粒子のライフサイクルを調べています。',
+        interest1: 'ラグランジュ粒子ベース雲微物理',
+        interest1Detail: '超水滴法（SDM）の開発、数値収束性、雲微物理パラメタリゼーション。',
+        interest2: '乱流—微物理相互作用',
+        interest2Detail: 'LES と DNS によるエントレインメント、混合、降水形成初期過程の解析。',
+        interest3: 'ラグランジュ粒子追跡',
+        interest3Detail: '前方・後方ラグランジュ粒子追跡による水成粒子のライフサイクル解析。',
+        interest4: 'スケーラブルな雲シミュレーション',
+        interest4Detail: 'SCALE-SDM、MPI、OpenMP、Fortran、Python を用いた高性能計算。',
+        pathKicker: 'アカデミックキャリア', pathTitle: '職歴・学歴',
+        exp1Period: '2026年3月 — 現在', exp1Role: '特任助教', exp1Place: '兵庫県立大学 · 日本・神戸', exp1Detail: 'UAE降雨増強科学研究プログラム（UAEREP）における雲微物理研究。',
+        exp2Period: '2019 — 2025', exp2Role: '博士（大気物理学・大気環境）', exp2Place: '南京信息工程大学', exp2Detail: '超水滴法の数値収束性と層積雲の巨視的特性・微物理特性を研究。',
+        exp3Period: '2020 — 2022', exp3Role: '研究生', exp3Place: '兵庫県立大学 · 日本・神戸', exp3Detail: 'ラグランジュ雲微物理スキームの開発と応用。',
+        honorsKicker: '受賞', honorsTitle: '主な受賞',
+        honor1Title: '中国気象科学技術十大進展', honor1Detail: 'チームメンバー（第 13 貢献者）。',
+        honor2Title: '優秀口頭発表賞', honor2Detail: '第 7 回中国メソスケール気象学シンポジウム。',
+        honor3Title: '中国国家留学基金管理委員会奨学金', honor3Detail: '日本での博士共同研究のための国家派遣プログラム。',
+        contactKicker: '連絡先', contactTitle: '研究に関するご相談を歓迎します。', contactBody: '共同研究、セミナー、SCALE-SDM や粒子追跡に関するご質問は、大学メールまでお気軽にご連絡ください。',
+        emailLabel: '大学メール', locationLabel: '拠点', locationValue: '日本・神戸',
+        offlineLabel: '研究者プロフィール · 2026 年 7 月更新'
+      }
+    };
+
+    const buttons = document.querySelectorAll('[data-lang]');
+    const copyNodes = document.querySelectorAll('[data-copy]');
+    const ariaNodes = document.querySelectorAll('[data-copy-aria]');
+
+    function prefersReducedMotion() {
+      return typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    function applyLanguage(lang, animate, persist) {
+      if (!translations[lang]) return;
+
+      const update = () => {
+        copyNodes.forEach((node) => {
+          const value = translations[lang][node.dataset.copy];
+          if (value !== undefined) node.innerHTML = value;
+        });
+        ariaNodes.forEach((node) => {
+          const value = translations[lang][node.dataset.copyAria];
+          if (value !== undefined) node.setAttribute('aria-label', value);
+        });
+        document.title = translations[lang].pageTitle;
+        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+        buttons.forEach((item) => {
+          const active = item.dataset.lang === lang;
+          item.classList.toggle('active', active);
+          item.setAttribute('aria-pressed', String(active));
+        });
+        document.body.classList.remove('switching');
+      };
+
+      if (animate && !prefersReducedMotion()) {
+        document.body.classList.add('switching');
+        window.setTimeout(update, 130);
+      } else {
+        update();
+      }
+
+      if (persist) {
+        try { window.localStorage.setItem('chongzhi-yin-language', lang); } catch (error) { /* file privacy mode */ }
+        try {
+          const url = new URL(window.location.href);
+          if (lang === 'en') url.searchParams.delete('lang');
+          else url.searchParams.set('lang', lang);
+          window.history.replaceState(null, '', url.href);
+        } catch (error) { /* some browsers restrict file URL history */ }
+      }
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        if (!button.classList.contains('active')) applyLanguage(button.dataset.lang, true, true);
+      });
+    });
+
+    let initialLanguage = 'en';
+    let queryLanguage = null;
+    try {
+      queryLanguage = new URL(window.location.href).searchParams.get('lang');
+    } catch (error) { /* malformed or restricted file URL */ }
+
+    if (translations[queryLanguage]) {
+      initialLanguage = queryLanguage;
+    } else {
+      try {
+        const storedLanguage = window.localStorage.getItem('chongzhi-yin-language');
+        if (translations[storedLanguage]) initialLanguage = storedLanguage;
+      } catch (error) { /* English remains the safe default */ }
+    }
+    applyLanguage(initialLanguage, false, false);
+  </script>
+</body>
+</html>
