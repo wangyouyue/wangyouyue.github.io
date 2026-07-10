@@ -9,6 +9,7 @@
   <meta property="og:description" content="Trilingual academic profile in English, Chinese, and Japanese.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://wangyouyue.github.io/">
+  <meta property="og:image" content="https://wangyouyue.github.io/og.png">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://wangyouyue.github.io/">
   <title>Chongzhi Yin — Cloud Microphysics</title>
@@ -223,6 +224,20 @@
       align-items: center;
       gap: 72px;
       padding: 66px 0 54px;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      inset: -20px -8vw 0 28%;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(247, 250, 251, 1) 0%, rgba(247, 250, 251, .98) 46%, rgba(247, 250, 251, .88) 66%, rgba(247, 250, 251, .24) 100%),
+        url("og.png") right center / cover no-repeat;
+      filter: saturate(.72) contrast(.92);
+      opacity: .56;
     }
 
     .hero-copy { position: relative; z-index: 2; }
@@ -335,6 +350,7 @@
     /* Atmospheric research plate */
     .atmosphere {
       position: relative;
+      z-index: 1;
       height: 438px;
       margin-right: 10px;
     }
@@ -881,6 +897,14 @@
         grid-template-columns: 1fr;
         gap: 12px;
         padding: 52px 0 34px;
+      }
+
+      .hero::before {
+        inset: 31% -18px 0 -18px;
+        background:
+          linear-gradient(180deg, rgba(247, 250, 251, 1) 0%, rgba(247, 250, 251, .93) 42%, rgba(247, 250, 251, .42) 100%),
+          url("og.png") right bottom / cover no-repeat;
+        opacity: .46;
       }
 
       h1 { font-size: clamp(50px, 15vw, 72px); }
