@@ -1,18 +1,74 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr" data-theme-mode="system" data-language="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f7fafb">
   <meta name="description" content="Chongzhi Yin — cloud microphysics, particle-based numerical modelling, SCALE-SDM, publications, academic experience, and contact information.">
   <meta property="og:title" content="Chongzhi Yin — Cloud Microphysics">
-  <meta property="og:description" content="Trilingual academic profile in English, Chinese, and Japanese.">
+  <meta property="og:description" content="Multilingual academic profile in English, Simplified Chinese, Traditional Chinese, Japanese, Korean, and Arabic.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://wangyouyue.github.io/">
   <meta property="og:image" content="https://wangyouyue.github.io/og.png">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://wangyouyue.github.io/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23eef6f8' stroke='%230d2738' stroke-width='3'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Georgia,serif' font-size='22' fill='%230d2738'%3ECY%3C/text%3E%3C/svg%3E">
   <title>Chongzhi Yin — Cloud Microphysics</title>
+  <script>
+    (() => {
+      const languageMeta = {
+        en: { lang: 'en', dir: 'ltr' },
+        'zh-Hans': { lang: 'zh-Hans', dir: 'ltr' },
+        'zh-Hant': { lang: 'zh-Hant', dir: 'ltr' },
+        ja: { lang: 'ja', dir: 'ltr' },
+        ko: { lang: 'ko', dir: 'ltr' },
+        ar: { lang: 'ar', dir: 'rtl' }
+      };
+      const canonicalLanguage = (value) => {
+        if (typeof value !== 'string') return null;
+        const normalized = value.trim().replace(/_/g, '-').toLowerCase();
+        if (!normalized) return null;
+        if (normalized === 'zh' || normalized.startsWith('zh-')) {
+          const tags = normalized.split('-');
+          const traditional = tags.includes('hant') || tags.some((tag) => ['tw', 'hk', 'mo'].includes(tag));
+          return traditional ? 'zh-Hant' : 'zh-Hans';
+        }
+        return ['en', 'ja', 'ko', 'ar'].find((code) => normalized === code || normalized.startsWith(`${code}-`)) || null;
+      };
+      const preferredLanguage = () => {
+        const candidates = [];
+        if (Array.isArray(window.navigator?.languages)) candidates.push(...window.navigator.languages);
+        if (window.navigator?.language) candidates.push(window.navigator.language);
+        return candidates.map(canonicalLanguage).find((candidate) => languageMeta[candidate]) || 'en';
+      };
+      let language = preferredLanguage();
+      let queryLanguage = null;
+      try {
+        queryLanguage = canonicalLanguage(new URL(window.location.href).searchParams.get('lang'));
+      } catch (error) { /* malformed or restricted file URL */ }
+      if (languageMeta[queryLanguage]) language = queryLanguage;
+      else {
+        try {
+          const storedLanguage = canonicalLanguage(window.localStorage.getItem('chongzhi-yin-language'));
+          if (languageMeta[storedLanguage]) language = storedLanguage;
+        } catch (error) { /* file privacy mode */ }
+      }
+
+      let mode = 'system';
+      try {
+        const saved = window.localStorage.getItem('chongzhi-yin-theme');
+        if (saved === 'light' || saved === 'dark' || saved === 'system') mode = saved;
+      } catch (error) { /* file privacy mode */ }
+      const systemDark = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const root = document.documentElement;
+      root.lang = languageMeta[language].lang;
+      root.dir = languageMeta[language].dir;
+      root.dataset.language = language;
+      root.dataset.themeMode = mode;
+      root.dataset.theme = mode === 'system' ? (systemDark ? 'dark' : 'light') : mode;
+    })();
+  </script>
   <style>
     :root {
       --paper: #f7fafb;
@@ -127,12 +183,35 @@
       height: 38px;
       display: grid;
       place-items: center;
+      padding: 0;
       border: 1px solid rgba(13, 39, 56, .7);
       border-radius: 50%;
+      color: inherit;
+      background: transparent;
+      appearance: none;
+      -webkit-appearance: none;
       font-family: var(--serif);
       font-size: 13px;
       letter-spacing: .04em;
     }
+
+    .monogram-button {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .22s cubic-bezier(.2, .8, .2, 1),
+                  border-color .22s ease,
+                  background .22s ease,
+                  box-shadow .22s ease;
+    }
+
+    .monogram-button:is(:hover, :focus-visible) {
+      border-color: color-mix(in srgb, var(--ink) 84%, transparent);
+      background: color-mix(in srgb, var(--surface-strong) 48%, transparent);
+      box-shadow: 0 8px 22px rgba(13, 39, 56, .12), inset 0 1px 0 rgba(255, 255, 255, .72);
+      transform: translateY(-1px) scale(1.045);
+    }
+
+    .monogram-button:active { transform: scale(.97); }
 
     .identity-copy {
       display: flex;
@@ -181,39 +260,6 @@
     }
 
     .nav-links a:hover::after { right: 0; }
-
-    .language-switcher {
-      justify-self: end;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      padding: 4px;
-      border: 1px solid rgba(13, 39, 56, .12);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, .52);
-      backdrop-filter: blur(8px);
-    }
-
-    .language-switcher button {
-      min-width: 44px;
-      height: 28px;
-      padding: 0 10px;
-      border: 0;
-      border-radius: 999px;
-      color: #567180;
-      background: transparent;
-      cursor: pointer;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .05em;
-      transition: color .2s ease, background .2s ease, box-shadow .2s ease;
-    }
-
-    .language-switcher button.active {
-      color: #f8fbfc;
-      background: var(--ink);
-      box-shadow: 0 4px 12px rgba(13, 39, 56, .16);
-    }
 
     /* Hero */
     .hero {
@@ -373,6 +419,30 @@
         inset 0 0 0 1px rgba(67, 116, 135, .12),
         0 36px 80px rgba(104, 148, 163, .16);
     }
+
+    .halo-principle {
+      position: absolute;
+      z-index: 2;
+      top: 43.5%;
+      left: 47%;
+      display: grid;
+      gap: 2px;
+      color: #846d42;
+      background: linear-gradient(105deg, #655432 0%, #aa8b52 42%, #766039 68%, #9a7d49 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: .055em;
+      line-height: 1.08;
+      text-align: center;
+      text-transform: uppercase;
+      transform: translate(-50%, -50%);
+    }
+
+    .halo-principle span { display: block; }
 
     .halo::before,
     .halo::after {
@@ -585,9 +655,9 @@
     .card-link:focus-visible,
     .social-links a:focus-visible,
     .contact-link:focus-visible,
-    .language-switcher button:focus-visible,
     .nav-links a:focus-visible,
-    .identity:focus-visible,
+    .identity-copy:focus-visible,
+    .monogram-button:focus-visible,
     .primary-action:focus-visible,
     .text-action:focus-visible {
       outline: 2px solid #527482;
@@ -894,9 +964,6 @@
         font-size: 10px;
       }
 
-      .language-switcher { grid-column: 2; grid-row: 1; }
-      .language-switcher button { min-width: 34px; padding: 0 7px; }
-
       .hero {
         grid-template-columns: 1fr;
         gap: 12px;
@@ -1082,31 +1149,1643 @@
         width: 100%;
       }
     }
+
+    /* Liquid Glass preview revision
+       Glass is reserved for navigation and controls; reading surfaces stay quiet. */
+    :root {
+      --focus: #126c91;
+      --glass-solid: rgba(247, 250, 251, .90);
+      --glass: rgba(248, 252, 253, .20);
+      --glass-popover: rgba(248, 252, 253, .38);
+      --glass-hover: rgba(255, 255, 255, .30);
+      --glass-selected: rgba(255, 255, 255, .42);
+      --glass-border: rgba(255, 255, 255, .46);
+      --glass-highlight: rgba(255, 255, 255, .76);
+      --glass-prism: radial-gradient(circle at 12% 0%, rgba(164, 232, 255, .12), transparent 34%), radial-gradient(circle at 92% 108%, rgba(220, 174, 255, .08), transparent 35%);
+      --glass-sheen: linear-gradient(145deg, rgba(255, 255, 255, .58) 0%, rgba(255, 255, 255, .12) 18%, rgba(255, 255, 255, 0) 42%), linear-gradient(325deg, rgba(62, 113, 135, .09) 0%, rgba(62, 113, 135, 0) 28%);
+      --glass-filter: blur(16px) saturate(165%) contrast(104%);
+      --glass-shadow: 0 14px 38px rgba(20, 58, 75, .11), inset 1px 1px 0 rgba(255, 255, 255, .76), inset -1px -1px 0 rgba(49, 97, 117, .11);
+      --glass-chrome-tint: rgba(246, 251, 253, .14);
+      --glass-chrome-panel-tint: rgba(244, 250, 252, .27);
+      --glass-chrome-hotspot: rgba(255, 255, 255, .82);
+      --glass-chrome-edge: rgba(255, 255, 255, .94);
+      --glass-chrome-prism: rgba(123, 210, 239, .54);
+      --glass-chrome-depth: rgba(35, 81, 101, .31);
+      --glass-dimensional-shadow: 0 1px 1px rgba(255, 255, 255, .58), 0 3px 8px rgba(23, 61, 78, .10), 0 13px 30px rgba(23, 61, 78, .13), 0 30px 74px rgba(23, 61, 78, .08), inset 0 1.5px 1px rgba(255, 255, 255, .86), inset 0 -1.5px 1px rgba(35, 81, 101, .18);
+      --glass-dimensional-shadow-hover: 0 1px 1px rgba(255, 255, 255, .68), 0 5px 12px rgba(23, 61, 78, .12), 0 18px 38px rgba(23, 61, 78, .16), 0 34px 82px rgba(23, 61, 78, .10), inset 0 1.5px 1px rgba(255, 255, 255, .92), inset 0 -2px 1px rgba(35, 81, 101, .20);
+      --surface-raised: rgba(255, 255, 255, .70);
+      --surface-strong: #ffffff;
+      --contact-bg: #0d2738;
+      --contact-ink: #f7fafb;
+      --header-offset: 118px;
+    }
+
+    html[data-theme="light"] { color-scheme: light; }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #091117;
+      --cloud: #101b22;
+      --mist: #15242d;
+      --sky: #203743;
+      --blue: #8bb5c6;
+      --ink: #eef5f7;
+      --ink-soft: #b7c9d1;
+      --line: rgba(222, 239, 245, .15);
+      --line-light: rgba(154, 199, 216, .17);
+      --focus: #93d4ef;
+      --glass-solid: rgba(18, 29, 36, .90);
+      --glass: rgba(12, 25, 32, .24);
+      --glass-popover: rgba(12, 24, 31, .40);
+      --glass-hover: rgba(25, 41, 50, .34);
+      --glass-selected: rgba(31, 49, 59, .44);
+      --glass-border: rgba(221, 241, 248, .24);
+      --glass-highlight: rgba(235, 248, 252, .30);
+      --glass-prism: radial-gradient(circle at 12% 0%, rgba(107, 201, 232, .12), transparent 34%), radial-gradient(circle at 92% 108%, rgba(181, 135, 224, .08), transparent 35%);
+      --glass-sheen: linear-gradient(145deg, rgba(235, 248, 252, .25) 0%, rgba(235, 248, 252, .06) 18%, rgba(235, 248, 252, 0) 42%), linear-gradient(325deg, rgba(0, 0, 0, .18) 0%, rgba(0, 0, 0, 0) 28%);
+      --glass-filter: blur(18px) saturate(140%) brightness(.90) contrast(104%);
+      --glass-shadow: 0 16px 42px rgba(0, 0, 0, .34), inset 1px 1px 0 rgba(235, 248, 252, .24), inset -1px -1px 0 rgba(0, 0, 0, .22);
+      --glass-chrome-tint: rgba(10, 23, 30, .18);
+      --glass-chrome-panel-tint: rgba(8, 19, 25, .31);
+      --glass-chrome-hotspot: rgba(210, 244, 255, .48);
+      --glass-chrome-edge: rgba(224, 247, 255, .67);
+      --glass-chrome-prism: rgba(104, 211, 245, .48);
+      --glass-chrome-depth: rgba(0, 0, 0, .58);
+      --glass-dimensional-shadow: 0 1px 1px rgba(220, 246, 255, .13), 0 4px 10px rgba(0, 0, 0, .32), 0 16px 36px rgba(0, 0, 0, .38), 0 34px 82px rgba(0, 0, 0, .25), inset 0 1.5px 1px rgba(226, 248, 255, .31), inset 0 -2px 1px rgba(0, 0, 0, .52);
+      --glass-dimensional-shadow-hover: 0 1px 1px rgba(220, 246, 255, .18), 0 6px 14px rgba(0, 0, 0, .36), 0 21px 44px rgba(0, 0, 0, .46), 0 40px 90px rgba(0, 0, 0, .29), inset 0 1.5px 1px rgba(226, 248, 255, .38), inset 0 -2px 1px rgba(0, 0, 0, .58);
+      --surface-raised: rgba(20, 34, 42, .78);
+      --surface-strong: #13222b;
+      --contact-bg: #050b0f;
+      --contact-ink: #eef5f7;
+    }
+
+    html { scroll-padding-top: var(--header-offset); }
+    html.js-smooth-scroll { scroll-behavior: auto; }
+
+    #top,
+    #research,
+    #profile,
+    #links,
+    #contact,
+    #profiles {
+      scroll-margin-top: var(--header-offset);
+      outline: none;
+    }
+
+    :is(#top, #research, #profile, #links, #contact):focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: -3px;
+    }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .liquid-glass-filter-defs {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    :where(a, button, input):focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      flex: 0 0 auto;
+      background: currentColor;
+      -webkit-mask: var(--icon) center / contain no-repeat;
+      mask: var(--icon) center / contain no-repeat;
+    }
+
+    /* Inline SVG masks keep every control icon available when Chrome opens this page via file://. */
+    .icon-home { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJNMTUgMjF2LThhMSAxIDAgMCAwLTEtMWgtNGExIDEgMCAwIDAtMSAxdjgiIC8+CiAgPHBhdGggZD0iTTMgMTBhMiAyIDAgMCAxIC43MDktMS41MjhsNy02YTIgMiAwIDAgMSAyLjU4MiAwbDcgNkEyIDIgMCAwIDEgMjEgMTB2OWEyIDIgMCAwIDEtMiAySDVhMiAyIDAgMCAxLTItMnoiIC8+Cjwvc3ZnPgo="); }
+    .icon-research { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJNNiAxOGg4IiAvPgogIDxwYXRoIGQ9Ik0zIDIyaDE4IiAvPgogIDxwYXRoIGQ9Ik0xNCAyMmE3IDcgMCAxIDAgMC0xNGgtMSIgLz4KICA8cGF0aCBkPSJNOSAxNGgyIiAvPgogIDxwYXRoIGQ9Ik05IDEyYTIgMiAwIDAgMS0yLTJWNmg2djRhMiAyIDAgMCAxLTIgMloiIC8+CiAgPHBhdGggZD0iTTEyIDZWM2ExIDEgMCAwIDAtMS0xSDlhMSAxIDAgMCAwLTEgMXYzIiAvPgo8L3N2Zz4K"); }
+    .icon-profile { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjgiIHI9IjUiIC8+CiAgPHBhdGggZD0iTTIwIDIxYTggOCAwIDAgMC0xNiAwIiAvPgo8L3N2Zz4K"); }
+    .icon-links { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJNOSAxN0g3QTUgNSAwIDAgMSA3IDdoMiIgLz4KICA8cGF0aCBkPSJNMTUgN2gyYTUgNSAwIDEgMSAwIDEwaC0yIiAvPgogIDxsaW5lIHgxPSI4IiB4Mj0iMTYiIHkxPSIxMiIgeTI9IjEyIiAvPgo8L3N2Zz4K"); }
+    .icon-contact { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJtMjIgNy04Ljk5MSA1LjcyN2EyIDIgMCAwIDEtMi4wMDkgMEwyIDciIC8+CiAgPHJlY3QgeD0iMiIgeT0iNCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE2IiByeD0iMiIgLz4KPC9zdmc+Cg=="); }
+    .icon-system { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cmVjdCB3aWR0aD0iMjAiIGhlaWdodD0iMTQiIHg9IjIiIHk9IjMiIHJ4PSIyIiAvPgogIDxsaW5lIHgxPSI4IiB4Mj0iMTYiIHkxPSIyMSIgeTI9IjIxIiAvPgogIDxsaW5lIHgxPSIxMiIgeDI9IjEyIiB5MT0iMTciIHkyPSIyMSIgLz4KPC9zdmc+Cg=="); }
+    .icon-light { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI0IiAvPgogIDxwYXRoIGQ9Ik0xMiAydjIiIC8+CiAgPHBhdGggZD0iTTEyIDIwdjIiIC8+CiAgPHBhdGggZD0ibTQuOTMgNC45MyAxLjQxIDEuNDEiIC8+CiAgPHBhdGggZD0ibTE3LjY2IDE3LjY2IDEuNDEgMS40MSIgLz4KICA8cGF0aCBkPSJNMiAxMmgyIiAvPgogIDxwYXRoIGQ9Ik0yMCAxMmgyIiAvPgogIDxwYXRoIGQ9Im02LjM0IDE3LjY2LTEuNDEgMS40MSIgLz4KICA8cGF0aCBkPSJtMTkuMDcgNC45My0xLjQxIDEuNDEiIC8+Cjwvc3ZnPgo="); }
+    .icon-dark { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJNMjAuOTg1IDEyLjQ4NmE5IDkgMCAxIDEtOS40NzMtOS40NzJjLjQwNS0uMDIyLjYxNy40Ni40MDIuODAzYTYgNiAwIDAgMCA4LjI2OCA4LjI2OGMuMzQ0LS4yMTUuODI1LS4wMDQuODAzLjQwMSIgLz4KPC9zdmc+Cg=="); }
+    .icon-orcid { --icon: url("data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+T1JDSUQ8L3RpdGxlPjxwYXRoIGQ9Ik0xMiAwQzUuMzcyIDAgMCA1LjM3MiAwIDEyczUuMzcyIDEyIDEyIDEyIDEyLTUuMzcyIDEyLTEyUzE4LjYyOCAwIDEyIDB6TTcuMzY5IDQuMzc4Yy41MjUgMCAuOTQ3LjQzMS45NDcuOTQ3cy0uNDIyLjk0Ny0uOTQ3Ljk0N2EuOTUuOTUgMCAwIDEtLjk0Ny0uOTQ3YzAtLjUyNS40MjItLjk0Ny45NDctLjk0N3ptLS43MjIgMy4wMzhoMS40NDR2MTAuMDQxSDYuNjQ3VjcuNDE2em0zLjU2MiAwaDMuOWMzLjcxMiAwIDUuMzQ0IDIuNjUzIDUuMzQ0IDUuMDI1IDAgMi41NzgtMi4wMTYgNS4wMjUtNS4zMjUgNS4wMjVoLTMuOTE5VjcuNDE2em0xLjQ0NCAxLjMwM3Y3LjQ0NGgyLjI5N2MzLjI3MiAwIDQuMDIyLTIuNDg0IDQuMDIyLTMuNzIyIDAtMi4wMTYtMS4yODQtMy43MjItNC4wOTctMy43MjJoLTIuMjIyeiIvPjwvc3ZnPg=="); color: #a6ce39; }
+    .icon-scholar { --icon: url("data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+R29vZ2xlIFNjaG9sYXI8L3RpdGxlPjxwYXRoIGQ9Ik01LjI0MiAxMy43NjlMMCA5LjUgMTIgMGwxMiA5LjUtNS4yNDIgNC4yNjlDMTcuNTQ4IDExLjI0OSAxNC45NzggOS41IDEyIDkuNWMtMi45NzcgMC01LjU0OCAxLjc0OC02Ljc1OCA0LjI2OXpNMTIgMTBhNyA3IDAgMSAwIDAgMTQgNyA3IDAgMCAwIDAtMTR6Ii8+PC9zdmc+"); color: #4285f4; }
+    .icon-researchgate { --icon: url("data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+UmVzZWFyY2hHYXRlPC90aXRsZT48cGF0aCBkPSJNMTkuNTg2IDBjLS44MTggMC0xLjUwOC4xOS0yLjA3My41NjUtLjU2My4zNzctLjk3LjkzNi0xLjIxMyAxLjY4YTMuMTkzIDMuMTkzIDAgMCAwLS4xMTIuNDM3IDguMzY1IDguMzY1IDAgMCAwLS4wNzguNTMgOSA5IDAgMCAwLS4wNS43MjdjLS4wMS4yODItLjAxMy42MjEtLjAxMyAxLjAxNmEzMS4xMjEgMzEuMTIzIDAgMCAwIC4wMTQgMS4wMTcgOSA5IDAgMCAwIC4wNS43MjcgNy45NDYgNy45NDYgMCAwIDAgLjA3Ny41M2gtLjAwNWEzLjMzNCAzLjMzNCAwIDAgMCAuMTEzLjQzOGMuMjQ1Ljc0My42NSAxLjMwMyAxLjIxNCAxLjY4LjU2NS4zNzYgMS4yNTYuNTY0IDIuMDc1LjU2NC44IDAgMS41MzYtLjIxMyAyLjEwNS0uNjAzLjU3LS4zOS45NC0uOTE2IDEuMTc1LTEuNjUuMDc2LS4yMzUuMTM1LS41NTguMTc3LS45M2ExMC45IDEwLjkgMCAwIDAgLjA0My0xLjIwN3YtLjgyYzAtLjA5NS0uMDQ3LS4xNDItLjE0LS4xNDJoLTMuMDY0Yy0uMDk0IDAtLjE0LjA0Ny0uMTQuMTQxdi45NTZjMCAuMDk0LjA0Ni4xNC4xNC4xNGgxLjY2NmMuMDU2IDAgLjA4NC4wMy4wODQuMDg2IDAgLjM2IDAgLjYyLS4wMzYuODY1LS4wMzguMjQ0LS4xLjQ0Ny0uMTQ3LjYwNi0uMTA4LjM4NS0uMzQ4LjY2NC0uNjM4Ljg3Ni0uMjkuMjEyLS43MzguMzUtMS4yMjcuMzUtLjU0NSAwLS45MDEtLjE1LTEuMjEtLjM1My0uMzA2LS4yMDMtLjUxNy0uNDU0LS42Ny0uOTE1YTMuMTM2IDMuMTM2IDAgMCAxLS4xNDctLjc2MiAxNy4zNjYgMTcuMzY3IDAgMCAxLS4wMzQtLjY1NmMtLjAxLS4yNi0uMDE0LS41NzItLjAxNC0uOTM5YTI2LjQwMSAyNi40MDMgMCAwIDEgLjAxNC0uOTM4IDE1LjgyMSAxNS44MjIgMCAwIDEgLjAzNS0uNjU2IDMuMTkgMy4xOSAwIDAgMSAuMTQ4LS43NiAxLjg5IDEuODkgMCAwIDEgLjc0Mi0xLjAxYy4zNDQtLjI0NC41OTMtLjM1MiAxLjEzNy0uMzUyLjUwOCAwIC44MTUuMDk2IDEuMTQ0LjMwMy4zMy4yMDcuNTI4LjQ5Mi43NjQuOTI1LjA0Ny4wOTQuMTExLjExOC4xOTguMDdsMS4wNDQtLjQzYy4wNzUtLjA0OC4wOS0uMTE1LjA0Mi0uMTk5YTMuNTQ5IDMuNTQ5IDAgMCAwLS40NjYtLjc0MiAzIDMgMCAwIDAtLjY3OS0uNjA3IDMuMzEzIDMuMzEzIDAgMCAwLS45MDMtLjQxQTQuMDY4IDQuMDY4IDAgMCAwIDE5LjU4NiAwek04LjIxNyA1LjgzNmMtMS42OSAwLTMuMDM2LjA4Ni00LjI5Ny4wODYtMS4xNDYgMC0yLjI5MSAwLTMuMDA3LS4wMjl2LjgzMWwxLjA4OC4yYy43NDQuMTQ0IDEuMTc0LjQ4OCAxLjE3NCAyLjI2NHYxMS4yODhjMCAxLjc3Ny0uNDMgMi4xMi0xLjE3NCAyLjI2M2wtMS4wODguMnYuODMyYy43NzMtLjAyOSAyLjEyLS4wODYgMy40NjUtLjA4NiAxLjI5IDAgMi45NTEuMDU3IDMuNjY3LjA4NnYtLjgzMWwtMS40OS0uMmMtLjc3My0uMTE1LTEuMTc0LS40ODctMS4xNzQtMi4yNjR2LTQuNzg0Yy42ODguMDU3IDEuMjkuMDU3IDIuMjA2LjA1NyAxLjc0OCAzLjEyMyAzLjQxIDUuNDcyIDQuMzU1IDYuNTYuODYgMS4wMzIgMi4xNzcgMS42OTEgMy44MzkgMS42OTEuNDg3IDAgMS4wMDMtLjA4NiAxLjMxOC0uMjN2LS43NDRjLTEuMDMxIDAtMi4wNjMtLjcxNi0yLjgwOC0xLjUxOC0xLjI2LTEuMzc2LTIuOTUtMy41ODItNC4zNTUtNi4wNzQgMi4zMi0uNTQ1IDQuMDQtMi43MjIgNC4wNC00LjkgMC0zLjIwOC0yLjQ5Mi00LjY5OC01Ljc1OC00LjY5OHptLS41MTUgMS4yOWMyLjQwNiAwIDMuODM5IDEuMjYgMy44MzkgMy41NTIgMCAyLjI2My0xLjU0NyAzLjc4Mi00LjA5NyAzLjc4Mi0uOTc0IDAtMS40MDQtLjAzLTIuMDYzLS4wODZ2LTcuMTljLjY2LS4wNTkgMS41NDctLjA1OSAyLjMyLS4wNTl6Ii8+PC9zdmc+"); color: #00b9a7; }
+    .icon-github { --icon: url("data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+R2l0SHViPC90aXRsZT48cGF0aCBkPSJNMTIgLjI5N2MtNi42MyAwLTEyIDUuMzczLTEyIDEyIDAgNS4zMDMgMy40MzggOS44IDguMjA1IDExLjM4NS42LjExMy44Mi0uMjU4LjgyLS41NzcgMC0uMjg1LS4wMS0xLjA0LS4wMTUtMi4wNC0zLjMzOC43MjQtNC4wNDItMS42MS00LjA0Mi0xLjYxQzQuNDIyIDE4LjA3IDMuNjMzIDE3LjcgMy42MzMgMTcuN2MtMS4wODctLjc0NC4wODQtLjcyOS4wODQtLjcyOSAxLjIwNS4wODQgMS44MzggMS4yMzYgMS44MzggMS4yMzYgMS4wNyAxLjgzNSAyLjgwOSAxLjMwNSAzLjQ5NS45OTguMTA4LS43NzYuNDE3LTEuMzA1Ljc2LTEuNjA1LTIuNjY1LS4zLTUuNDY2LTEuMzMyLTUuNDY2LTUuOTMgMC0xLjMxLjQ2NS0yLjM4IDEuMjM1LTMuMjItLjEzNS0uMzAzLS41NC0xLjUyMy4xMDUtMy4xNzYgMCAwIDEuMDA1LS4zMjIgMy4zIDEuMjMuOTYtLjI2NyAxLjk4LS4zOTkgMy0uNDA1IDEuMDIuMDA2IDIuMDQuMTM4IDMgLjQwNSAyLjI4LTEuNTUyIDMuMjg1LTEuMjMgMy4yODUtMS4yMy42NDUgMS42NTMuMjQgMi44NzMuMTIgMy4xNzYuNzY1Ljg0IDEuMjMgMS45MSAxLjIzIDMuMjIgMCA0LjYxLTIuODA1IDUuNjI1LTUuNDc1IDUuOTIuNDIuMzYuODEgMS4wOTYuODEgMi4yMiAwIDEuNjA2LS4wMTUgMi44OTYtLjAxNSAzLjI4NiAwIC4zMTUuMjEuNjkuODI1LjU3QzIwLjU2NSAyMi4wOTIgMjQgMTcuNTkyIDI0IDEyLjI5N2MwLTYuNjI3LTUuMzczLTEyLTEyLTEyIi8+PC9zdmc+"); }
+    .icon-cv { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJNNiAyMmEyIDIgMCAwIDEtMi0yVjRhMiAyIDAgMCAxIDItMmg4YTIuNCAyLjQgMCAwIDEgMS43MDQuNzA2bDMuNTg4IDMuNTg4QTIuNCAyLjQgMCAwIDEgMjAgOHYxMmEyIDIgMCAwIDEtMiAyeiIgLz4KICA8cGF0aCBkPSJNMTQgMnY1YTEgMSAwIDAgMCAxIDFoNSIgLz4KICA8cGF0aCBkPSJNMTAgOUg4IiAvPgogIDxwYXRoIGQ9Ik0xNiAxM0g4IiAvPgogIDxwYXRoIGQ9Ik0xNiAxN0g4IiAvPgo8L3N2Zz4K"); }
+    .icon-external { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJNMTUgM2g2djYiIC8+CiAgPHBhdGggZD0iTTEwIDE0IDIxIDMiIC8+CiAgPHBhdGggZD0iTTE4IDEzdjZhMiAyIDAgMCAxLTIgMkg1YTIgMiAwIDAgMS0yLTJWOGEyIDIgMCAwIDEgMi0yaDYiIC8+Cjwvc3ZnPgo="); }
+    .icon-up { --icon: url("data:image/svg+xml;base64,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9ImN1cnJlbnRDb2xvciIKICBzdHJva2Utd2lkdGg9IjIiCiAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogIHN0cm9rZS1saW5lam9pbj0icm91bmQiCj4KICA8cGF0aCBkPSJtNSAxMiA3LTcgNyA3IiAvPgogIDxwYXRoIGQ9Ik0xMiAxOVY1IiAvPgo8L3N2Zz4K"); }
+
+    header {
+      height: auto;
+      min-height: 88px;
+      padding: 12px 0;
+      border-bottom-color: var(--line);
+      background: color-mix(in srgb, var(--paper) 48%, transparent);
+      box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--glass-border) 58%, transparent);
+      -webkit-backdrop-filter: blur(11px) saturate(145%) contrast(102%);
+      backdrop-filter: blur(11px) saturate(145%) contrast(102%);
+    }
+
+    .nav {
+      grid-template-columns: minmax(174px, 1fr) auto minmax(270px, 1fr);
+      gap: 18px;
+    }
+
+    .monogram { border-color: color-mix(in srgb, var(--ink) 68%, transparent); }
+
+    .nav-links,
+    .language-trigger,
+    .language-panel,
+    .theme-switcher,
+    .profile-dock,
+    .back-to-top,
+    .easter-egg-card,
+    .easter-egg-close {
+      border: 1px solid var(--glass-border);
+      background: var(--glass-sheen), var(--glass-prism), var(--glass);
+      box-shadow: var(--glass-shadow);
+      -webkit-backdrop-filter: var(--glass-filter);
+      backdrop-filter: var(--glass-filter);
+    }
+
+    .language-panel,
+    .easter-egg-card {
+      background: var(--glass-sheen), var(--glass-prism), var(--glass-popover);
+      box-shadow: 0 20px 58px rgba(13, 39, 56, .18), inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 rgba(68, 113, 132, .10);
+      -webkit-backdrop-filter: blur(22px) saturate(170%) contrast(104%);
+      backdrop-filter: blur(22px) saturate(170%) contrast(104%);
+    }
+
+    .nav-links {
+      gap: 2px;
+      padding: 5px;
+      border-radius: 999px;
+      color: var(--ink-soft);
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: .025em;
+    }
+
+    .nav-links a {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 12px;
+      border: 1px solid color-mix(in srgb, var(--glass-border) 62%, transparent);
+      border-radius: 999px;
+      background:
+        var(--glass-sheen),
+        color-mix(in srgb, var(--glass-selected) 68%, transparent);
+      box-shadow:
+        0 3px 8px color-mix(in srgb, var(--glass-chrome-depth) 36%, transparent),
+        inset 0 1px 0 color-mix(in srgb, var(--glass-highlight) 84%, transparent),
+        inset 0 -2px 2px color-mix(in srgb, var(--glass-chrome-depth) 30%, transparent);
+      white-space: nowrap;
+      transition: color .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+
+    .nav-links a::after { display: none; }
+
+    .nav-links .icon {
+      width: 14px;
+      height: 14px;
+      opacity: .78;
+    }
+
+    .header-tools {
+      display: flex;
+      align-items: center;
+      justify-self: end;
+      gap: 8px;
+    }
+
+    .theme-switcher {
+      min-inline-size: 0;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin: 0;
+      padding: 4px;
+      border-radius: 999px;
+    }
+
+    .theme-switcher label {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 1px solid transparent;
+      border-radius: 50%;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: color .2s ease, background .2s ease, border-color .2s ease, transform .2s ease;
+    }
+
+    .theme-switcher input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .theme-switcher label:has(input:checked) {
+      color: var(--ink);
+      border-color: color-mix(in srgb, var(--ink) 11%, transparent);
+      background: var(--glass-selected);
+      box-shadow: 0 2px 8px rgba(13, 39, 56, .12), inset 0 1px 0 var(--glass-highlight);
+    }
+
+    .theme-switcher input:focus-visible + .icon {
+      outline: 3px solid var(--focus);
+      outline-offset: 7px;
+      border-radius: 50%;
+    }
+
+    .theme-tooltip {
+      position: absolute;
+      z-index: 4;
+      top: calc(100% + 10px);
+      left: 50%;
+      width: max-content;
+      padding: 6px 9px;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--ink);
+      background: color-mix(in srgb, var(--glass-solid) 84%, transparent);
+      box-shadow: 0 8px 24px rgba(13, 39, 56, .16);
+      font-size: 10px;
+      font-weight: 650;
+      line-height: 1;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -4px);
+      transition: opacity .16s ease, transform .16s ease;
+    }
+
+    .language-picker {
+      position: relative;
+      z-index: 12;
+    }
+
+    .language-trigger {
+      position: relative;
+      min-width: 66px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 13px;
+      border-radius: 999px;
+      color: var(--ink);
+      cursor: pointer;
+      overflow: hidden;
+      isolation: isolate;
+      transition: color .2s ease, border-color .2s ease, box-shadow .3s ease, transform .3s cubic-bezier(.2, .8, .2, 1), background .3s ease;
+    }
+
+    .language-trigger::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: -80% -28%;
+      background: linear-gradient(112deg, transparent 38%, rgba(255, 255, 255, .58) 48%, transparent 58%);
+      opacity: 0;
+      transform: translateX(-34%) rotate(-8deg);
+      transition: opacity .22s ease, transform .62s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .language-glyph {
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .current-language {
+      min-width: 18px;
+      color: var(--ink-soft);
+      font-size: 10px;
+      font-weight: 760;
+      letter-spacing: .045em;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .language-panel {
+      position: absolute;
+      z-index: 50;
+      top: calc(100% + 10px);
+      inset-inline-end: 0;
+      width: min(306px, calc(100vw - 28px));
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      padding: 8px;
+      border-radius: 24px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-9px) scale(.96);
+      transform-origin: top right;
+      transition: opacity .2s ease, visibility 0s linear .22s, transform .32s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .language-panel {
+      background:
+        var(--glass-sheen),
+        color-mix(in srgb, var(--glass-solid) 90%, transparent);
+      -webkit-backdrop-filter: blur(24px) saturate(145%) contrast(104%);
+      backdrop-filter: blur(24px) saturate(145%) contrast(104%);
+    }
+
+    html[dir="rtl"] .language-panel { transform-origin: top left; }
+
+    .language-picker.is-open .language-panel {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+      transition-delay: 0s;
+    }
+
+    .language-panel button {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 13px;
+      border: 1px solid transparent;
+      border-radius: 16px;
+      color: var(--ink-soft);
+      background: transparent;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 650;
+      text-align: start;
+      transition: color .18s ease, border-color .18s ease, background .18s ease, transform .18s ease;
+    }
+
+    .language-panel button small {
+      color: inherit;
+      font-size: 10px;
+      font-weight: 760;
+      opacity: .72;
+    }
+
+    .language-panel button.active {
+      color: var(--ink);
+      border-color: color-mix(in srgb, var(--ink) 9%, transparent);
+      background: var(--glass-selected);
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 3px 12px rgba(13, 39, 56, .08);
+    }
+
+    .language-picker:is(:hover, .is-open) .language-trigger {
+      border-color: color-mix(in srgb, var(--glass-border) 76%, var(--ink) 24%);
+      background: var(--glass-sheen), var(--glass-prism), var(--glass-hover);
+      box-shadow: 0 14px 38px rgba(20, 58, 75, .16), inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 rgba(68, 113, 132, .10);
+      transform: translateY(-1px) scale(1.015);
+    }
+
+    .language-picker:is(:hover, .is-open) .language-trigger::before {
+      opacity: .72;
+      transform: translateX(34%) rotate(-8deg);
+    }
+
+    .profile-dock {
+      width: fit-content;
+      max-width: 100%;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 27px;
+      padding: 6px;
+      border-radius: 20px;
+    }
+
+    .profile-button {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 13px;
+      border: 1px solid color-mix(in srgb, var(--glass-border) 62%, transparent);
+      border-radius: 14px;
+      color: var(--ink);
+      background:
+        var(--glass-sheen),
+        color-mix(in srgb, var(--glass-selected) 68%, transparent);
+      box-shadow:
+        0 3px 8px color-mix(in srgb, var(--glass-chrome-depth) 36%, transparent),
+        inset 0 1px 0 color-mix(in srgb, var(--glass-highlight) 84%, transparent),
+        inset 0 -2px 2px color-mix(in srgb, var(--glass-chrome-depth) 30%, transparent);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      white-space: nowrap;
+      transition: background .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+
+    .profile-button .icon { width: 17px; height: 17px; }
+
+    .nav-links a:active,
+    .profile-button:active {
+      transform: translateY(1px) scale(.985);
+    }
+
+    .hilbert-quote {
+      width: fit-content;
+      max-width: min(calc(100% - 34px), 540px);
+      margin: 30px 0 0 clamp(18px, 2.4vw, 32px);
+      direction: ltr;
+      text-align: left;
+      opacity: .82;
+    }
+
+    .hilbert-quote blockquote,
+    .hilbert-quote figcaption {
+      color: #846d42;
+      background: linear-gradient(105deg, #655432 0%, #aa8b52 42%, #766039 68%, #9a7d49 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hilbert-quote blockquote {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(15px, 1.08vw, 16px);
+      font-weight: 600;
+      letter-spacing: .025em;
+      line-height: 1.45;
+    }
+
+    .hilbert-quote figcaption {
+      margin-top: 5px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-align: right;
+    }
+
+    .links-section {
+      padding: 84px 0;
+      border-top: 1px solid var(--line);
+      background: color-mix(in srgb, var(--surface-raised) 50%, transparent);
+    }
+
+    .links-layout {
+      display: grid;
+      grid-template-columns: minmax(240px, .68fr) minmax(0, 1.32fr);
+      gap: clamp(42px, 7vw, 110px);
+      align-items: start;
+    }
+
+    .links-heading h2 {
+      margin: 0 0 17px;
+      font-family: var(--serif);
+      font-size: clamp(34px, 4vw, 58px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -.035em;
+    }
+
+    .friend-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .friend-grid li { min-width: 0; }
+
+    .friend-link {
+      min-height: 106px;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) 18px;
+      gap: 15px;
+      align-items: center;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--surface-raised);
+      box-shadow: 0 12px 34px rgba(31, 72, 90, .06);
+      transition: border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+
+    .friend-mark {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      color: var(--ink);
+      background: color-mix(in srgb, var(--sky) 44%, var(--surface-strong));
+      font-family: var(--serif);
+      font-size: 15px;
+      letter-spacing: .04em;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .friend-mark--shima .friend-initials,
+    .friend-mark--shima .friend-crest {
+      grid-area: 1 / 1;
+      transition: opacity .24s ease, transform .34s cubic-bezier(.2, .8, .2, 1), filter .34s ease;
+    }
+
+    .friend-mark--shima .friend-initials {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .friend-mark--shima .friend-crest {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      opacity: 0;
+      transform: scale(.72) rotate(-5deg);
+      filter: blur(2px) saturate(.82);
+    }
+
+    .friend-link:focus-visible .friend-mark--shima .friend-initials {
+      opacity: 0;
+      transform: scale(.82);
+    }
+
+    .friend-link:focus-visible .friend-mark--shima .friend-crest {
+      opacity: 1;
+      transform: scale(1) rotate(0);
+      filter: blur(0) saturate(1);
+    }
+
+    .friend-copy {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .friend-copy strong {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .friend-copy small {
+      color: var(--ink-soft);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .friend-link > .icon { color: var(--ink-soft); }
+
+    .contact-location {
+      font-style: normal;
+    }
+
+    .contact-location small {
+      display: block;
+      margin-top: 7px;
+      color: #a9c0ca;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-style: normal;
+      line-height: 1.55;
+    }
+
+    .acknowledgment {
+      margin: 0 auto;
+      padding: 2px 0 22px;
+      color: #a9bec7;
+      font-size: 12px;
+      line-height: 1.65;
+      opacity: .82;
+    }
+
+    .ack-glass-credit {
+      margin-inline-start: .38em;
+      white-space: normal;
+    }
+
+    .ack-glass-credit::before {
+      content: "·";
+      margin-inline-end: .38em;
+    }
+
+    .ack-glass-credit a {
+      color: inherit;
+      text-decoration-color: color-mix(in srgb, currentColor 42%, transparent);
+      text-underline-offset: .18em;
+      transition: color .2s ease, text-decoration-color .2s ease;
+    }
+
+    .ack-glass-credit a:is(:hover, :focus-visible) {
+      color: color-mix(in srgb, var(--sky) 68%, white);
+      text-decoration-color: currentColor;
+    }
+
+    .chatgpt-egg-trigger {
+      position: relative;
+      z-index: 1;
+      display: inline-grid;
+      grid-template-columns: max-content;
+      align-items: baseline;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      color: inherit;
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+      line-height: inherit;
+      vertical-align: baseline;
+      overflow: visible;
+      isolation: isolate;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    .chatgpt-egg-trigger bdi,
+    .chatgpt-egg-trigger::after {
+      grid-area: 1 / 1;
+      justify-self: center;
+      white-space: nowrap;
+      transition: opacity .22s ease, transform .32s cubic-bezier(.2, .8, .2, 1), letter-spacing .32s ease, filter .32s ease;
+    }
+
+    .chatgpt-egg-trigger::after {
+      content: "ChatGPT";
+      padding-inline: .09em;
+      color: #70c7d9;
+      background: linear-gradient(100deg, #7be0d2, #82b9ff 48%, #d6a8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: var(--serif);
+      font-weight: 700;
+      letter-spacing: .055em;
+      opacity: 0;
+      transform: translateY(2px) scale(.96);
+      filter: drop-shadow(0 2px 8px rgba(116, 203, 218, .28));
+      pointer-events: none;
+    }
+
+    .chatgpt-egg-trigger:focus-visible {
+      border-radius: 5px;
+      outline-offset: 3px;
+    }
+
+    .chatgpt-egg-trigger:focus-visible bdi {
+      opacity: 0;
+      transform: translateY(-1px) scale(.98);
+    }
+
+    .chatgpt-egg-trigger:focus-visible::after {
+      letter-spacing: .055em;
+      opacity: 1;
+      transform: translateY(0) scale(1.02);
+    }
+
+    html.cinematic-egg-open { overflow: hidden; }
+
+    .cinematic-egg-dialog {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      max-width: none;
+      height: 100vh;
+      height: 100dvh;
+      max-height: none;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      color: #f7fbfc;
+      background: #000;
+      overflow: hidden;
+      cursor: default;
+      isolation: isolate;
+    }
+
+    .cinematic-egg-dialog::backdrop { background: #000; }
+
+    .cinematic-egg-dialog[open] {
+      display: grid;
+      place-items: center;
+    }
+
+    .cinematic-egg-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+      background: #000;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .cinematic-egg-close-hint {
+      position: absolute;
+      z-index: 1;
+      inset-inline: max(20px, env(safe-area-inset-left)) max(20px, env(safe-area-inset-right));
+      bottom: max(26px, calc(env(safe-area-inset-bottom) + 14px));
+      width: max-content;
+      max-width: calc(100% - 40px);
+      margin: 0 auto;
+      padding: 10px 16px;
+      border: 1px solid rgba(255, 255, 255, .24);
+      border-radius: 999px;
+      color: rgba(255, 255, 255, .88);
+      background: rgba(8, 13, 16, .58);
+      -webkit-backdrop-filter: blur(18px) saturate(130%);
+      backdrop-filter: blur(18px) saturate(130%);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, .36), inset 0 1px 0 rgba(255, 255, 255, .18);
+      font-size: 12px;
+      line-height: 1.45;
+      letter-spacing: .035em;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .28s ease, transform .28s cubic-bezier(.2, .8, .2, 1);
+      pointer-events: none;
+    }
+
+    .cinematic-egg-dialog.is-ended {
+      cursor: pointer;
+    }
+
+    .cinematic-egg-dialog.is-ended .cinematic-egg-close-hint {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .easter-egg-dialog {
+      width: min(620px, calc(100% - 28px));
+      max-width: none;
+      max-height: calc(100dvh - 28px);
+      margin: auto;
+      padding: 0;
+      border: 0;
+      color: var(--ink);
+      background: transparent;
+      overflow: visible;
+    }
+
+    .easter-egg-dialog::backdrop {
+      background: rgba(5, 15, 21, .28);
+      -webkit-backdrop-filter: blur(14px) saturate(130%);
+      backdrop-filter: blur(14px) saturate(130%);
+    }
+
+    .easter-egg-card {
+      padding: 10px;
+      border-radius: 30px;
+      overflow: hidden;
+    }
+
+    .easter-egg-toolbar {
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 3px 6px;
+    }
+
+    .easter-egg-close {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border-radius: 50%;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 25px;
+      font-weight: 300;
+      line-height: 1;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .easter-egg-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 21px;
+      background: color-mix(in srgb, var(--surface-strong) 48%, transparent);
+    }
+
+    .easter-egg-dialog[open] .easter-egg-card {
+      animation: glass-dialog-in .36s cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    @keyframes glass-dialog-in {
+      from { opacity: 0; transform: translateY(18px) scale(.965); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .back-to-top {
+      position: fixed;
+      z-index: 30;
+      right: auto;
+      inset-inline-end: max(22px, env(safe-area-inset-right));
+      bottom: max(22px, env(safe-area-inset-bottom));
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 0 15px;
+      border-radius: 999px;
+      color: var(--ink);
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transform: translateY(12px) scale(.92);
+      transition: width .24s cubic-bezier(.2, .8, .2, 1), opacity .2s ease, transform .24s cubic-bezier(.2, .8, .2, 1), background .2s ease, visibility 0s linear .24s;
+      overflow: hidden;
+    }
+
+    .back-to-top.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      transition-delay: 0s;
+    }
+
+    .back-to-top .top-label {
+      width: 0;
+      max-width: 0;
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      opacity: 0;
+      overflow: hidden;
+      margin-inline-start: 0;
+      transition: width .22s ease, max-width .22s ease, margin-inline-start .22s ease, opacity .14s ease;
+    }
+
+    .skip-link {
+      left: auto;
+      inset-inline-start: 12px;
+    }
+
+    .native-name {
+      margin-left: 0;
+      margin-inline-start: 15px;
+    }
+
+    .hero-copy {
+      padding-left: 0;
+      padding-inline-start: clamp(10px, 1vw, 16px);
+    }
+
+    .atmosphere {
+      margin-right: 0;
+      margin-inline-end: 10px;
+    }
+
+    .plate-note {
+      left: auto;
+      right: auto;
+      inset-inline-start: 5px;
+    }
+
+    .plate-note .number { float: inline-end; }
+    html[dir="rtl"] .plate-note .number { float: left; }
+
+    .research-card {
+      padding: 23px 0 25px;
+      padding-inline-end: 31px;
+      border-right: 0;
+      border-inline-end: 1px solid var(--line);
+      transition: background .25s ease, padding-inline-start .25s ease;
+    }
+
+    .research-card + .research-card {
+      padding-left: 0;
+      padding-inline-start: 31px;
+    }
+
+    .research-card:last-child { border-inline-end: 0; }
+
+    html[lang="ko"] {
+      --sans: "Apple SD Gothic Neo", "Noto Sans KR", Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, sans-serif;
+      --serif: AppleMyungjo, "Noto Serif KR", Iowan Old Style, Baskerville, serif;
+    }
+
+    html[lang="ar"] {
+      --sans: "SF Arabic", "Geeza Pro", "Noto Sans Arabic", Tahoma, sans-serif;
+      --serif: "Noto Naskh Arabic", "Geeza Pro", serif;
+    }
+
+    html[lang="ar"] :is(.eyebrow, .section-kicker, .identity-copy span, .nav-links, .field-label, .card-meta, .card-topic, .contact-link span, .offline-note, .current-language) {
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    html[lang="ar"] :is(h1, h2, .links-heading h2, .contact h2) { line-height: 1.16; }
+
+    html[dir="rtl"] .hero::before {
+      background-position: center, center, left 54%;
+      transform: none;
+    }
+
+    html[dir="rtl"] .icon-external { transform: scaleX(-1); }
+
+    html[dir="rtl"] .back-to-top {
+      inset-inline-end: max(22px, env(safe-area-inset-left));
+    }
+
+    html[dir="rtl"] .hilbert-quote { margin-left: auto; }
+
+    html[data-theme="dark"] header { background: rgba(9, 17, 23, .46); }
+    html[data-theme="dark"] .easter-egg-dialog::backdrop { background: rgba(2, 7, 10, .42); }
+
+    html[data-theme="dark"] body {
+      background: linear-gradient(180deg, #091117 0%, #0c171d 64%, #101d24 100%);
+    }
+
+    html[data-theme="dark"] .page::before {
+      background:
+        radial-gradient(circle at 84% 9%, rgba(65, 111, 127, .22), transparent 29%),
+        radial-gradient(circle at 12% 45%, rgba(31, 55, 66, .38), transparent 31%),
+        linear-gradient(116deg, transparent 0 61%, rgba(37, 68, 79, .18) 61% 100%);
+    }
+
+    html[data-theme="dark"] .halo-principle {
+      color: #a98a55;
+      background: linear-gradient(105deg, #80683e 0%, #b99a60 42%, #8b7043 68%, #a98a55 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    html[data-theme="dark"] .hilbert-quote blockquote,
+    html[data-theme="dark"] .hilbert-quote figcaption {
+      color: #a98a55;
+      background: linear-gradient(105deg, #80683e 0%, #b99a60 42%, #8b7043 68%, #a98a55 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    html[data-theme="dark"] :is(.identity-copy span, .nav-links, .role span, .intro, .body-copy, .card-meta, .card-authors, .card-topic, .footer-note, .interest-copy small, .timeline time, .timeline .place, .timeline .detail, .honors-list time, .honors-list p, .plate-note p) {
+      color: var(--ink-soft);
+    }
+
+    html[data-theme="dark"] .native-name,
+    html[data-theme="dark"] .degree,
+    html[data-theme="dark"] .eyebrow,
+    html[data-theme="dark"] .section-kicker,
+    html[data-theme="dark"] .field-label,
+    html[data-theme="dark"] .plate-note .number {
+      color: #9bc0cf;
+    }
+
+    html[data-theme="dark"] .field-label {
+      z-index: 2;
+      padding: 4px 7px;
+      border: 1px solid rgba(222, 242, 249, .16);
+      border-radius: 999px;
+      color: #edf8fb;
+      background: rgba(5, 16, 22, .62);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 4px 14px rgba(0, 0, 0, .22);
+      -webkit-backdrop-filter: blur(8px) saturate(125%);
+      backdrop-filter: blur(8px) saturate(125%);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, .90);
+    }
+
+    html[data-theme="dark"] .field-label::before {
+      flex: none;
+      background: #bce3ef;
+      box-shadow: 0 0 0 4px rgba(143, 213, 234, .14);
+    }
+
+    html[data-theme="dark"] .role { color: #e2edf1; }
+
+    html[data-theme="dark"] .interest-list p,
+    html[data-theme="dark"] .interest-copy small { color: var(--ink-soft); }
+
+    html[data-theme="dark"] .interest-copy strong { color: var(--ink); }
+    html[data-theme="dark"] .interest-list p span:first-child { color: #9bc0cf; }
+
+    html[data-theme="dark"] .hero::before {
+      background:
+        linear-gradient(180deg, rgba(9, 17, 23, .93) 0%, rgba(9, 17, 23, .26) 17%, rgba(9, 17, 23, .14) 70%, rgba(9, 17, 23, .94) 100%),
+        linear-gradient(90deg, rgba(9, 17, 23, .83) 0%, rgba(9, 17, 23, .15) 17%, rgba(9, 17, 23, .12) 81%, rgba(9, 17, 23, .78) 100%),
+        url("cloud-background.png") right 54% / cover no-repeat;
+      filter: grayscale(.12) saturate(.56) brightness(.54) contrast(1.02);
+      opacity: .72;
+    }
+
+    html[data-theme="dark"][dir="rtl"] .hero::before {
+      background-position: center, center, left 54%;
+    }
+
+    html[data-theme="dark"] .plate-note {
+      border-top-color: var(--line);
+      background: rgba(12, 24, 30, .64);
+    }
+
+    html[data-theme="dark"] :is(.research-card:hover, .details) {
+      background: rgba(18, 31, 38, .62);
+    }
+
+    html[data-theme="dark"] .research-card .card-index,
+    html[data-theme="dark"] .social-links a {
+      color: var(--ink-soft);
+      border-color: var(--line);
+      background: var(--surface-raised);
+    }
+
+    html[data-theme="dark"] .contact {
+      color: var(--contact-ink);
+      background: var(--contact-bg);
+    }
+
+    html[data-theme="dark"] .contact .body-copy { color: #b9ccd4; }
+
+    @media (hover: hover) {
+      .nav-links a:hover {
+        color: var(--ink);
+        border-color: color-mix(in srgb, var(--ink) 9%, transparent);
+        background: var(--glass-sheen), var(--glass-hover);
+        box-shadow:
+          0 8px 18px color-mix(in srgb, var(--glass-chrome-depth) 42%, transparent),
+          inset 0 1px 0 var(--glass-highlight),
+          inset 0 -1px 0 color-mix(in srgb, var(--glass-chrome-depth) 38%, transparent);
+        transform: translateY(-1px) scale(1.01);
+      }
+
+      .theme-switcher label:hover {
+        color: var(--ink);
+        background: var(--glass-hover);
+      }
+
+      .theme-switcher label:hover .theme-tooltip,
+      .theme-switcher label:focus-within .theme-tooltip {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+      .profile-button:hover {
+        border-color: color-mix(in srgb, var(--ink) 10%, transparent);
+        background: var(--glass-sheen), var(--glass-hover);
+        box-shadow:
+          0 8px 18px color-mix(in srgb, var(--glass-chrome-depth) 42%, transparent),
+          inset 0 1px 0 var(--glass-highlight),
+          inset 0 -1px 0 color-mix(in srgb, var(--glass-chrome-depth) 38%, transparent);
+        transform: translateY(-1px) scale(1.01);
+      }
+
+      .language-panel button:hover {
+        color: var(--ink);
+        border-color: color-mix(in srgb, var(--ink) 8%, transparent);
+        background: var(--glass-hover);
+        transform: translateY(-1px);
+      }
+
+      .chatgpt-egg-trigger:hover bdi,
+      .chatgpt-egg-trigger:focus-visible bdi {
+        opacity: 0;
+        transform: translateY(-1px) scale(.98);
+      }
+
+      .chatgpt-egg-trigger:hover::after,
+      .chatgpt-egg-trigger:focus-visible::after {
+        letter-spacing: .055em;
+        opacity: 1;
+        transform: translateY(0) scale(1.02);
+      }
+
+      .easter-egg-close:hover {
+        background: var(--glass-sheen), var(--glass-prism), var(--glass-hover);
+        box-shadow: 0 10px 28px rgba(13, 39, 56, .14), inset 0 1px 0 var(--glass-highlight);
+        transform: scale(1.05);
+      }
+
+      .friend-link:hover {
+        border-color: color-mix(in srgb, var(--blue) 58%, var(--line));
+        background: var(--surface-strong);
+        box-shadow: 0 16px 38px rgba(31, 72, 90, .11);
+        transform: translateY(-2px);
+      }
+
+      .friend-link:hover .friend-mark--shima .friend-initials {
+        opacity: 0;
+        transform: scale(.82);
+      }
+
+      .friend-link:hover .friend-mark--shima .friend-crest {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+        filter: blur(0) saturate(1);
+      }
+
+      .back-to-top:hover,
+      .back-to-top:focus-visible {
+        width: 132px;
+        justify-content: center;
+        background: var(--glass-sheen), var(--glass-prism), var(--glass-hover);
+        box-shadow: 0 18px 46px rgba(20, 58, 75, .18), inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 rgba(68, 113, 132, .10);
+      }
+
+      .back-to-top:hover .top-label,
+      .back-to-top:focus-visible .top-label {
+        width: auto;
+        max-width: 90px;
+        margin-inline-start: 8px;
+        opacity: 1;
+      }
+
+      .nav-links a:active,
+      .profile-button:active {
+        transform: translateY(1px) scale(.985);
+      }
+    }
+
+    @media (max-width: 1180px) {
+      header { padding: 10px 0; }
+
+      .nav {
+        grid-template-columns: 1fr auto;
+        gap: 9px 16px;
+      }
+
+      .header-tools { grid-column: 2; grid-row: 1; }
+
+      .nav-links {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        width: 100%;
+        justify-content: center;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .nav-links::-webkit-scrollbar { display: none; }
+    }
+
+    @media (max-width: 900px) {
+      html { scroll-padding-top: var(--header-offset); }
+
+      .hero-copy { padding-inline-start: 8px; }
+      .native-name { margin-inline-start: 0; }
+
+      .actions.profile-dock {
+        width: fit-content;
+        max-width: 100%;
+        align-items: stretch;
+        flex-direction: row;
+      }
+
+      .atmosphere { margin-inline-end: 0; }
+
+      .plate-note {
+        inset-inline-start: auto;
+        inset-inline-end: 0;
+      }
+
+      .research-card,
+      .research-card + .research-card {
+        padding: 24px 0;
+        border-inline-end: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .research-card:last-child { border-bottom: 0; }
+
+      .links-layout { grid-template-columns: 1fr; gap: 30px; }
+      .contact-grid { align-items: start; }
+    }
+
+    @media (max-width: 680px) {
+      .shell { width: calc(100% - 28px); }
+
+      .identity { gap: 9px; }
+      .monogram { width: 36px; height: 36px; }
+      .theme-switcher label { width: 32px; height: 32px; }
+      .language-trigger { min-width: 62px; height: 42px; padding-inline: 11px; }
+      .header-tools { gap: 5px; }
+
+      .nav-links {
+        justify-content: flex-start;
+        padding: 4px;
+      }
+
+      .nav-links a { min-height: 36px; padding: 0 11px; }
+
+      .profile-dock { border-radius: 18px; }
+      .profile-button { flex: 1 1 calc(50% - 4px); justify-content: center; }
+      .hilbert-quote {
+        max-width: calc(100% - 14px);
+        margin-left: 12px;
+      }
+      html[dir="rtl"] .hilbert-quote { margin-left: auto; margin-right: 12px; }
+
+      .friend-grid { grid-template-columns: 1fr; }
+      .links-section { padding: 62px 0; }
+
+      .back-to-top {
+        right: auto;
+        inset-inline-end: max(14px, env(safe-area-inset-right));
+        bottom: max(14px, env(safe-area-inset-bottom));
+      }
+
+      html[dir="rtl"] .back-to-top { inset-inline-end: max(14px, env(safe-area-inset-left)); }
+    }
+
+    @media (max-width: 420px) {
+      .nav { grid-template-columns: 1fr; }
+      .identity { grid-column: 1; grid-row: 1; }
+
+      .header-tools {
+        grid-column: 1;
+        grid-row: 2;
+        width: 100%;
+        justify-content: space-between;
+        justify-self: stretch;
+      }
+
+      .nav-links { grid-row: 3; }
+    }
+
+    @media (pointer: coarse) {
+      .nav-links a,
+      .profile-button,
+      .theme-switcher label,
+      .language-trigger,
+      .language-panel button,
+      .chatgpt-egg-trigger,
+      .easter-egg-close {
+        min-height: 44px;
+      }
+
+      .theme-switcher label { width: 44px; }
+      .chatgpt-egg-trigger { margin-block: -10px; padding-block: 10px; }
+    }
+
+    /* Chromium enhancement adapted from rdev/liquid-glass-react's layered method:
+       a separately filtered backdrop warp, sharp content, RGB edge refraction,
+       two masked specular rings, and pointer-directed elasticity. */
+    html.liquid-glass-enhanced [data-liquid-glass] {
+      --glass-angle: 135deg;
+      --glass-hotspot-x: 28%;
+      --glass-hotspot-y: 18%;
+      --glass-edge-opacity: .36;
+      --glass-hotspot-opacity: .14;
+      --glass-shift-x: 0px;
+      --glass-shift-y: 0px;
+      --glass-scale-x: 1;
+      --glass-scale-y: 1;
+      --glass-press-scale: 1;
+      --glass-warp-blur: 6px;
+      --glass-warp-saturation: 158%;
+      isolation: isolate;
+      border-color: transparent;
+      background: transparent;
+      box-shadow: var(--glass-dimensional-shadow);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    html.liquid-glass-enhanced :is(.nav-links, .theme-switcher, .profile-dock, .easter-egg-card) {
+      position: relative;
+      transition: border-color .25s ease, box-shadow .32s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    html.liquid-glass-enhanced [data-liquid-glass="panel"] {
+      --glass-warp-blur: 8px;
+      --glass-warp-saturation: 150%;
+      --glass-edge-opacity: .32;
+    }
+
+    html.liquid-glass-enhanced .language-panel {
+      --glass-warp-blur: 22px;
+      --glass-warp-saturation: 135%;
+    }
+
+    html.liquid-glass-enhanced [data-liquid-glass] > :not([data-glass-optical]) {
+      position: relative;
+      z-index: 3;
+    }
+
+    [data-glass-optical] { display: none; }
+
+    html.liquid-glass-enhanced [data-glass-optical] { display: block; }
+
+    .liquid-glass__clip,
+    .liquid-glass__edge,
+    .liquid-glass__hotspot {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      transform-origin: center;
+    }
+
+    .liquid-glass__clip {
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .liquid-glass__warp,
+    .liquid-glass__tint {
+      position: absolute;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .liquid-glass__warp {
+      inset: -6px;
+      background: rgba(255, 255, 255, .002);
+      -webkit-backdrop-filter: blur(var(--glass-warp-blur)) saturate(var(--glass-warp-saturation));
+      backdrop-filter: blur(var(--glass-warp-blur)) saturate(var(--glass-warp-saturation));
+      transform: translate3d(var(--glass-shift-x), var(--glass-shift-y), 0) scaleX(var(--glass-scale-x)) scaleY(var(--glass-scale-y)) scale(var(--glass-press-scale));
+      transition: transform .38s cubic-bezier(.2, .9, .2, 1);
+      will-change: filter, backdrop-filter, transform;
+    }
+
+    .liquid-glass__tint {
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(circle at var(--glass-hotspot-x) var(--glass-hotspot-y), var(--glass-chrome-hotspot) 0%, transparent 31%),
+        linear-gradient(145deg, rgba(255, 255, 255, .33) 0%, rgba(255, 255, 255, .06) 26%, transparent 47%, rgba(35, 81, 101, .09) 100%),
+        var(--glass-chrome-tint);
+      opacity: .76;
+      mix-blend-mode: soft-light;
+    }
+
+    [data-liquid-glass="panel"] .liquid-glass__tint {
+      background:
+        radial-gradient(circle at var(--glass-hotspot-x) var(--glass-hotspot-y), var(--glass-chrome-hotspot) 0%, transparent 36%),
+        linear-gradient(145deg, rgba(255, 255, 255, .28) 0%, rgba(255, 255, 255, .05) 25%, transparent 48%, rgba(35, 81, 101, .11) 100%),
+        var(--glass-chrome-panel-tint);
+      opacity: .84;
+    }
+
+    html.liquid-glass-enhanced .language-panel .liquid-glass__tint {
+      background:
+        var(--glass-sheen),
+        color-mix(in srgb, var(--glass-solid) 94%, transparent);
+      opacity: .98;
+      mix-blend-mode: normal;
+    }
+
+    .liquid-glass__edge {
+      z-index: 2;
+      padding: 1.25px;
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      transition: opacity .28s ease;
+    }
+
+    .liquid-glass__edge--screen {
+      background: linear-gradient(var(--glass-angle), var(--glass-chrome-edge) 0%, rgba(255, 255, 255, .16) 19%, transparent 37%, var(--glass-chrome-depth) 62%, rgba(255, 255, 255, .52) 84%, var(--glass-chrome-prism) 100%);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, .70), 0 1px 2px rgba(255, 255, 255, .18);
+      mix-blend-mode: screen;
+      opacity: calc(var(--glass-edge-opacity) * .72);
+    }
+
+    .liquid-glass__edge--overlay {
+      background: linear-gradient(calc(var(--glass-angle) + 18deg), var(--glass-chrome-prism) 0%, transparent 26%, rgba(255, 255, 255, .45) 48%, transparent 67%, var(--glass-chrome-depth) 100%);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, .34), inset 0 -1px 1px rgba(0, 0, 0, .18);
+      mix-blend-mode: overlay;
+      opacity: var(--glass-edge-opacity);
+    }
+
+    .liquid-glass__hotspot {
+      z-index: 2;
+      inset: 0;
+      background:
+        radial-gradient(circle at var(--glass-hotspot-x) var(--glass-hotspot-y), rgba(255, 255, 255, .68) 0%, rgba(255, 255, 255, .20) 14%, transparent 37%),
+        radial-gradient(circle at calc(100% - var(--glass-hotspot-x)) calc(100% - var(--glass-hotspot-y)), var(--glass-chrome-prism) 0%, transparent 29%);
+      mix-blend-mode: overlay;
+      opacity: var(--glass-hotspot-opacity);
+      transition: opacity .24s ease;
+    }
+
+    html.liquid-glass-enhanced [data-liquid-glass]:is(:hover, :focus-within) {
+      border-color: transparent;
+      box-shadow: var(--glass-dimensional-shadow-hover);
+    }
+
+    html.liquid-glass-enhanced [data-liquid-glass].is-glass-pressed {
+      --glass-press-scale: .985;
+      --glass-hotspot-opacity: .54;
+      --glass-edge-opacity: .60;
+    }
+
+    html.liquid-glass-enhanced .language-trigger::before { display: none; }
+
+    html.liquid-glass-enhanced .language-picker:is(:hover, .is-open) .language-trigger,
+    html.liquid-glass-enhanced .back-to-top:hover,
+    html.liquid-glass-enhanced .back-to-top:focus-visible {
+      background: transparent;
+    }
+
+    @media (pointer: coarse) {
+      html.liquid-glass-enhanced [data-liquid-glass] {
+        --glass-hotspot-opacity: .10;
+        --glass-edge-opacity: .30;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html.liquid-glass-enhanced [data-liquid-glass] {
+        --glass-shift-x: 0px !important;
+        --glass-shift-y: 0px !important;
+        --glass-scale-x: 1 !important;
+        --glass-scale-y: 1 !important;
+        --glass-press-scale: 1 !important;
+      }
+
+      .liquid-glass__warp { transform: none !important; }
+
+      .friend-mark--shima .friend-initials,
+      .friend-mark--shima .friend-crest { transition: none !important; }
+    }
+
+    @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+      header,
+      .nav-links,
+      .language-trigger,
+      .language-panel,
+      .theme-switcher,
+      .profile-dock,
+      .back-to-top,
+      .easter-egg-card,
+      .easter-egg-close {
+        background: var(--glass-solid);
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      header,
+      .nav-links,
+      .language-trigger,
+      .language-panel,
+      .theme-switcher,
+      .profile-dock,
+      .back-to-top,
+      .easter-egg-card,
+      .easter-egg-close,
+      html[data-theme="dark"] .field-label {
+        background: var(--glass-solid);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+      }
+
+      html.liquid-glass-enhanced [data-liquid-glass] {
+        border-color: var(--glass-border) !important;
+        background: var(--glass-solid) !important;
+        box-shadow: 0 5px 18px rgba(13, 39, 56, .12), inset 0 1px 0 var(--glass-highlight) !important;
+      }
+
+      html.liquid-glass-enhanced [data-glass-optical] { display: none !important; }
+      html.liquid-glass-enhanced [data-glass-warp] {
+        filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+      }
+    }
+
+    @media (forced-colors: active) {
+      header,
+      .nav-links,
+      .language-trigger,
+      .language-panel,
+      .theme-switcher,
+      .profile-dock,
+      .back-to-top,
+      .easter-egg-card,
+      .easter-egg-close,
+      html[data-theme="dark"] .field-label,
+      .friend-link {
+        border: 1px solid CanvasText;
+        background: Canvas;
+        box-shadow: none;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+      }
+
+      html.liquid-glass-enhanced [data-liquid-glass] {
+        border: 1px solid CanvasText !important;
+        background: Canvas !important;
+        box-shadow: none !important;
+      }
+
+      html.liquid-glass-enhanced [data-glass-optical] { display: none !important; }
+      html.liquid-glass-enhanced [data-glass-warp] {
+        filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+      }
+
+      .theme-switcher label:has(input:checked),
+      .language-panel button.active {
+        color: HighlightText;
+        background: Highlight;
+      }
+
+      .chatgpt-egg-trigger::after { display: none; }
+      .chatgpt-egg-trigger:is(:hover, :focus-visible) bdi { opacity: 1; }
+      .easter-egg-dialog::backdrop { background: Canvas; opacity: .72; }
+
+      .icon { forced-color-adjust: auto; }
+    }
   </style>
 </head>
 <body>
+  <svg class="liquid-glass-filter-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs data-liquid-glass-filter-root></defs>
+  </svg>
   <a class="skip-link" href="#main-content" data-copy="skipLink">Skip to main content</a>
-  <div class="page" id="top">
+  <div class="page" id="top" tabindex="-1">
     <header>
       <div class="shell nav">
-        <a class="identity" href="#top" aria-label="Chongzhi Yin, home" data-copy-aria="identityAria">
-          <span class="monogram">CY</span>
-          <span class="identity-copy">
+        <div class="identity">
+          <button class="monogram monogram-button" type="button" aria-haspopup="dialog" aria-controls="shima-lab-cinematic-easter-egg" aria-expanded="false" aria-label="Play the Shima Lab intro" data-cinematic-egg-open data-copy-aria="cinematicEggOpenAria">CY</button>
+          <a class="identity-copy" href="#top" aria-label="Chongzhi Yin, home" data-copy-aria="identityAria" data-smooth-scroll>
             <strong>Chongzhi Yin</strong>
             <span data-copy="identitySubtitle">Cloud microphysics</span>
-          </span>
-        </a>
+          </a>
+        </div>
 
-        <nav class="nav-links" aria-label="Primary navigation" data-copy-aria="navAria">
-          <a href="#research" data-copy="navResearch">Research</a>
-          <a href="#profile" data-copy="navAbout">Profile</a>
-          <a href="#contact" data-copy="navConnect">Contact</a>
+        <nav class="nav-links" aria-label="Primary navigation" data-copy-aria="navAria" data-liquid-glass="pill">
+          <a href="#top" data-smooth-scroll><span class="icon icon-home" aria-hidden="true"></span><span data-copy="navHome">Home</span></a>
+          <a href="#research" data-smooth-scroll><span class="icon icon-research" aria-hidden="true"></span><span data-copy="navResearch">Research</span></a>
+          <a href="#profile" data-smooth-scroll><span class="icon icon-profile" aria-hidden="true"></span><span data-copy="navAbout">Profile</span></a>
+          <a href="#links" data-smooth-scroll><span class="icon icon-links" aria-hidden="true"></span><span data-copy="navLinks">Links</span></a>
+          <a href="#contact" data-smooth-scroll><span class="icon icon-contact" aria-hidden="true"></span><span data-copy="navConnect">Contact</span></a>
         </nav>
 
-        <div class="language-switcher" role="group" aria-label="Language" data-copy-aria="languageAria">
-          <button type="button" data-lang="zh" aria-label="中文" aria-pressed="false">中</button>
-          <button type="button" class="active" data-lang="en" aria-label="English" aria-pressed="true">EN</button>
-          <button type="button" data-lang="ja" aria-label="日本語" aria-pressed="false">日本語</button>
+        <div class="header-tools">
+          <fieldset class="theme-switcher" data-liquid-glass="pill">
+            <legend class="visually-hidden" data-copy="themeLegend">Appearance</legend>
+            <label>
+              <input type="radio" name="theme" value="system" data-theme-mode="system" data-copy-aria="themeSystemAria" checked>
+              <span class="icon icon-system" aria-hidden="true"></span>
+              <span class="theme-tooltip" data-copy="themeSystem">System</span>
+            </label>
+            <label>
+              <input type="radio" name="theme" value="light" data-theme-mode="light" data-copy-aria="themeLightAria">
+              <span class="icon icon-light" aria-hidden="true"></span>
+              <span class="theme-tooltip" data-copy="themeLight">Light</span>
+            </label>
+            <label>
+              <input type="radio" name="theme" value="dark" data-theme-mode="dark" data-copy-aria="themeDarkAria">
+              <span class="icon icon-dark" aria-hidden="true"></span>
+              <span class="theme-tooltip" data-copy="themeDark">Dark</span>
+            </label>
+          </fieldset>
+
+          <div class="language-picker" data-language-picker>
+            <button class="language-trigger" type="button" aria-expanded="false" aria-controls="language-panel" aria-label="Choose language" data-language-trigger data-copy-aria="languageTriggerAria" data-liquid-glass="pill">
+              <span class="language-glyph" aria-hidden="true">文</span>
+              <span class="current-language" data-current-language aria-hidden="true">EN</span>
+            </button>
+            <div class="language-panel" id="language-panel" role="group" aria-label="Language selection" data-language-panel data-copy-aria="languageAria" data-liquid-glass="panel" inert>
+              <button type="button" class="active" data-lang="en" lang="en" dir="ltr" aria-label="English" aria-pressed="true"><span>English</span><small>EN</small></button>
+              <button type="button" data-lang="zh-Hans" lang="zh-Hans" dir="ltr" aria-label="简体中文" aria-pressed="false"><span>简体中文</span><small>简</small></button>
+              <button type="button" data-lang="zh-Hant" lang="zh-Hant" dir="ltr" aria-label="繁體中文" aria-pressed="false"><span>繁體中文</span><small>繁</small></button>
+              <button type="button" data-lang="ja" lang="ja" dir="ltr" aria-label="日本語" aria-pressed="false"><span>日本語</span><small>日</small></button>
+              <button type="button" data-lang="ko" lang="ko" dir="ltr" aria-label="한국어" aria-pressed="false"><span>한국어</span><small>한</small></button>
+              <button type="button" data-lang="ar" lang="ar" dir="rtl" aria-label="العربية" aria-pressed="false"><span>العربية</span><small>ع</small></button>
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -1115,17 +2794,24 @@
       <section class="shell hero" id="about">
         <div class="hero-copy">
           <div class="eyebrow" data-copy="eyebrow">Atmospheric Science · Numerical Modelling</div>
-          <h1>Chongzhi YIN <span class="native-name">殷翀之</span> <span class="degree">Ph.D.</span></h1>
+          <h1><bdi dir="ltr">Chongzhi YIN</bdi> <span class="native-name" dir="ltr">殷翀之</span> <span class="degree" dir="ltr">Ph.D.</span></h1>
           <p class="role" data-copy="role">Specially Appointed Assistant Professor <span>— Graduate School of Information Science, University of Hyogo</span></p>
           <p class="intro" data-copy="intro">I investigate how cloud-scale turbulence and microscopic droplets shape one another. Using particle-based numerical methods, I seek to make the hidden life histories of clouds measurable.</p>
-          <div class="actions">
-            <a class="primary-action" href="#research"><span data-copy="explore">Explore selected research</span><span class="arrow" aria-hidden="true">↘</span></a>
-            <a class="text-action" href="#profiles" data-copy="profile">View academic profiles</a>
+          <div class="actions profile-dock" id="profiles" aria-label="Academic profiles and CV" data-copy-aria="profilesAria" data-liquid-glass="panel">
+            <a class="profile-button" href="https://orcid.org/0000-0002-0105-0144" target="_blank" rel="noopener noreferrer" aria-label="ORCID profile, opens in a new tab" data-copy-aria="orcidAria"><span class="icon icon-orcid" aria-hidden="true"></span><bdi dir="ltr">ORCID</bdi></a>
+            <a class="profile-button" href="https://scholar.google.com/citations?user=8Tz-CxQAAAAJ" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar profile, opens in a new tab" data-copy-aria="scholarAria"><span class="icon icon-scholar" aria-hidden="true"></span><bdi dir="ltr">Google Scholar</bdi></a>
+            <a class="profile-button" href="https://www.researchgate.net/profile/Chongzhi-Yin?ev=hdr_xprf" target="_blank" rel="noopener noreferrer" aria-label="ResearchGate profile, opens in a new tab" data-copy-aria="researchGateAria"><span class="icon icon-researchgate" aria-hidden="true"></span><bdi dir="ltr">ResearchGate</bdi></a>
+            <a class="profile-button" href="https://github.com/wangyouyue" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile, opens in a new tab" data-copy-aria="githubAria"><span class="icon icon-github" aria-hidden="true"></span><bdi dir="ltr">GitHub</bdi></a>
+            <a class="profile-button" href="https://drive.google.com/file/d/1t3fLoglDvxGlKiySTlRNXRBcJMQ4ukpr/view?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="Curriculum vitae on Google Drive, opens in a new tab" data-copy-aria="cvAria"><span class="icon icon-cv" aria-hidden="true"></span><bdi dir="ltr">CV</bdi></a>
           </div>
+          <figure class="hilbert-quote" lang="de" dir="ltr">
+            <blockquote>Wir müssen wissen. Wir werden wissen.</blockquote>
+            <figcaption>— David Hilbert</figcaption>
+          </figure>
         </div>
 
         <div class="atmosphere" role="img" aria-label="Abstract cloud microphysics field illustration" data-copy-aria="fieldAria">
-          <div class="halo"></div>
+          <div class="halo"><span class="halo-principle" lang="la" dir="ltr" aria-label="RATIO NATURAE"><span>RATIO</span><span>NATURAE</span></span></div>
           <div class="contour c1"></div>
           <div class="contour c2"></div>
           <div class="contour c3"></div>
@@ -1142,24 +2828,17 @@
         </div>
       </section>
 
-      <section class="research" id="research">
+      <section class="research" id="research" tabindex="-1">
         <div class="shell">
           <div class="section-head">
             <div>
               <p class="section-kicker" data-copy="sectionKicker">Current &amp; recent work</p>
               <h2 data-copy="sectionTitle">Selected Research</h2>
             </div>
-            <div class="social-links" id="profiles" aria-label="Academic profiles" data-copy-aria="profilesAria">
-              <a href="https://orcid.org/0000-0002-0105-0144" target="_blank" rel="noreferrer" aria-label="ORCID profile" data-copy-aria="orcidAria">ORCID</a>
-              <a href="https://scholar.google.com/citations?user=8Tz-CxQAAAAJ" target="_blank" rel="noreferrer" aria-label="Google Scholar profile" data-copy-aria="scholarAria">Google Scholar</a>
-              <a href="https://www.researchgate.net/profile/Chongzhi-Yin?ev=hdr_xprf" target="_blank" rel="noreferrer" aria-label="ResearchGate profile" data-copy-aria="researchGateAria">ResearchGate</a>
-              <a href="https://github.com/wangyouyue" target="_blank" rel="noreferrer" aria-label="GitHub profile" data-copy-aria="githubAria">GitHub</a>
-              <a href="https://drive.google.com/file/d/1t3fLoglDvxGlKiySTlRNXRBcJMQ4ukpr/view?usp=sharing" target="_blank" rel="noreferrer" aria-label="Curriculum vitae on Google Drive" data-copy-aria="cvAria">CV</a>
-            </div>
           </div>
 
           <div class="research-grid">
-            <article class="research-card" lang="en">
+            <article class="research-card" lang="en" dir="ltr">
               <div class="card-meta"><span>2026 · Article</span><span class="card-index">01</span></div>
               <a class="card-link" href="https://doi.org/10.1007/s00376-025-5043-z" target="_blank" rel="noreferrer">
                 <h3>Resolving Entrainment–Mixing in Marine Stratocumulus: The Role of LES Grid Resolution and Super-Droplet Number</h3>
@@ -1167,7 +2846,7 @@
               <p class="card-authors">Yin, C., Shima, S., Lu, C., Gao, S., &amp; Xu, X.</p>
               <div class="card-topic">Advances in Atmospheric Sciences · 43(4), 845–860</div>
             </article>
-            <article class="research-card" lang="en">
+            <article class="research-card" lang="en" dir="ltr">
               <div class="card-meta"><span>2024 · Article</span><span class="card-index">02</span></div>
               <a class="card-link" href="https://doi.org/10.5194/gmd-17-5167-2024" target="_blank" rel="noreferrer">
                 <h3>Simulation of marine stratocumulus using the super-droplet method: numerical convergence and comparison to a double-moment bulk scheme using SCALE-SDM 5.2.6-2.3.1</h3>
@@ -1175,7 +2854,7 @@
               <p class="card-authors">Yin, C., Shima, S., Xue, L., &amp; Lu, C.</p>
               <div class="card-topic">Geoscientific Model Development · 17(13), 5167–5189</div>
             </article>
-            <article class="research-card" lang="en">
+            <article class="research-card" lang="en" dir="ltr">
               <div class="card-meta"><span>2025 · Preprint</span><span class="card-index">03</span></div>
               <a class="card-link" href="https://doi.org/10.5194/egusphere-2025-6221" target="_blank" rel="noreferrer">
                 <h3>A Lagrangian Particle Tracking Framework for the Super-Droplet Method: Development, Implementation, and Application of Backward and Forward Algorithms in SCALE-SDM 5.2.6-2.3.1</h3>
@@ -1187,12 +2866,12 @@
 
           <div class="footer-note">
             <span data-copy="footerLeft">Computational cloud physics · Open science</span>
-            <span>© 2026 Chongzhi Yin</span>
+            <span><bdi dir="ltr">© 2026 Chongzhi Yin</bdi></span>
           </div>
         </div>
       </section>
 
-      <section class="details" id="profile">
+      <section class="details" id="profile" tabindex="-1">
         <div class="shell details-grid">
           <div>
             <p class="section-kicker" data-copy="profileKicker">Research profile</p>
@@ -1214,7 +2893,7 @@
                 <time data-copy="exp1Period">Mar. 2026 — present</time>
                 <div>
                   <h3 data-copy="exp1Role">Specially Appointed Assistant Professor</h3>
-                  <p class="place" data-copy="exp1Place">University of Hyogo · Kobe, Japan</p>
+                  <p class="place" data-copy="exp1Place">University of Hyogo · Shima Lab · Kobe, Japan</p>
                   <p class="detail" data-copy="exp1Detail">Cloud microphysics research within the UAE Research Program for Rain Enhancement Science (UAEREP).</p>
                 </div>
               </article>
@@ -1230,7 +2909,7 @@
                 <time data-copy="exp3Period">2020 — 2022</time>
                 <div>
                   <h3 data-copy="exp3Role">Research Student</h3>
-                  <p class="place" data-copy="exp3Place">University of Hyogo · Kobe, Japan</p>
+                  <p class="place" data-copy="exp3Place">University of Hyogo · Shima Lab · Kobe, Japan</p>
                   <p class="detail" data-copy="exp3Detail">Development and application of Lagrangian cloud microphysics schemes.</p>
                 </div>
               </article>
@@ -1269,7 +2948,33 @@
         </div>
       </section>
 
-      <section class="contact" id="contact">
+      <section class="links-section" id="links" tabindex="-1" aria-labelledby="links-title">
+        <div class="shell links-layout">
+          <div class="links-heading">
+            <p class="section-kicker" data-copy="linksKicker">Academic network</p>
+            <h2 id="links-title" data-copy="linksTitle">Related links</h2>
+            <p class="body-copy" data-copy="linksIntro">Research groups and colleagues whose work connects with this site.</p>
+          </div>
+          <ul class="friend-grid" aria-label="Related academic links" data-copy-aria="linksAria">
+            <li>
+              <a class="friend-link" href="https://s-shima-lab.sakura.ne.jp/en/" target="_blank" rel="noopener noreferrer" aria-label="Visit Shima Lab in a new tab" data-copy-aria="shimaAria">
+                <span class="friend-mark friend-mark--shima" aria-hidden="true"><span class="friend-initials">SL</span><img class="friend-crest" src="assets/shima-lab-crest.png" alt="" aria-hidden="true"></span>
+                <span class="friend-copy"><strong data-copy="shimaName"><bdi dir="ltr">Shima Lab</bdi></strong><small data-copy="shimaDesc">Cloud microphysics research group</small></span>
+                <span class="icon icon-external" aria-hidden="true"></span>
+              </a>
+            </li>
+            <li>
+              <a class="friend-link" href="https://imanhal.github.io/" target="_blank" rel="noopener noreferrer" aria-label="Visit Dr. Manhal Alhilali's website in a new tab" data-copy-aria="manhalAria">
+                <span class="friend-mark" aria-hidden="true">MA</span>
+                <span class="friend-copy"><strong><bdi dir="ltr">Dr. Manhal Alhilali</bdi></strong><small data-copy="manhalDesc">Personal academic website</small></span>
+                <span class="icon icon-external" aria-hidden="true"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="contact" id="contact" tabindex="-1">
         <div class="shell contact-grid">
           <div>
             <p class="section-kicker" data-copy="contactKicker">Contact</p>
@@ -1277,16 +2982,39 @@
             <p class="body-copy" data-copy="contactBody">For collaboration, seminars, or questions about SCALE-SDM and particle tracking, please get in touch by email.</p>
           </div>
           <div class="contact-details">
-            <a class="contact-link" href="mailto:chongzhi.yin@gsis.u-hyogo.ac.jp"><span data-copy="emailLabel">Institutional email</span>chongzhi.yin@gsis.u-hyogo.ac.jp</a>
-            <p class="contact-location"><span data-copy="locationLabel">Based in</span><strong data-copy="locationValue">Kobe, Japan</strong></p>
+            <a class="contact-link" href="mailto:chongzhi.yin@gsis.u-hyogo.ac.jp"><span data-copy="emailLabel">Institutional email</span><bdi dir="ltr">chongzhi.yin@gsis.u-hyogo.ac.jp</bdi></a>
+            <address class="contact-location"><span data-copy="addressLabel">Postal address</span><strong data-copy="addressValue">〒650-0047 7-1-28 Minatojima-minamimachi, Chuo-ku, Kobe, Hyogo, Japan</strong><small data-copy="affiliationValue">Graduate School of Information Science, University of Hyogo</small></address>
           </div>
         </div>
+        <p class="shell acknowledgment"><span data-copy="ackBefore">This site was created with assistance from </span><button class="chatgpt-egg-trigger" type="button" aria-haspopup="dialog" aria-controls="chatgpt-easter-egg" aria-expanded="false" aria-label="Open the ChatGPT easter egg" data-easter-egg-open data-copy-aria="eggOpenAria"><bdi dir="ltr">ChatGPT</bdi></button><span data-copy="ackAfter">. Thanks also to Dr. Manhal Alhilali for suggestions and inspiration.</span><span class="ack-glass-credit"><span data-copy="ackGlassBefore">Liquid Glass adapted from </span><a href="https://github.com/rdev/liquid-glass-react" target="_blank" rel="noopener noreferrer"><bdi dir="ltr">rdev/liquid-glass-react</bdi></a><span data-copy="ackGlassAfter">.</span></span></p>
         <div class="shell offline-note">
           <span data-copy="offlineLabel">Academic profile · Updated July 2026</span>
-          <span>© 2026 Chongzhi Yin</span>
+          <span><bdi dir="ltr">© 2026 Chongzhi Yin</bdi></span>
         </div>
       </section>
     </main>
+
+    <a class="back-to-top" href="#top" data-smooth-scroll data-back-to-top tabindex="-1" aria-hidden="true" aria-label="Back to top" data-copy-aria="backTopAria" data-liquid-glass="pill">
+      <span class="icon icon-up" aria-hidden="true"></span>
+      <span class="top-label" data-copy="backTop">Back to top</span>
+    </a>
+
+    <dialog class="cinematic-egg-dialog" id="shima-lab-cinematic-easter-egg" tabindex="-1" aria-labelledby="cinematic-egg-title" aria-describedby="cinematic-egg-close-hint" data-cinematic-egg-dialog>
+      <h2 class="visually-hidden" id="cinematic-egg-title" data-copy="cinematicEggTitle">Shima Lab cinematic intro</h2>
+      <video class="cinematic-egg-video" src="assets/shima-lab-intro.mp4" preload="metadata" playsinline disablepictureinpicture disableremoteplayback data-cinematic-egg-video></video>
+      <p class="cinematic-egg-close-hint" id="cinematic-egg-close-hint" data-cinematic-egg-close-hint data-copy="cinematicEggCloseHint">Playback has ended. Click anywhere to return.</p>
+    </dialog>
+
+    <dialog class="easter-egg-dialog" id="chatgpt-easter-egg" aria-labelledby="egg-title" aria-describedby="egg-instruction" data-easter-egg-dialog>
+      <div class="easter-egg-card" data-liquid-glass="panel">
+        <div class="easter-egg-toolbar">
+          <h2 class="visually-hidden" id="egg-title" data-copy="eggTitle">A small ChatGPT easter egg</h2>
+          <button class="easter-egg-close" type="button" aria-label="Close image" data-easter-egg-close data-copy-aria="eggCloseAria"><span aria-hidden="true">×</span></button>
+        </div>
+        <p class="visually-hidden" id="egg-instruction" data-copy="eggInstruction">Press Escape or activate the close button to return to the page.</p>
+        <img src="assets/chatgpt-illustration.png" width="1254" height="1254" loading="lazy" decoding="async" draggable="false" alt="Humorous cartoon of a character saluting under the words ‘Sworn loyalty to ChatGPT’, with the ChatGPT emblem on the hat." data-copy-alt="eggImageAlt">
+      </div>
+    </dialog>
   </div>
 
   <script>
@@ -1294,10 +3022,13 @@
       en: {
         pageTitle: 'Chongzhi Yin — Cloud Microphysics',
         skipLink: 'Skip to main content', identitySubtitle: 'Cloud microphysics',
-        identityAria: 'Chongzhi Yin, home', navAria: 'Primary navigation', languageAria: 'Language selection',
-        profilesAria: 'Academic profiles and CV', orcidAria: 'ORCID profile', scholarAria: 'Google Scholar profile', researchGateAria: 'ResearchGate profile', githubAria: 'GitHub profile', cvAria: 'Curriculum vitae on Google Drive',
+        identityAria: 'Chongzhi Yin, home', cinematicEggOpenAria: 'Play the Shima Lab intro', navAria: 'Primary navigation', languageAria: 'Language selection', languageTriggerAria: 'Choose language',
+        themeSystemAria: 'Use system appearance', themeLightAria: 'Use light appearance', themeDarkAria: 'Use dark appearance',
+        profilesAria: 'Academic profiles and CV', orcidAria: 'ORCID profile, opens in a new tab', scholarAria: 'Google Scholar profile, opens in a new tab', researchGateAria: 'ResearchGate profile, opens in a new tab', githubAria: 'GitHub profile, opens in a new tab', cvAria: 'Curriculum vitae on Google Drive, opens in a new tab',
+        linksAria: 'Related academic links', shimaAria: 'Visit Shima Lab in a new tab', manhalAria: "Visit Dr. Manhal Alhilali's website in a new tab", backTopAria: 'Back to top',
         fieldAria: 'Abstract cloud microphysics field across droplet and cloud scales',
-        navResearch: 'Research', navAbout: 'Profile', navConnect: 'Contact',
+        navHome: 'Home', navResearch: 'Research', navAbout: 'Profile', navLinks: 'Links', navConnect: 'Contact',
+        themeLegend: 'Appearance', themeSystem: 'System', themeLight: 'Light', themeDark: 'Dark',
         eyebrow: 'Atmospheric Science · Cloud Microphysics',
         role: 'Specially Appointed Assistant Professor <span>— Graduate School of Information Science, University of Hyogo</span>',
         intro: 'I investigate how cloud-scale turbulence and microscopic droplets shape one another. Using particle-based numerical methods, I seek to make the hidden life histories of clouds measurable.',
@@ -1317,36 +3048,48 @@
         interest4: 'Scalable cloud simulation',
         interest4Detail: 'High-performance computing with SCALE-SDM, MPI, OpenMP, Fortran, and Python workflows.',
         pathKicker: 'Academic path', pathTitle: 'Appointments & education',
-        exp1Period: 'Mar. 2026 — present', exp1Role: 'Specially Appointed Assistant Professor', exp1Place: 'University of Hyogo · Kobe, Japan', exp1Detail: 'Cloud microphysics research within the UAE Research Program for Rain Enhancement Science (UAEREP).',
+        exp1Period: 'Mar. 2026 — present', exp1Role: 'Specially Appointed Assistant Professor', exp1Place: 'University of Hyogo · Shima Lab · Kobe, Japan', exp1Detail: 'Cloud microphysics research within the UAE Research Program for Rain Enhancement Science (UAEREP).',
         exp2Period: '2019 — 2025', exp2Role: 'Ph.D. in Atmospheric Physics and Atmospheric Environment', exp2Place: 'Nanjing University of Information Science & Technology', exp2Detail: 'Numerical convergence of the Super-Droplet Method and stratocumulus cloud physics.',
-        exp3Period: '2020 — 2022', exp3Role: 'Research Student', exp3Place: 'University of Hyogo · Kobe, Japan', exp3Detail: 'Development and application of Lagrangian cloud microphysics schemes.',
+        exp3Period: '2020 — 2022', exp3Role: 'Research Student', exp3Place: 'University of Hyogo · Shima Lab · Kobe, Japan', exp3Detail: 'Development and application of Lagrangian cloud microphysics schemes.',
         honorsKicker: 'Recognition', honorsTitle: 'Selected honors',
         honor1Title: "China's Top 10 Advances in Meteorological Science and Technology", honor1Detail: 'Team member, 13th contributor.',
         honor2Title: 'Excellent Oral Presentation Award', honor2Detail: '7th Chinese Symposium on Mesoscale Meteorology.',
         honor3Title: 'China Scholarship Council Scholarship', honor3Detail: 'State-Sponsored Graduate Program for joint Ph.D. study in Japan.',
+        linksKicker: 'Academic network', linksTitle: 'Related links', linksIntro: 'Research groups and colleagues whose work connects with this site.',
+        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: 'Cloud microphysics research group', manhalDesc: 'Personal academic website',
         contactKicker: 'Contact', contactTitle: 'Research conversations are welcome.', contactBody: 'For collaboration, seminars, or questions about SCALE-SDM and particle tracking, please get in touch by email.',
-        emailLabel: 'Institutional email', locationLabel: 'Based in', locationValue: 'Kobe, Japan',
+        emailLabel: 'Institutional email', addressLabel: 'Postal address', addressValue: '〒650-0047 7-1-28 Minatojima-minamimachi, Chuo-ku, Kobe, Hyogo, Japan',
+        affiliationValue: 'Graduate School of Information Science, University of Hyogo',
+        ackBefore: 'This site was created with assistance from ', ackAfter: '. Thanks also to Dr. Manhal Alhilali for suggestions and inspiration.',
+        ackGlassBefore: 'Liquid Glass adapted from ', ackGlassAfter: '.',
+        cinematicEggTitle: 'Shima Lab cinematic intro', cinematicEggCloseHint: 'Playback has ended. Click anywhere to return.', cinematicEggPlaybackError: 'The video could not be played. Click anywhere to return.',
+        eggOpenAria: 'Open the ChatGPT easter egg', eggCloseAria: 'Close image', eggTitle: 'A small ChatGPT easter egg',
+        eggInstruction: 'Press Escape or activate the close button to return to the page.',
+        eggImageAlt: 'Humorous cartoon of a character saluting under the words “Sworn loyalty to ChatGPT”, with the ChatGPT emblem on the hat.', backTop: 'Back to top',
         offlineLabel: 'Academic profile · Updated July 2026'
       },
-      zh: {
+      'zh-Hans': {
         pageTitle: '殷翀之 — 云微物理',
         skipLink: '跳到主要内容', identitySubtitle: '云微物理',
-        identityAria: '殷翀之，返回页面顶部', navAria: '主导航', languageAria: '语言选择',
-        profilesAria: '学术主页与个人简历', orcidAria: 'ORCID 主页', scholarAria: 'Google Scholar 主页', researchGateAria: 'ResearchGate 主页', githubAria: 'GitHub 主页', cvAria: 'Google Drive 上的个人简历',
+        identityAria: '殷翀之，返回页面顶部', cinematicEggOpenAria: '播放 Shima Lab 开场动画', navAria: '主导航', languageAria: '语言选择', languageTriggerAria: '选择语言',
+        themeSystemAria: '使用系统外观', themeLightAria: '使用亮色外观', themeDarkAria: '使用暗色外观',
+        profilesAria: '学术主页与个人简历', orcidAria: 'ORCID 主页，在新标签页打开', scholarAria: 'Google Scholar 主页，在新标签页打开', researchGateAria: 'ResearchGate 主页，在新标签页打开', githubAria: 'GitHub 主页，在新标签页打开', cvAria: 'Google Drive 上的个人简历，在新标签页打开',
+        linksAria: '友情链接', shimaAria: '在新标签页访问 Shima Lab', manhalAria: '在新标签页访问 Dr. Manhal Alhilali 的个人主页', backTopAria: '返回页面顶部',
         fieldAria: '展示云滴到云尺度过程的抽象云微物理场示意图',
-        navResearch: '研究', navAbout: '简介', navConnect: '联系',
+        navHome: '首页', navResearch: '研究', navAbout: '简介', navLinks: '友情链接', navConnect: '联系',
+        themeLegend: '外观模式', themeSystem: '系统', themeLight: '亮色', themeDark: '暗色',
         eyebrow: '大气科学 · 云微物理',
         role: '特任助教 <span>— 兵库县立大学 大学院信息科学研究科</span>',
         intro: '我研究云尺度湍流与微观云滴如何相互影响，并通过基于粒子的数值方法，试图让云中难以观测的粒子生命史变得可解析、可度量。',
         explore: '浏览代表研究', profile: '查看学术主页',
         fieldLabelA: 'LES 云场', fieldLabelB: '云滴集合', fieldLabelC: '拉格朗日路径',
-        plateTitle: '跨尺度理解云', plateText: '从单个超级水滴到湍流云系统。',
+        plateTitle: '跨尺度理解云', plateText: '从单个超水滴到湍流云系统。',
         sectionKicker: '当前与近期工作', sectionTitle: '代表研究',
         footerLeft: '计算云物理 · 开放科学',
         profileKicker: '个人简介', profileTitle: '逐粒子解析云物理过程。',
         profileBody: '我的研究位于云微物理、湍流与计算科学的交叉地带。我开发 SCALE-SDM 的粒子方法，并使用高分辨率模拟研究卷入混合、降水起始以及单个水凝物粒子的完整生命史。',
         interest1: '拉格朗日粒子云微物理',
-        interest1Detail: '超级水滴法（SDM）开发、数值收敛与云微物理参数化。',
+        interest1Detail: '超水滴法（SDM）开发、数值收敛与云微物理参数化。',
         interest2: '湍流—微物理相互作用',
         interest2Detail: '通过大涡模拟与直接数值模拟研究卷入、混合和降水起始。',
         interest3: '拉格朗日粒子追踪',
@@ -1354,66 +3097,275 @@
         interest4: '可扩展云模拟',
         interest4Detail: '基于 SCALE-SDM、MPI、OpenMP、Fortran 与 Python 的高性能计算。',
         pathKicker: '学术路径', pathTitle: '任职与教育经历',
-        exp1Period: '2026年3月 — 至今', exp1Role: '特任助教', exp1Place: '兵库县立大学 · 日本神户', exp1Detail: '参与阿联酋降雨增强科学研究计划（UAEREP），开展云微物理研究。',
-        exp2Period: '2019 — 2025', exp2Role: '大气物理学与大气环境博士', exp2Place: '南京信息工程大学', exp2Detail: '研究超级水滴法的数值收敛性与层积云的宏观特征和微物理特征。',
-        exp3Period: '2020 — 2022', exp3Role: '研究生（Research Student）', exp3Place: '兵库县立大学 · 日本神户', exp3Detail: '开发并应用拉格朗日云微物理方案。',
+        exp1Period: '2026年3月 — 至今', exp1Role: '特任助教', exp1Place: '兵库县立大学 · Shima Lab · 日本神户', exp1Detail: '参与阿联酋降雨增强科学研究计划（UAEREP），开展云微物理研究。',
+        exp2Period: '2019 — 2025', exp2Role: '大气物理学与大气环境博士', exp2Place: '南京信息工程大学', exp2Detail: '研究超水滴法的数值收敛性与层积云的宏观特征和微物理特征。',
+        exp3Period: '2020 — 2022', exp3Role: '研究生（Research Student）', exp3Place: '兵库县立大学 · Shima Lab · 日本神户', exp3Detail: '开发并应用拉格朗日云微物理方案。',
         honorsKicker: '荣誉', honorsTitle: '代表荣誉',
         honor1Title: '中国气象科技十大进展', honor1Detail: '团队成员，第 13 完成人。',
         honor2Title: '优秀口头报告奖', honor2Detail: '第七届全国中尺度气象学术研讨会。',
         honor3Title: '国家留学基金委奖学金', honor3Detail: '国家建设高水平大学公派研究生项目，赴日联合培养。',
+        linksKicker: '学术网络', linksTitle: '友情链接', linksIntro: '与本站研究相关的实验室与同行主页。',
+        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: '云微物理研究团队', manhalDesc: '个人学术主页',
         contactKicker: '联系', contactTitle: '欢迎交流云物理与数值模拟研究。', contactBody: '如需合作、邀请报告，或讨论 SCALE-SDM 与粒子追踪方法，欢迎通过机构邮箱联系。',
-        emailLabel: '机构邮箱', locationLabel: '所在地', locationValue: '日本神户',
+        emailLabel: '机构邮箱', addressLabel: '通讯地址', addressValue: '〒650-0047 日本兵库县神户市中央区港岛南町7-1-28',
+        affiliationValue: '兵库县立大学大学院信息科学研究科',
+        ackBefore: '本网站在 ', ackAfter: ' 的协助下制作，并感谢 Dr. Manhal Alhilali 对个人主页提出的建议与启发。',
+        ackGlassBefore: 'Liquid Glass 效果参考了 ', ackGlassAfter: '。',
+        cinematicEggTitle: 'Shima Lab 开场动画', cinematicEggCloseHint: '播放结束。点击任意位置返回。', cinematicEggPlaybackError: '无法播放视频。点击任意位置返回。',
+        eggOpenAria: '打开 ChatGPT 彩蛋', eggCloseAria: '关闭图片', eggTitle: '一个小小的 ChatGPT 彩蛋',
+        eggInstruction: '按 Esc 键或使用关闭按钮返回页面。',
+        eggImageAlt: '幽默插图：角色敬礼，上方写着“誓死效忠 ChatGPT”，帽子上有 ChatGPT 标志。', backTop: '返回顶部',
         offlineLabel: '个人学术主页 · 2026 年 7 月更新'
       },
       ja: {
         pageTitle: '殷翀之 — 雲微物理',
         skipLink: 'メインコンテンツへ移動', identitySubtitle: '雲微物理',
-        identityAria: '殷翀之、ページ上部へ', navAria: 'メインナビゲーション', languageAria: '言語選択',
-        profilesAria: '研究者プロフィールと履歴書', orcidAria: 'ORCID プロフィール', scholarAria: 'Google Scholar プロフィール', researchGateAria: 'ResearchGate プロフィール', githubAria: 'GitHub プロフィール', cvAria: 'Google Drive 上の履歴書',
+        identityAria: '殷翀之、ホームへ', cinematicEggOpenAria: '島研究室のイントロ映像を再生', navAria: 'メインナビゲーション', languageAria: '言語選択', languageTriggerAria: '言語を選択',
+        themeSystemAria: 'システムの外観を使用', themeLightAria: 'ライト表示を使用', themeDarkAria: 'ダーク表示を使用',
+        profilesAria: '研究者プロフィールと履歴書', orcidAria: 'ORCID プロフィール、新しいタブで開きます', scholarAria: 'Google Scholar プロフィール、新しいタブで開きます', researchGateAria: 'ResearchGate プロフィール、新しいタブで開きます', githubAria: 'GitHub プロフィール、新しいタブで開きます', cvAria: 'Google Drive 上の履歴書、新しいタブで開きます',
+        linksAria: '関連リンク', shimaAria: '島研究室を新しいタブで開きます', manhalAria: 'Dr. Manhal Alhilali のウェブサイトを新しいタブで開きます', backTopAria: 'ページ上部へ戻る',
         fieldAria: '雲粒から雲スケールまでを表す雲微物理場の抽象図',
-        navResearch: '研究', navAbout: 'プロフィール', navConnect: '連絡先',
+        navHome: 'ホーム', navResearch: '研究', navAbout: 'プロフィール', navLinks: 'リンク', navConnect: '連絡先',
+        themeLegend: '外観モード', themeSystem: 'システム', themeLight: 'ライト', themeDark: 'ダーク',
         eyebrow: '大気科学・雲微物理',
         role: '特任助教 <span>— 兵庫県立大学 大学院情報科学研究科</span>',
-        intro: '雲スケールの乱流と微小な雲粒がどのように影響し合うかを研究しています。粒子ベースの数値手法を用い、雲の中に隠れた粒子の履歴を定量的に明らかにすることを目指します。',
+        intro: '雲スケールの乱流と微小な雲粒がどのように影響し合うかを研究しています。粒子ベースの数値手法を用いて、雲内では観測が難しい粒子の履歴を解析し、定量化することを試みています。',
         explore: '主な研究を見る', profile: '研究者プロフィール',
-        fieldLabelA: 'LES 雲場', fieldLabelB: '雲粒集団', fieldLabelC: 'ラグランジュ経路',
+        fieldLabelA: 'LESによる雲場', fieldLabelB: '雲粒集団', fieldLabelC: 'ラグランジュ粒子軌跡',
         plateTitle: 'スケールを越えて雲を捉える', plateText: '個々の超水滴から乱流雲システムまで。',
         sectionKicker: '現在および最近の研究', sectionTitle: '主な研究',
         footerLeft: '計算雲物理 · オープンサイエンス',
-        profileKicker: 'プロフィール', profileTitle: '雲物理を一粒ずつ解き明かす。',
-        profileBody: '雲微物理、乱流、計算科学の接点で研究を進めています。SCALE-SDM の粒子ベース手法を開発し、高解像度シミュレーションにより、エントレインメント・混合、降水形成の初期過程、個々の水成粒子のライフサイクルを調べています。',
+        profileKicker: 'プロフィール', profileTitle: '粒子一つ一つから捉える雲物理。',
+        profileBody: '雲微物理、乱流、計算科学の接点で研究を進めています。SCALE-SDM の粒子ベース手法を開発し、高解像度シミュレーションにより、エントレインメント・混合、降水形成の初期過程、個々の雲・降水粒子のライフサイクルを調べています。',
         interest1: 'ラグランジュ粒子ベース雲微物理',
         interest1Detail: '超水滴法（SDM）の開発、数値収束性、雲微物理パラメタリゼーション。',
         interest2: '乱流—微物理相互作用',
-        interest2Detail: 'LES と DNS によるエントレインメント、混合、降水形成初期過程の解析。',
+        interest2Detail: 'ラージ・エディ・シミュレーション（LES）と直接数値シミュレーション（DNS）によるエントレインメント、混合、降水形成初期過程の解析。',
         interest3: 'ラグランジュ粒子追跡',
-        interest3Detail: '前方・後方ラグランジュ粒子追跡による水成粒子のライフサイクル解析。',
+        interest3Detail: '前方・後方ラグランジュ粒子追跡による雲・降水粒子のライフサイクル解析。',
         interest4: 'スケーラブルな雲シミュレーション',
         interest4Detail: 'SCALE-SDM、MPI、OpenMP、Fortran、Python を用いた高性能計算。',
         pathKicker: 'アカデミックキャリア', pathTitle: '職歴・学歴',
-        exp1Period: '2026年3月 — 現在', exp1Role: '特任助教', exp1Place: '兵庫県立大学 · 日本・神戸', exp1Detail: 'UAE降雨増強科学研究プログラム（UAEREP）における雲微物理研究。',
-        exp2Period: '2019 — 2025', exp2Role: '博士（大気物理学・大気環境）', exp2Place: '南京信息工程大学', exp2Detail: '超水滴法の数値収束性と層積雲の巨視的特性・微物理特性を研究。',
-        exp3Period: '2020 — 2022', exp3Role: '研究生', exp3Place: '兵庫県立大学 · 日本・神戸', exp3Detail: 'ラグランジュ雲微物理スキームの開発と応用。',
+        exp1Period: '2026年3月 — 現在', exp1Role: '特任助教', exp1Place: '兵庫県立大学 · 島研究室 · 日本・神戸', exp1Detail: 'UAE Research Program for Rain Enhancement Science（UAEREP）における雲微物理研究。',
+        exp2Period: '2019 — 2025', exp2Role: '博士（大気物理学・大気環境学）', exp2Place: '南京信息工程大学', exp2Detail: '超水滴法の数値収束性と、層積雲の巨視的特性および微物理学的特性を研究。',
+        exp3Period: '2020 — 2022', exp3Role: '研究生', exp3Place: '兵庫県立大学 · 島研究室 · 日本・神戸', exp3Detail: 'ラグランジュ粒子ベース雲微物理スキームの開発と応用。',
         honorsKicker: '受賞', honorsTitle: '主な受賞',
-        honor1Title: '中国気象科学技術十大進展', honor1Detail: 'チームメンバー（第 13 貢献者）。',
+        honor1Title: '中国気象科学技術十大進展', honor1Detail: 'チームメンバー（貢献者として13番目に記載）。',
         honor2Title: '優秀口頭発表賞', honor2Detail: '第 7 回中国メソスケール気象学シンポジウム。',
-        honor3Title: '中国国家留学基金管理委員会奨学金', honor3Detail: '日本での博士共同研究のための国家派遣プログラム。',
-        contactKicker: '連絡先', contactTitle: '研究に関するご相談を歓迎します。', contactBody: '共同研究、セミナー、SCALE-SDM や粒子追跡に関するご質問は、大学メールまでお気軽にご連絡ください。',
-        emailLabel: '大学メール', locationLabel: '拠点', locationValue: '日本・神戸',
+        honor3Title: '中国国家留学基金管理委員会奨学金', honor3Detail: '「国家建設高水平大学公派研究生項目」により、兵庫県立大学で博士共同研究。',
+        linksKicker: 'アカデミックネットワーク', linksTitle: '関連リンク', linksIntro: '本サイトの研究とつながる研究グループと研究者。',
+        shimaName: '島研究室', shimaDesc: '雲微物理研究グループ', manhalDesc: '個人学術ウェブサイト',
+        contactKicker: '連絡先', contactTitle: '研究に関する交流を歓迎します。', contactBody: '共同研究、セミナー、SCALE-SDM や粒子追跡に関するご質問は、大学のメールアドレスまでお気軽にご連絡ください。',
+        emailLabel: '大学メールアドレス', addressLabel: '住所', addressValue: '〒650-0047 兵庫県神戸市中央区港島南町7丁目1番28',
+        affiliationValue: '兵庫県立大学大学院情報科学研究科',
+        ackBefore: '本サイトの制作には ', ackAfter: ' の協力を得ました。また、個人ホームページへの助言と着想をくださった Dr. Manhal Alhilali に感謝します。',
+        ackGlassBefore: 'Liquid Glass 表現は ', ackGlassAfter: ' を参考にしています。',
+        cinematicEggTitle: '島研究室のイントロ映像', cinematicEggCloseHint: '再生が終了しました。画面のどこかをクリックして戻ります。', cinematicEggPlaybackError: '動画を再生できませんでした。画面のどこかをクリックして戻ります。',
+        eggOpenAria: 'ChatGPT のイースターエッグを開く', eggCloseAria: '画像を閉じる', eggTitle: 'ChatGPT の小さなイースターエッグ',
+        eggInstruction: 'Esc キーまたは閉じるボタンでページに戻れます。',
+        eggImageAlt: '「ChatGPT に忠誠を誓う」と書かれ、帽子に ChatGPT のロゴを付けたキャラクターが敬礼するユーモラスなイラスト。', backTop: 'ページ上部へ',
         offlineLabel: '研究者プロフィール · 2026 年 7 月更新'
+      },
+      'zh-Hant': {
+        pageTitle: '殷翀之 — 雲微物理',
+        skipLink: '跳至主要內容', identitySubtitle: '雲微物理',
+        identityAria: '殷翀之，返回頁面頂端', cinematicEggOpenAria: '播放 Shima Lab 開場動畫', navAria: '主要導覽', languageAria: '語言選擇', languageTriggerAria: '選擇語言',
+        themeSystemAria: '使用系統外觀', themeLightAria: '使用淺色外觀', themeDarkAria: '使用深色外觀',
+        profilesAria: '學術主頁與個人履歷', orcidAria: 'ORCID 主頁，在新分頁開啟', scholarAria: 'Google Scholar 主頁，在新分頁開啟', researchGateAria: 'ResearchGate 主頁，在新分頁開啟', githubAria: 'GitHub 主頁，在新分頁開啟', cvAria: 'Google Drive 上的個人履歷，在新分頁開啟',
+        linksAria: '相關學術連結', shimaAria: '在新分頁開啟 Shima Lab', manhalAria: '在新分頁開啟 Dr. Manhal Alhilali 的個人主頁', backTopAria: '返回頁面頂端',
+        fieldAria: '呈現雲滴至雲尺度過程的抽象雲微物理場示意圖',
+        navHome: '首頁', navResearch: '研究', navAbout: '簡介', navLinks: '友情連結', navConnect: '聯絡',
+        themeLegend: '外觀模式', themeSystem: '系統', themeLight: '淺色', themeDark: '深色',
+        eyebrow: '大氣科學 · 雲微物理',
+        role: '特任助教 <span>— 兵庫縣立大學 大學院資訊科學研究科</span>',
+        intro: '我研究雲尺度湍流與微小雲滴如何相互影響，並透過以粒子為基礎的數值方法，試圖讓雲中難以觀測的粒子生命史變得可解析、可度量。',
+        explore: '瀏覽代表研究', profile: '查看學術主頁',
+        fieldLabelA: 'LES 雲場', fieldLabelB: '雲滴集合', fieldLabelC: '拉格朗日路徑',
+        plateTitle: '跨尺度理解雲', plateText: '從單個超水滴到湍流雲系統。',
+        sectionKicker: '目前與近期工作', sectionTitle: '代表研究',
+        footerLeft: '計算雲物理 · 開放科學',
+        profileKicker: '個人簡介', profileTitle: '逐粒子解析雲物理過程。',
+        profileBody: '我的研究位於雲微物理、湍流與計算科學的交會處。我開發 SCALE-SDM 的粒子方法，並利用高解析度模擬研究捲入與混合、降水起始，以及單個水凝物粒子的完整生命史。',
+        interest1: '拉格朗日粒子雲微物理',
+        interest1Detail: '超水滴法（SDM）開發、數值收斂與雲微物理參數化。',
+        interest2: '湍流—微物理相互作用',
+        interest2Detail: '透過大渦模擬與直接數值模擬研究捲入、混合和降水起始。',
+        interest3: '拉格朗日粒子追蹤',
+        interest3Detail: '利用前向與後向拉格朗日追蹤，重建水凝物粒子的完整生命史。',
+        interest4: '可擴展雲模擬',
+        interest4Detail: '以 SCALE-SDM、MPI、OpenMP、Fortran 與 Python 進行高效能運算。',
+        pathKicker: '學術歷程', pathTitle: '任職與教育經歷',
+        exp1Period: '2026年3月 — 至今', exp1Role: '特任助教', exp1Place: '兵庫縣立大學 · Shima Lab · 日本神戶', exp1Detail: '參與阿聯酋增雨科學研究計畫（UAEREP），進行雲微物理研究。',
+        exp2Period: '2019 — 2025', exp2Role: '大氣物理學與大氣環境博士', exp2Place: '南京資訊工程大學', exp2Detail: '研究超水滴法的數值收斂性，以及層積雲的巨觀與微物理特性。',
+        exp3Period: '2020 — 2022', exp3Role: '研究生（Research Student）', exp3Place: '兵庫縣立大學 · Shima Lab · 日本神戶', exp3Detail: '開發並應用拉格朗日雲微物理方案。',
+        honorsKicker: '榮譽', honorsTitle: '代表榮譽',
+        honor1Title: '中國氣象科技十大進展', honor1Detail: '團隊成員，第 13 完成人。',
+        honor2Title: '優秀口頭報告獎', honor2Detail: '第七屆全國中尺度氣象學術研討會。',
+        honor3Title: '國家留學基金管理委員會獎學金', honor3Detail: '國家建設高水平大學公派研究生計畫，赴日聯合培養。',
+        linksKicker: '學術網絡', linksTitle: '友情連結', linksIntro: '與本站研究相關的實驗室及研究者主頁。',
+        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: '雲微物理研究團隊', manhalDesc: '個人學術主頁',
+        contactKicker: '聯絡', contactTitle: '歡迎交流雲物理與數值模擬研究。', contactBody: '如需合作、邀請演講，或討論 SCALE-SDM 與粒子追蹤方法，歡迎透過學校電子郵件聯絡。',
+        emailLabel: '學校電子郵件', addressLabel: '通訊地址', addressValue: '〒650-0047 日本兵庫縣神戶市中央區港島南町7-1-28',
+        affiliationValue: '兵庫縣立大學大學院資訊科學研究科',
+        ackBefore: '本網站在 ', ackAfter: ' 的協助下製作，並感謝 Dr. Manhal Alhilali 對個人網站提出的建議與啟發。',
+        ackGlassBefore: 'Liquid Glass 效果參考了 ', ackGlassAfter: '。',
+        cinematicEggTitle: 'Shima Lab 開場動畫', cinematicEggCloseHint: '播放結束。點擊任意位置返回。', cinematicEggPlaybackError: '無法播放影片。點擊任意位置返回。',
+        eggOpenAria: '開啟 ChatGPT 彩蛋', eggCloseAria: '關閉圖片', eggTitle: '一個小小的 ChatGPT 彩蛋',
+        eggInstruction: '按 Esc 鍵或使用關閉按鈕返回頁面。',
+        eggImageAlt: '幽默插圖：角色敬禮，上方寫著「誓死效忠 ChatGPT」，帽子上有 ChatGPT 標誌。', backTop: '返回頂端',
+        offlineLabel: '個人學術主頁 · 2026 年 7 月更新'
+      },
+      ko: {
+        pageTitle: 'Chongzhi Yin — 구름 미세물리',
+        skipLink: '본문으로 바로가기', identitySubtitle: '구름 미세물리',
+        identityAria: 'Chongzhi Yin, 홈으로', cinematicEggOpenAria: 'Shima Lab 인트로 영상 재생', navAria: '주요 탐색 메뉴', languageAria: '언어 선택', languageTriggerAria: '언어 선택',
+        themeSystemAria: '시스템 설정에 따른 화면 모드 사용', themeLightAria: '라이트 모드 사용', themeDarkAria: '다크 모드 사용',
+        profilesAria: '학술 프로필 및 이력서', orcidAria: 'ORCID 프로필, 새 탭에서 열림', scholarAria: 'Google Scholar 프로필, 새 탭에서 열림', researchGateAria: 'ResearchGate 프로필, 새 탭에서 열림', githubAria: 'GitHub 프로필, 새 탭에서 열림', cvAria: 'Google Drive의 이력서, 새 탭에서 열림',
+        linksAria: '관련 학술 링크', shimaAria: 'Shima Lab을 새 탭에서 열기', manhalAria: 'Dr. Manhal Alhilali의 웹사이트를 새 탭에서 열기', backTopAria: '페이지 맨 위로 이동',
+        fieldAria: '구름방울 규모에서 구름 규모까지의 구름미세물리 과정을 나타낸 추상화된 그림',
+        navHome: '홈', navResearch: '연구', navAbout: '소개', navLinks: '관련 링크', navConnect: '연락처',
+        themeLegend: '화면 모드', themeSystem: '시스템', themeLight: '라이트', themeDark: '다크',
+        eyebrow: '대기과학 · 구름 미세물리',
+        role: '특임 조교수 <span>— 효고현립대학교 대학원 정보과학연구과</span>',
+        intro: '저는 구름 규모의 난류와 미세한 구름방울이 서로 어떻게 영향을 주고받는지 연구합니다. 입자 기반 수치 기법을 통해 구름 안에서 관측하기 어려운 입자의 생애사를 해석하고 정량화하고자 합니다.',
+        explore: '주요 연구 보기', profile: '학술 프로필 보기',
+        fieldLabelA: 'LES 유동장', fieldLabelB: '구름방울 앙상블', fieldLabelC: '라그랑지안 궤적',
+        plateTitle: '여러 규모에서 바라본 구름', plateText: '개별 슈퍼드롭에서 난류 구름 시스템까지.',
+        sectionKicker: '현재 및 최근 연구', sectionTitle: '주요 연구',
+        footerLeft: '계산 구름물리 · 오픈 사이언스',
+        profileKicker: '연구 소개', profileTitle: '입자 하나하나를 통해 구름물리를 해석합니다.',
+        profileBody: '저의 연구는 구름미세물리, 난류, 계산과학의 접점에 있습니다. SCALE-SDM의 입자 기반 기법을 개발하고, 고해상도 수치모의를 통해 연행·혼합, 강수 생성 초기 과정, 개별 수상체의 전체 생애주기를 연구합니다.',
+        interest1: '라그랑지안 입자 기반 구름미세물리',
+        interest1Detail: '슈퍼드롭법(Super-Droplet Method, SDM) 개발, 수치 수렴성 및 구름미세물리 모수화.',
+        interest2: '난류–미세물리 상호작용',
+        interest2Detail: '큰에디모사(LES)와 직접수치모사(DNS)를 이용한 연행·혼합 및 강수 생성 초기 과정 연구.',
+        interest3: '라그랑지안 입자 추적',
+        interest3Detail: '순방향·역방향 라그랑지안 추적을 이용한 수상체 입자의 전체 생애사 복원.',
+        interest4: '확장성 높은 구름 모의',
+        interest4Detail: 'SCALE-SDM, MPI, OpenMP, Fortran 및 Python 워크플로를 활용한 고성능 컴퓨팅.',
+        pathKicker: '학술 경력', pathTitle: '경력 및 학력',
+        exp1Period: '2026년 3월 — 현재', exp1Role: '특임 조교수', exp1Place: '효고현립대학교 · Shima Lab · 일본 고베', exp1Detail: 'UAE Research Program for Rain Enhancement Science(UAEREP)에서 구름미세물리 연구를 수행합니다.',
+        exp2Period: '2019 — 2025', exp2Role: '대기물리학·대기환경학 박사', exp2Place: 'Nanjing University of Information Science & Technology', exp2Detail: '슈퍼드롭법의 수치 수렴성과 층적운의 거시적·미세물리적 특성을 연구했습니다.',
+        exp3Period: '2020 — 2022', exp3Role: '연구생(Research Student)', exp3Place: '효고현립대학교 · Shima Lab · 일본 고베', exp3Detail: '라그랑지안 구름미세물리 기법을 개발하고 적용했습니다.',
+        honorsKicker: '수상', honorsTitle: '주요 수상 및 선정',
+        honor1Title: '중국 기상과학기술 10대 진전', honor1Detail: '연구팀 구성원, 13번째 기여자.',
+        honor2Title: '우수 구두 발표상', honor2Detail: '제7회 중국 중규모기상학 학술 심포지엄.',
+        honor3Title: '중국국가유학기금관리위원회(CSC) 장학금', honor3Detail: '일본 박사과정 공동연구를 위한 국가파견 대학원생 프로그램.',
+        linksKicker: '학술 네트워크', linksTitle: '관련 링크', linksIntro: '이 사이트의 연구와 연관된 연구 그룹 및 연구자 웹사이트입니다.',
+        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: '구름 미세물리 연구 그룹', manhalDesc: '개인 학술 웹사이트',
+        contactKicker: '연락처', contactTitle: '연구 교류를 환영합니다.', contactBody: '공동연구, 세미나, SCALE-SDM 및 입자 추적에 관한 문의는 대학 이메일로 연락해 주십시오.',
+        emailLabel: '대학 이메일', addressLabel: '우편 주소', addressValue: '〒650-0047 일본 효고현 고베시 주오구 미나토지마미나미마치 7-1-28',
+        affiliationValue: '효고현립대학교 대학원 정보과학연구과',
+        ackBefore: '이 사이트는 ', ackAfter: '의 도움을 받아 제작했습니다. 또한 개인 홈페이지에 대한 조언과 영감을 주신 Dr. Manhal Alhilali께 감사드립니다.',
+        ackGlassBefore: 'Liquid Glass 효과에는 ', ackGlassAfter: '의 구현을 참고했습니다.',
+        cinematicEggTitle: 'Shima Lab 인트로 영상', cinematicEggCloseHint: '재생이 끝났습니다. 아무 곳이나 클릭하여 돌아가세요.', cinematicEggPlaybackError: '영상을 재생할 수 없습니다. 아무 곳이나 클릭하여 돌아가세요.',
+        eggOpenAria: 'ChatGPT 이스터 에그 열기', eggCloseAria: '이미지 닫기', eggTitle: '작은 ChatGPT 이스터 에그',
+        eggInstruction: 'Esc 키 또는 닫기 버튼을 사용하여 페이지로 돌아갈 수 있습니다.',
+        eggImageAlt: '“ChatGPT에 충성을 맹세한다”라는 문구 아래, ChatGPT 로고가 있는 모자를 쓴 캐릭터가 경례하는 유머러스한 그림.', backTop: '맨 위로',
+        offlineLabel: '학술 프로필 · 2026년 7월 업데이트'
+      },
+      ar: {
+        pageTitle: 'تشونغتشي يين — الفيزياء الدقيقة للسحب',
+        skipLink: 'الانتقال إلى المحتوى الرئيسي', identitySubtitle: 'الفيزياء الدقيقة للسحب',
+        identityAria: 'تشونغتشي يين، العودة إلى أعلى الصفحة', cinematicEggOpenAria: 'تشغيل مقدمة Shima Lab', navAria: 'التنقل الرئيسي', languageAria: 'اختيار اللغة', languageTriggerAria: 'اختيار اللغة',
+        themeSystemAria: 'استخدام مظهر النظام', themeLightAria: 'استخدام المظهر الفاتح', themeDarkAria: 'استخدام المظهر الداكن',
+        profilesAria: 'الصفحات الأكاديمية والسيرة الذاتية', orcidAria: 'ملف ORCID، يُفتح في علامة تبويب جديدة', scholarAria: 'ملف Google Scholar، يُفتح في علامة تبويب جديدة', researchGateAria: 'ملف ResearchGate، يُفتح في علامة تبويب جديدة', githubAria: 'ملف GitHub، يُفتح في علامة تبويب جديدة', cvAria: 'السيرة الذاتية على Google Drive، تُفتح في علامة تبويب جديدة',
+        linksAria: 'روابط أكاديمية ذات صلة', shimaAria: 'زيارة Shima Lab في علامة تبويب جديدة', manhalAria: 'زيارة موقع Dr. Manhal Alhilali في علامة تبويب جديدة', backTopAria: 'العودة إلى أعلى الصفحة',
+        fieldAria: 'تصوّر تجريدي لحقل الفيزياء الدقيقة للسحب من مقياس قطيرات السحب إلى مقياس السحابة',
+        navHome: 'الرئيسية', navResearch: 'البحث', navAbout: 'نبذة', navLinks: 'روابط', navConnect: 'تواصل',
+        themeLegend: 'المظهر', themeSystem: 'حسب النظام', themeLight: 'فاتح', themeDark: 'داكن',
+        eyebrow: 'علوم الغلاف الجوي · الفيزياء الدقيقة للسحب',
+        role: 'أستاذ مساعد بتعيين خاص <span>— كلية الدراسات العليا في علوم المعلومات، جامعة هيوغو</span>',
+        intro: 'أدرس كيفية تفاعل الاضطراب على مقياس السحابة مع قطيرات السحب المجهرية. وباستخدام طرائق عددية قائمة على الجسيمات، أحاول جعل دورات حياة الجسيمات التي يصعب رصدها داخل السحب قابلة للتحليل والقياس الكمي.',
+        explore: 'استعراض الأبحاث المختارة', profile: 'عرض الصفحات الأكاديمية',
+        fieldLabelA: 'حقل <bdi dir="ltr">LES</bdi>', fieldLabelB: 'تجمّع القطيرات', fieldLabelC: 'مسار لاغرانجي',
+        plateTitle: 'السحب عبر المقاييس', plateText: 'من القطيرات الفائقة المفردة إلى نظم السحب المضطربة.',
+        sectionKicker: 'أعمال حالية وحديثة', sectionTitle: 'أبحاث مختارة',
+        footerLeft: 'فيزياء السحب الحاسوبية · العلم المفتوح',
+        profileKicker: 'الملف البحثي', profileTitle: 'فيزياء السحب، جسيمًا بعد جسيم.',
+        profileBody: 'يقع عملي عند تقاطع الفيزياء الدقيقة للسحب والاضطراب والعلوم الحاسوبية. أطوّر طرائق قائمة على الجسيمات ضمن نموذج <bdi dir="ltr">SCALE-SDM</bdi>، وأستخدم محاكاة عالية الاستبانة لفهم دخول الهواء المحيط إلى السحب واختلاطه بها <bdi dir="ltr">(entrainment–mixing)</bdi>، وبداية الهطول، ودورة الحياة الكاملة لكل جسيم من جسيمات السحب والهطول.',
+        interest1: 'الفيزياء الدقيقة للسحب بنهج جسيمي لاغرانجي',
+        interest1Detail: 'تطوير طريقة القطيرة الفائقة <bdi dir="ltr">(Super-Droplet Method, SDM)</bdi>، ودراسة التقارب العددي، وتمثيل الفيزياء الدقيقة للسحب بالمعلمات.',
+        interest2: 'تفاعلات الاضطراب والفيزياء الدقيقة',
+        interest2Detail: 'محاكاة الدوامات الكبيرة <bdi dir="ltr">(LES)</bdi> والمحاكاة العددية المباشرة <bdi dir="ltr">(DNS)</bdi> لدراسة دخول الهواء المحيط إلى السحب واختلاطه بها، وبداية الهطول.',
+        interest3: 'التتبّع اللاغرانجي للجسيمات',
+        interest3Detail: 'التتبّع اللاغرانجي الأمامي والخلفي لإعادة بناء دورات الحياة الكاملة لجسيمات السحب والهطول.',
+        interest4: 'محاكاة السحب القابلة للتوسع',
+        interest4Detail: 'حوسبة عالية الأداء باستخدام <bdi dir="ltr">SCALE-SDM</bdi> و<bdi dir="ltr">MPI</bdi> و<bdi dir="ltr">OpenMP</bdi> و<bdi dir="ltr">Fortran</bdi> و<bdi dir="ltr">Python</bdi>.',
+        pathKicker: 'المسار الأكاديمي', pathTitle: 'المناصب الأكاديمية والتعليم',
+        exp1Period: 'مارس 2026 — حتى الآن', exp1Role: 'أستاذ مساعد بتعيين خاص', exp1Place: 'جامعة هيوغو · <bdi dir="ltr">Shima Lab</bdi> · كوبي، اليابان', exp1Detail: 'بحث في الفيزياء الدقيقة للسحب ضمن برنامج الإمارات لبحوث علوم الاستمطار <bdi dir="ltr">(UAEREP)</bdi>.',
+        exp2Period: '2019 — 2025', exp2Role: 'دكتوراه في فيزياء الغلاف الجوي والبيئة الجوية', exp2Place: 'جامعة نانجينغ لعلوم وتكنولوجيا المعلومات <bdi dir="ltr">(NUIST)</bdi>', exp2Detail: 'بحث في التقارب العددي لطريقة القطيرة الفائقة، والخصائص الكلية وخصائص الفيزياء الدقيقة لسحب الرهج الركامي <bdi dir="ltr">(Stratocumulus)</bdi>.',
+        exp3Period: '2020 — 2022', exp3Role: 'طالب باحث (Research Student)', exp3Place: 'جامعة هيوغو · <bdi dir="ltr">Shima Lab</bdi> · كوبي، اليابان', exp3Detail: 'تطوير طرائق الفيزياء الدقيقة للسحب القائمة على المنظور اللاغرانجي وتطبيقها.',
+        honorsKicker: 'التقدير', honorsTitle: 'جوائز وتكريمات مختارة',
+        honor1Title: 'أهم عشرة تطورات في علوم وتكنولوجيا الأرصاد الجوية في الصين', honor1Detail: 'عضو في الفريق، المساهم الثالث عشر.',
+        honor2Title: 'جائزة العرض الشفهي المتميز', honor2Detail: 'الندوة الصينية السابعة للأرصاد الجوية متوسطة المقياس.',
+        honor3Title: 'منحة مجلس المنح الدراسية الصيني <bdi dir="ltr">(CSC)</bdi>', honor3Detail: 'برنامج دراسات عليا ممول من الدولة لإجراء بحث مشترك ضمن مرحلة الدكتوراه في اليابان.',
+        linksKicker: 'الشبكة الأكاديمية', linksTitle: 'روابط ذات صلة', linksIntro: 'مجموعات بحثية ومواقع باحثين ترتبط أعمالهم بموضوعات هذا الموقع.',
+        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: 'مجموعة بحثية في الفيزياء الدقيقة للسحب', manhalDesc: 'موقع أكاديمي شخصي',
+        contactKicker: 'تواصل', contactTitle: 'أرحّب بالنقاشات البحثية.', contactBody: 'للتعاون أو دعوات الندوات أو الاستفسارات عن <bdi dir="ltr">SCALE-SDM</bdi> وتتبّع الجسيمات، يُرجى التواصل معي عبر البريد الإلكتروني الجامعي.',
+        emailLabel: 'البريد الإلكتروني الجامعي', addressLabel: 'العنوان البريدي', addressValue: '<bdi dir="ltr">〒650-0047</bdi>، <bdi dir="ltr">7-1-28</bdi> ميناتوجيما-ميناميماتشي، حي تشو، كوبي، محافظة هيوغو، اليابان',
+        affiliationValue: 'كلية الدراسات العليا في علوم المعلومات، جامعة هيوغو',
+        ackBefore: 'أُنشئ هذا الموقع بمساعدة ', ackAfter: '. كما أشكر Dr. Manhal Alhilali على اقتراحاته وإلهامه لتطوير صفحتي الشخصية.',
+        ackGlassBefore: 'استُلهم تأثير Liquid Glass من ', ackGlassAfter: '.',
+        cinematicEggTitle: 'المقدمة المرئية لـ Shima Lab', cinematicEggCloseHint: 'انتهى العرض. انقر في أي مكان للعودة.', cinematicEggPlaybackError: 'تعذر تشغيل الفيديو. انقر في أي مكان للعودة.',
+        eggOpenAria: 'فتح مفاجأة ChatGPT المخفية', eggCloseAria: 'إغلاق الصورة', eggTitle: 'مفاجأة صغيرة خاصة بـ ChatGPT',
+        eggInstruction: 'اضغط على مفتاح Escape أو زر الإغلاق للعودة إلى الصفحة.',
+        eggImageAlt: 'رسم فكاهي لشخصية تؤدي التحية أسفل عبارة «الولاء التام لـ ChatGPT»، وعلى قبعتها شعار ChatGPT.', backTop: 'إلى الأعلى',
+        offlineLabel: 'الملف الأكاديمي · آخر تحديث في يوليو 2026'
       }
     };
 
+    const languageMeta = {
+      en: { lang: 'en', dir: 'ltr', short: 'EN' },
+      'zh-Hans': { lang: 'zh-Hans', dir: 'ltr', short: '简' },
+      'zh-Hant': { lang: 'zh-Hant', dir: 'ltr', short: '繁' },
+      ja: { lang: 'ja', dir: 'ltr', short: '日' },
+      ko: { lang: 'ko', dir: 'ltr', short: '한' },
+      ar: { lang: 'ar', dir: 'rtl', short: 'ع' }
+    };
+    const canonicalizeLanguage = (value) => {
+      if (typeof value !== 'string') return null;
+      const normalized = value.trim().replace(/_/g, '-').toLowerCase();
+      if (!normalized) return null;
+      if (normalized === 'zh' || normalized.startsWith('zh-')) {
+        const tags = normalized.split('-');
+        const traditional = tags.includes('hant') || tags.some((tag) => ['tw', 'hk', 'mo'].includes(tag));
+        return traditional ? 'zh-Hant' : 'zh-Hans';
+      }
+      return ['en', 'ja', 'ko', 'ar'].find((code) => normalized === code || normalized.startsWith(`${code}-`)) || null;
+    };
+    const preferredBrowserLanguage = () => {
+      const candidates = [];
+      if (Array.isArray(window.navigator?.languages)) candidates.push(...window.navigator.languages);
+      if (window.navigator?.language) candidates.push(window.navigator.language);
+      return candidates.map(canonicalizeLanguage).find((candidate) => translations[candidate]) || 'en';
+    };
     const buttons = document.querySelectorAll('[data-lang]');
     const copyNodes = document.querySelectorAll('[data-copy]');
     const ariaNodes = document.querySelectorAll('[data-copy-aria]');
+    const altNodes = document.querySelectorAll('[data-copy-alt]');
+    const languagePicker = typeof document.querySelector === 'function' ? document.querySelector('[data-language-picker]') : null;
+    const languageTrigger = typeof document.querySelector === 'function' ? document.querySelector('[data-language-trigger]') : null;
+    const languagePanel = typeof document.querySelector === 'function' ? document.querySelector('[data-language-panel]') : null;
+    const currentLanguage = typeof document.querySelector === 'function' ? document.querySelector('[data-current-language]') : null;
+    const languageHoverQuery = typeof window.matchMedia === 'function'
+      ? window.matchMedia('(hover: hover) and (pointer: fine)')
+      : null;
 
     function prefersReducedMotion() {
       return typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     }
 
-    function applyLanguage(lang, animate, persist) {
-      if (!translations[lang]) return;
+    function applyLanguage(requestedLanguage, animate, persist) {
+      const lang = canonicalizeLanguage(requestedLanguage);
+      const meta = languageMeta[lang];
+      if (!translations[lang] || !meta) return;
+
+      const root = document.documentElement;
+      root.lang = meta.lang;
+      root.dir = meta.dir;
+      if (!root.dataset) root.dataset = {};
+      root.dataset.language = lang;
 
       const update = () => {
         copyNodes.forEach((node) => {
@@ -1424,8 +3376,12 @@
           const value = translations[lang][node.dataset.copyAria];
           if (value !== undefined) node.setAttribute('aria-label', value);
         });
+        altNodes.forEach((node) => {
+          const value = translations[lang][node.dataset.copyAlt];
+          if (value !== undefined) node.setAttribute('alt', value);
+        });
         document.title = translations[lang].pageTitle;
-        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+        if (currentLanguage) currentLanguage.textContent = meta.short;
         buttons.forEach((item) => {
           const active = item.dataset.lang === lang;
           item.classList.toggle('active', active);
@@ -1452,27 +3408,737 @@
       }
     }
 
+    let languageCloseTimer = null;
+    let languagePointerInside = false;
+
+    function setLanguagePickerOpen(open, restoreFocus) {
+      if (!languagePicker || !languageTrigger || !languagePanel) return;
+      if (languageCloseTimer !== null) {
+        window.clearTimeout(languageCloseTimer);
+        languageCloseTimer = null;
+      }
+      languagePicker.classList.toggle('is-open', open);
+      languageTrigger.setAttribute('aria-expanded', String(open));
+      languagePanel.inert = !open;
+      if (open && typeof languagePanel.removeAttribute === 'function') languagePanel.removeAttribute('inert');
+      if (!open && typeof languagePanel.setAttribute === 'function') languagePanel.setAttribute('inert', '');
+      if (restoreFocus && typeof languageTrigger.focus === 'function') {
+        try { languageTrigger.focus({ preventScroll: true }); }
+        catch (error) { languageTrigger.focus(); }
+      }
+    }
+
+    function scheduleLanguagePickerClose() {
+      if (!languagePicker) return;
+      if (languageCloseTimer !== null) window.clearTimeout(languageCloseTimer);
+      languageCloseTimer = window.setTimeout(() => setLanguagePickerOpen(false, false), 150);
+    }
+
+    if (languagePicker && languageTrigger && languagePanel) {
+      setLanguagePickerOpen(false, false);
+      languagePicker.addEventListener('pointerenter', () => {
+        languagePointerInside = true;
+        if (languageHoverQuery?.matches) setLanguagePickerOpen(true, false);
+      });
+      languagePicker.addEventListener('pointerleave', () => {
+        languagePointerInside = false;
+        if (languageHoverQuery?.matches) scheduleLanguagePickerClose();
+      });
+      languagePicker.addEventListener('focusout', (event) => {
+        if (typeof languagePicker.contains !== 'function' || !languagePicker.contains(event.relatedTarget)) scheduleLanguagePickerClose();
+      });
+      languageTrigger.addEventListener('click', (event) => {
+        const isOpen = languageTrigger.getAttribute('aria-expanded') === 'true';
+        const pointerActivation = event.detail !== 0;
+        if (isOpen && pointerActivation && languageHoverQuery?.matches && languagePointerInside) return;
+        setLanguagePickerOpen(!isOpen, false);
+      });
+    }
+
     buttons.forEach((button) => {
       button.addEventListener('click', () => {
         if (!button.classList.contains('active')) applyLanguage(button.dataset.lang, true, true);
+        setLanguagePickerOpen(false, true);
       });
     });
 
-    let initialLanguage = 'en';
+    if (typeof document.addEventListener === 'function') {
+      document.addEventListener('pointerdown', (event) => {
+        if (languagePicker && typeof languagePicker.contains === 'function' && !languagePicker.contains(event.target)) {
+          setLanguagePickerOpen(false, false);
+        }
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && languageTrigger?.getAttribute('aria-expanded') === 'true') {
+          event.preventDefault();
+          setLanguagePickerOpen(false, true);
+        }
+      });
+    }
+
+    let initialLanguage = preferredBrowserLanguage();
     let queryLanguage = null;
     try {
-      queryLanguage = new URL(window.location.href).searchParams.get('lang');
+      queryLanguage = canonicalizeLanguage(new URL(window.location.href).searchParams.get('lang'));
     } catch (error) { /* malformed or restricted file URL */ }
 
     if (translations[queryLanguage]) {
       initialLanguage = queryLanguage;
     } else {
       try {
-        const storedLanguage = window.localStorage.getItem('chongzhi-yin-language');
+        const storedLanguage = canonicalizeLanguage(window.localStorage.getItem('chongzhi-yin-language'));
         if (translations[storedLanguage]) initialLanguage = storedLanguage;
-      } catch (error) { /* English remains the safe default */ }
+      } catch (error) { /* browser language remains the safe default */ }
     }
     applyLanguage(initialLanguage, false, false);
+
+    const cinematicEggOpen = typeof document.querySelector === 'function' ? document.querySelector('[data-cinematic-egg-open]') : null;
+    const cinematicEggDialog = typeof document.querySelector === 'function' ? document.querySelector('[data-cinematic-egg-dialog]') : null;
+    const cinematicEggVideo = typeof document.querySelector === 'function' ? document.querySelector('[data-cinematic-egg-video]') : null;
+    const cinematicEggCloseHint = typeof document.querySelector === 'function' ? document.querySelector('[data-cinematic-egg-close-hint]') : null;
+    let cinematicEggReturnFocus = null;
+
+    function setCinematicEggHint(copyKey) {
+      if (!cinematicEggCloseHint) return;
+      cinematicEggCloseHint.dataset.copy = copyKey;
+      const lang = document.documentElement.dataset.language || 'en';
+      const value = translations[lang]?.[copyKey] ?? translations.en[copyKey];
+      if (value !== undefined) cinematicEggCloseHint.innerHTML = value;
+    }
+
+    function markCinematicEggEnded(copyKey = 'cinematicEggCloseHint') {
+      if (!cinematicEggDialog?.hasAttribute('open')) return;
+      setCinematicEggHint(copyKey);
+      cinematicEggDialog.classList.add('is-ended');
+    }
+
+    function finalizeCinematicEggClose() {
+      document.documentElement.classList.remove('cinematic-egg-open');
+      cinematicEggDialog?.classList.remove('is-ended');
+      setCinematicEggHint('cinematicEggCloseHint');
+      if (cinematicEggVideo) {
+        cinematicEggVideo.pause();
+        try { cinematicEggVideo.currentTime = 0; } catch (error) { /* metadata may not be available */ }
+      }
+      if (cinematicEggOpen) cinematicEggOpen.setAttribute('aria-expanded', 'false');
+      if (cinematicEggReturnFocus?.isConnected && typeof cinematicEggReturnFocus.focus === 'function') {
+        try { cinematicEggReturnFocus.focus({ preventScroll: true }); }
+        catch (error) { cinematicEggReturnFocus.focus(); }
+      }
+      cinematicEggReturnFocus = null;
+    }
+
+    function closeCinematicEgg() {
+      if (!cinematicEggDialog) return;
+      if (cinematicEggVideo) cinematicEggVideo.pause();
+      if (typeof cinematicEggDialog.close === 'function') cinematicEggDialog.close();
+      else {
+        cinematicEggDialog.removeAttribute('open');
+        finalizeCinematicEggClose();
+      }
+    }
+
+    if (cinematicEggOpen && cinematicEggDialog && cinematicEggVideo && cinematicEggCloseHint) {
+      cinematicEggOpen.addEventListener('click', () => {
+        if (cinematicEggDialog.hasAttribute('open')) return;
+        cinematicEggReturnFocus = document.activeElement || cinematicEggOpen;
+        cinematicEggDialog.classList.remove('is-ended');
+        setCinematicEggHint('cinematicEggCloseHint');
+        try { cinematicEggVideo.currentTime = 0; } catch (error) { /* metadata may not be available */ }
+
+        if (typeof cinematicEggDialog.showModal === 'function') cinematicEggDialog.showModal();
+        else cinematicEggDialog.setAttribute('open', '');
+        document.documentElement.classList.add('cinematic-egg-open');
+        cinematicEggOpen.setAttribute('aria-expanded', 'true');
+        try { cinematicEggDialog.focus({ preventScroll: true }); }
+        catch (error) { cinematicEggDialog.focus(); }
+
+        const playback = cinematicEggVideo.play();
+        if (playback && typeof playback.catch === 'function') {
+          playback.catch(() => markCinematicEggEnded('cinematicEggPlaybackError'));
+        }
+      });
+
+      cinematicEggVideo.addEventListener('ended', () => markCinematicEggEnded());
+      cinematicEggVideo.addEventListener('error', () => markCinematicEggEnded('cinematicEggPlaybackError'));
+      cinematicEggDialog.addEventListener('click', () => {
+        if (cinematicEggDialog.classList.contains('is-ended')) closeCinematicEgg();
+      });
+      cinematicEggDialog.addEventListener('keydown', (event) => {
+        if (!cinematicEggDialog.classList.contains('is-ended')) return;
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        closeCinematicEgg();
+      });
+      cinematicEggDialog.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        closeCinematicEgg();
+      });
+      cinematicEggDialog.addEventListener('close', finalizeCinematicEggClose);
+
+      if (typeof cinematicEggDialog.showModal !== 'function' && typeof document.addEventListener === 'function') {
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && cinematicEggDialog.hasAttribute('open')) closeCinematicEgg();
+        });
+      }
+    }
+
+    const eggOpen = typeof document.querySelector === 'function' ? document.querySelector('[data-easter-egg-open]') : null;
+    const eggDialog = typeof document.querySelector === 'function' ? document.querySelector('[data-easter-egg-dialog]') : null;
+    const eggClose = typeof document.querySelector === 'function' ? document.querySelector('[data-easter-egg-close]') : null;
+    let eggReturnFocus = null;
+
+    function finalizeEggClose() {
+      if (eggOpen) eggOpen.setAttribute('aria-expanded', 'false');
+      if (eggReturnFocus?.isConnected && typeof eggReturnFocus.focus === 'function') {
+        try { eggReturnFocus.focus({ preventScroll: true }); }
+        catch (error) { eggReturnFocus.focus(); }
+      }
+      eggReturnFocus = null;
+    }
+
+    function closeEasterEgg() {
+      if (!eggDialog) return;
+      if (typeof eggDialog.close === 'function') eggDialog.close();
+      else {
+        if (typeof eggDialog.removeAttribute === 'function') eggDialog.removeAttribute('open');
+        finalizeEggClose();
+      }
+    }
+
+    if (eggOpen && eggDialog && eggClose) {
+      eggOpen.addEventListener('click', () => {
+        eggReturnFocus = document.activeElement || eggOpen;
+        if (typeof eggDialog.showModal === 'function') eggDialog.showModal();
+        else if (typeof eggDialog.setAttribute === 'function') eggDialog.setAttribute('open', '');
+        eggOpen.setAttribute('aria-expanded', 'true');
+        if (typeof eggClose.focus === 'function') {
+          try { eggClose.focus({ preventScroll: true }); }
+          catch (error) { eggClose.focus(); }
+        }
+      });
+      eggClose.addEventListener('click', closeEasterEgg);
+      eggDialog.addEventListener('click', (event) => {
+        if (event.target === eggDialog) closeEasterEgg();
+      });
+      eggDialog.addEventListener('close', finalizeEggClose);
+      if (typeof eggDialog.showModal !== 'function' && typeof document.addEventListener === 'function') {
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && eggDialog.hasAttribute?.('open')) closeEasterEgg();
+        });
+      }
+    }
+
+    const themeInputs = document.querySelectorAll('.theme-switcher input[data-theme-mode]');
+    const systemThemeQuery = typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-color-scheme: dark)')
+      : null;
+
+    function isThemeMode(value) {
+      return value === 'system' || value === 'light' || value === 'dark';
+    }
+
+    function applyThemeMode(mode, persist) {
+      const safeMode = isThemeMode(mode) ? mode : 'system';
+      const resolvedTheme = safeMode === 'system'
+        ? (systemThemeQuery?.matches ? 'dark' : 'light')
+        : safeMode;
+      const root = document.documentElement;
+      if (!root.dataset) root.dataset = {};
+      root.dataset.themeMode = safeMode;
+      root.dataset.theme = resolvedTheme;
+
+      themeInputs.forEach((input) => {
+        input.checked = input.dataset.themeMode === safeMode;
+      });
+
+      if (typeof document.querySelector === 'function') {
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) themeColor.setAttribute('content', resolvedTheme === 'dark' ? '#091117' : '#f7fafb');
+      }
+
+      if (persist) {
+        try { window.localStorage.setItem('chongzhi-yin-theme', safeMode); } catch (error) { /* file privacy mode */ }
+      }
+    }
+
+    let initialThemeMode = document.documentElement.dataset?.themeMode || 'system';
+    try {
+      const storedThemeMode = window.localStorage.getItem('chongzhi-yin-theme');
+      if (isThemeMode(storedThemeMode)) initialThemeMode = storedThemeMode;
+    } catch (error) { /* system appearance remains the safe default */ }
+    applyThemeMode(initialThemeMode, false);
+
+    themeInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        if (input.checked) applyThemeMode(input.dataset.themeMode, true);
+      });
+    });
+
+    function syncSystemTheme() {
+      if (document.documentElement.dataset?.themeMode === 'system') applyThemeMode('system', false);
+    }
+
+    if (systemThemeQuery) {
+      if (typeof systemThemeQuery.addEventListener === 'function') systemThemeQuery.addEventListener('change', syncSystemTheme);
+      else if (typeof systemThemeQuery.addListener === 'function') systemThemeQuery.addListener(syncSystemTheme);
+    }
+
+    /*
+      Chromium Liquid Glass enhancement.
+      The layer/filter architecture is adapted from rdev/liquid-glass-react
+      (MIT, commit ac48eab18d1f7f444ae30002d240cae29c863a21).
+      See assets/THIRD_PARTY_NOTICES.md.
+    */
+    function supportsLiquidGlassEnhancement() {
+      if (typeof navigator === 'undefined'
+        || typeof CSS === 'undefined'
+        || typeof document.createElement !== 'function'
+        || typeof document.createElementNS !== 'function'
+        || typeof document.createDocumentFragment !== 'function') return false;
+
+      const brands = Array.isArray(navigator.userAgentData?.brands)
+        ? navigator.userAgentData.brands.map((item) => item.brand).join(' ')
+        : '';
+      const userAgent = navigator.userAgent || '';
+      const isChromium = /Chromium|Google Chrome|Microsoft Edge/i.test(brands)
+        || /(?:Chrome|Chromium|Edg)\//.test(userAgent);
+      if (!isChromium || /Firefox\//.test(userAgent)) return false;
+
+      let supportsBackdrop = false;
+      let supportsSvgFilter = false;
+      try {
+        supportsBackdrop = CSS.supports('backdrop-filter', 'blur(1px)')
+          || CSS.supports('-webkit-backdrop-filter', 'blur(1px)');
+        supportsSvgFilter = CSS.supports('filter', 'url("#liquid-glass-capability")');
+      } catch (error) { return false; }
+
+      const canvas = document.createElement('canvas');
+      return supportsBackdrop && supportsSvgFilter && Boolean(canvas.getContext?.('2d'));
+    }
+
+    function createLiquidGlassSvgElement(name, attributes = {}) {
+      const element = document.createElementNS('http://www.w3.org/2000/svg', name);
+      Object.entries(attributes).forEach(([attribute, value]) => element.setAttribute(attribute, String(value)));
+      return element;
+    }
+
+    function liquidGlassRoundedRectDistance(x, y, width, height, radius) {
+      const horizontal = Math.abs(x - width / 2) - (width / 2 - radius);
+      const vertical = Math.abs(y - height / 2) - (height / 2 - radius);
+      const outside = Math.hypot(Math.max(horizontal, 0), Math.max(vertical, 0));
+      const inside = Math.min(Math.max(horizontal, vertical), 0);
+      return outside + inside - radius;
+    }
+
+    function liquidGlassSmoothstep(start, end, value) {
+      const progress = Math.max(0, Math.min(1, (value - start) / (end - start || 1)));
+      return progress * progress * (3 - 2 * progress);
+    }
+
+    function generateLiquidGlassDisplacementMap(width, height, radius) {
+      const maximumMapDimension = 320;
+      const mapScale = Math.min(1, maximumMapDimension / Math.max(width, height));
+      const mapWidth = Math.max(8, Math.round(width * mapScale));
+      const mapHeight = Math.max(8, Math.round(height * mapScale));
+      const mapRadius = Math.min(mapWidth / 2, mapHeight / 2, Math.max(1, radius * mapScale));
+      const edgeDepth = Math.max(6, Math.min(25, Math.min(mapWidth, mapHeight) * .38));
+      const canvas = document.createElement('canvas');
+      canvas.width = mapWidth;
+      canvas.height = mapHeight;
+      const context = canvas.getContext('2d', { alpha: false });
+      if (!context) throw new Error('Canvas 2D context unavailable');
+      const imageData = context.createImageData(mapWidth, mapHeight);
+      const pixels = imageData.data;
+
+      for (let y = 0; y < mapHeight; y += 1) {
+        for (let x = 0; x < mapWidth; x += 1) {
+          const sampleX = x + .5;
+          const sampleY = y + .5;
+          const distance = liquidGlassRoundedRectDistance(sampleX, sampleY, mapWidth, mapHeight, mapRadius);
+          const inwardDepth = Math.max(0, -distance);
+          const edgeInfluence = Math.pow(1 - liquidGlassSmoothstep(0, edgeDepth, inwardDepth), .72);
+          const normalX = liquidGlassRoundedRectDistance(sampleX + .75, sampleY, mapWidth, mapHeight, mapRadius)
+            - liquidGlassRoundedRectDistance(sampleX - .75, sampleY, mapWidth, mapHeight, mapRadius);
+          const normalY = liquidGlassRoundedRectDistance(sampleX, sampleY + .75, mapWidth, mapHeight, mapRadius)
+            - liquidGlassRoundedRectDistance(sampleX, sampleY - .75, mapWidth, mapHeight, mapRadius);
+          const normalLength = Math.hypot(normalX, normalY) || 1;
+          const horizontalVector = normalX / normalLength;
+          const verticalVector = normalY / normalLength;
+          const pixelIndex = (y * mapWidth + x) * 4;
+
+          pixels[pixelIndex] = Math.round(128 + horizontalVector * edgeInfluence * 127);
+          pixels[pixelIndex + 1] = Math.round(128 + verticalVector * edgeInfluence * 127);
+          pixels[pixelIndex + 2] = Math.round(128 + verticalVector * edgeInfluence * 127);
+          pixels[pixelIndex + 3] = 255;
+        }
+      }
+
+      context.putImageData(imageData, 0, 0);
+      return canvas.toDataURL('image/png');
+    }
+
+    function createLiquidGlassFilter(filterRoot, filterId, displacementScale) {
+      const filter = createLiquidGlassSvgElement('filter', {
+        id: filterId,
+        x: '-35%',
+        y: '-35%',
+        width: '170%',
+        height: '170%',
+        'color-interpolation-filters': 'sRGB'
+      });
+      const displacementImage = createLiquidGlassSvgElement('feImage', {
+        x: '0',
+        y: '0',
+        width: '100%',
+        height: '100%',
+        preserveAspectRatio: 'xMidYMid slice',
+        result: 'liquid-glass-map'
+      });
+      filter.append(displacementImage);
+
+      const aberrationIntensity = 2;
+      const channelScales = [
+        -displacementScale,
+        displacementScale * (-1 - aberrationIntensity * .05),
+        displacementScale * (-1 - aberrationIntensity * .10)
+      ];
+      const channelNames = ['red', 'green', 'blue'];
+      const colorMatrices = [
+        '1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0',
+        '0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0',
+        '0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0'
+      ];
+
+      channelNames.forEach((channel, index) => {
+        const displacedResult = `${channel}-displaced`;
+        filter.append(createLiquidGlassSvgElement('feDisplacementMap', {
+          in: 'SourceGraphic',
+          in2: 'liquid-glass-map',
+          scale: channelScales[index].toFixed(2),
+          xChannelSelector: 'R',
+          yChannelSelector: 'B',
+          result: displacedResult
+        }));
+        filter.append(createLiquidGlassSvgElement('feColorMatrix', {
+          in: displacedResult,
+          type: 'matrix',
+          values: colorMatrices[index],
+          result: `${channel}-channel`
+        }));
+      });
+
+      filter.append(createLiquidGlassSvgElement('feBlend', {
+        in: 'red-channel',
+        in2: 'green-channel',
+        mode: 'screen',
+        result: 'red-green-channels'
+      }));
+      filter.append(createLiquidGlassSvgElement('feBlend', {
+        in: 'red-green-channels',
+        in2: 'blue-channel',
+        mode: 'screen',
+        result: 'refracted-channels'
+      }));
+      filter.append(createLiquidGlassSvgElement('feGaussianBlur', {
+        in: 'refracted-channels',
+        stdDeviation: '.3',
+        result: 'refracted-soft'
+      }));
+      filter.append(createLiquidGlassSvgElement('feComposite', {
+        in: 'refracted-soft',
+        in2: 'SourceGraphic',
+        operator: 'in'
+      }));
+      filterRoot.append(filter);
+      return { filter, displacementImage };
+    }
+
+    function createLiquidGlassOpticalLayers(host) {
+      const clip = document.createElement('span');
+      clip.className = 'liquid-glass__clip';
+      clip.setAttribute('data-glass-optical', '');
+      clip.setAttribute('aria-hidden', 'true');
+
+      const warp = document.createElement('span');
+      warp.className = 'liquid-glass__warp';
+      warp.setAttribute('data-glass-warp', '');
+      warp.setAttribute('aria-hidden', 'true');
+
+      const tint = document.createElement('span');
+      tint.className = 'liquid-glass__tint';
+      tint.setAttribute('aria-hidden', 'true');
+      clip.append(warp, tint);
+
+      const screenEdge = document.createElement('span');
+      screenEdge.className = 'liquid-glass__edge liquid-glass__edge--screen';
+      screenEdge.setAttribute('data-glass-optical', '');
+      screenEdge.setAttribute('data-glass-border', 'screen');
+      screenEdge.setAttribute('aria-hidden', 'true');
+
+      const overlayEdge = document.createElement('span');
+      overlayEdge.className = 'liquid-glass__edge liquid-glass__edge--overlay';
+      overlayEdge.setAttribute('data-glass-optical', '');
+      overlayEdge.setAttribute('data-glass-border', 'overlay');
+      overlayEdge.setAttribute('aria-hidden', 'true');
+
+      const hotspot = document.createElement('span');
+      hotspot.className = 'liquid-glass__hotspot';
+      hotspot.setAttribute('data-glass-optical', '');
+      hotspot.setAttribute('data-glass-glint', 'hover press');
+      hotspot.setAttribute('aria-hidden', 'true');
+
+      const fragment = document.createDocumentFragment();
+      fragment.append(clip, screenEdge, overlayEdge, hotspot);
+      const legend = host.tagName === 'FIELDSET' ? host.querySelector('legend') : null;
+      host.insertBefore(fragment, legend ? legend.nextSibling : host.firstChild);
+      return { warp };
+    }
+
+    function initializeLiquidGlass() {
+      if (!supportsLiquidGlassEnhancement()) return;
+      const filterRoot = document.querySelector('[data-liquid-glass-filter-root]');
+      const hosts = Array.from(document.querySelectorAll('[data-liquid-glass]'));
+      if (!filterRoot || hosts.length === 0) return;
+
+      try {
+        const records = hosts.map((host, index) => {
+          const { warp } = createLiquidGlassOpticalLayers(host);
+          const displacementScale = host.dataset.liquidGlass === 'panel' ? 44 : 58;
+          const filterId = `liquid-glass-rdev-${index}`;
+          const { filter, displacementImage } = createLiquidGlassFilter(filterRoot, filterId, displacementScale);
+          warp.style.filter = `url("#${filterId}")`;
+          warp.style.webkitFilter = `url("#${filterId}")`;
+          host.dataset.glassFilterId = filterId;
+          return { host, warp, filter, displacementImage, lastMapKey: '', resizeTimer: null };
+        });
+
+        function refreshDisplacementMap(record) {
+          const bounds = record.host.getBoundingClientRect();
+          const width = Math.round(bounds.width);
+          const height = Math.round(bounds.height);
+          if (width < 4 || height < 4) return;
+          const computedStyle = window.getComputedStyle(record.host);
+          const radius = Math.min(width / 2, height / 2, parseFloat(computedStyle.borderTopLeftRadius) || 0);
+          const mapKey = `${width}x${height}r${Math.round(radius)}`;
+          if (record.lastMapKey === mapKey) return;
+          record.displacementImage.setAttribute('href', generateLiquidGlassDisplacementMap(width, height, radius));
+          record.host.dataset.glassMap = mapKey;
+          record.lastMapKey = mapKey;
+        }
+
+        function scheduleDisplacementRefresh(record) {
+          if (record.resizeTimer !== null) window.clearTimeout(record.resizeTimer);
+          record.resizeTimer = window.setTimeout(() => {
+            record.resizeTimer = null;
+            refreshDisplacementMap(record);
+          }, 140);
+        }
+
+        records.forEach(refreshDisplacementMap);
+        if (typeof ResizeObserver === 'function') {
+          const recordByHost = new Map(records.map((record) => [record.host, record]));
+          const resizeObserver = new ResizeObserver((entries) => {
+            entries.forEach((entry) => {
+              const record = recordByHost.get(entry.target);
+              if (record) scheduleDisplacementRefresh(record);
+            });
+          });
+          records.forEach((record) => resizeObserver.observe(record.host));
+        } else {
+          window.addEventListener('resize', () => records.forEach(scheduleDisplacementRefresh), { passive: true });
+        }
+
+        document.documentElement.classList.add('liquid-glass-enhanced');
+
+        const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+        if (!reducedMotionQuery.matches && finePointerQuery.matches) {
+          const activationZone = 200;
+          let pointerFrame = null;
+          let latestPointer = null;
+          let pressedHost = null;
+          const clamp = (value, minimum, maximum) => Math.max(minimum, Math.min(maximum, value));
+
+          function resetLiquidGlassPointer(record) {
+            const { style } = record.host;
+            style.setProperty('--glass-angle', '135deg');
+            style.setProperty('--glass-hotspot-x', '28%');
+            style.setProperty('--glass-hotspot-y', '18%');
+            style.setProperty('--glass-edge-opacity', record.host.dataset.liquidGlass === 'panel' ? '.32' : '.36');
+            style.setProperty('--glass-hotspot-opacity', '.14');
+            style.setProperty('--glass-shift-x', '0px');
+            style.setProperty('--glass-shift-y', '0px');
+            style.setProperty('--glass-scale-x', '1');
+            style.setProperty('--glass-scale-y', '1');
+          }
+
+          function renderLiquidGlassPointer() {
+            pointerFrame = null;
+            if (!latestPointer) return;
+            records.forEach((record) => {
+              const bounds = record.host.getBoundingClientRect();
+              if (bounds.width < 4 || bounds.height < 4) return;
+              const outsideX = Math.max(bounds.left - latestPointer.x, 0, latestPointer.x - bounds.right);
+              const outsideY = Math.max(bounds.top - latestPointer.y, 0, latestPointer.y - bounds.bottom);
+              const distance = Math.hypot(outsideX, outsideY);
+              const fade = clamp(1 - distance / activationZone, 0, 1);
+              if (fade <= 0) {
+                resetLiquidGlassPointer(record);
+                return;
+              }
+
+              const centerX = bounds.left + bounds.width / 2;
+              const centerY = bounds.top + bounds.height / 2;
+              const offsetX = latestPointer.x - centerX;
+              const offsetY = latestPointer.y - centerY;
+              const horizontalRatio = clamp(Math.abs(offsetX) / (bounds.width / 2 + activationZone), 0, 1);
+              const verticalRatio = clamp(Math.abs(offsetY) / (bounds.height / 2 + activationZone), 0, 1);
+              const elasticity = record.host.dataset.liquidGlass === 'panel' ? .09 : .15;
+              const translationX = clamp(offsetX * elasticity * .1 * fade, -2.8, 2.8);
+              const translationY = clamp(offsetY * elasticity * .1 * fade, -2.8, 2.8);
+              const scaleX = 1 + horizontalRatio * elasticity * .30 * fade - verticalRatio * elasticity * .15 * fade;
+              const scaleY = 1 + verticalRatio * elasticity * .30 * fade - horizontalRatio * elasticity * .15 * fade;
+              const hotspotX = clamp((latestPointer.x - bounds.left) / bounds.width * 100, 0, 100);
+              const hotspotY = clamp((latestPointer.y - bounds.top) / bounds.height * 100, 0, 100);
+              const angle = 135 + clamp(offsetX, -120, 120) * 1.2;
+              const { style } = record.host;
+
+              style.setProperty('--glass-angle', `${angle.toFixed(1)}deg`);
+              style.setProperty('--glass-hotspot-x', `${hotspotX.toFixed(1)}%`);
+              style.setProperty('--glass-hotspot-y', `${hotspotY.toFixed(1)}%`);
+              style.setProperty('--glass-edge-opacity', (.30 + fade * .24).toFixed(3));
+              style.setProperty('--glass-hotspot-opacity', (.12 + fade * .38).toFixed(3));
+              style.setProperty('--glass-shift-x', `${translationX.toFixed(2)}px`);
+              style.setProperty('--glass-shift-y', `${translationY.toFixed(2)}px`);
+              style.setProperty('--glass-scale-x', scaleX.toFixed(4));
+              style.setProperty('--glass-scale-y', scaleY.toFixed(4));
+            });
+          }
+
+          document.addEventListener('pointermove', (event) => {
+            latestPointer = { x: event.clientX, y: event.clientY };
+            if (pointerFrame === null) pointerFrame = window.requestAnimationFrame(renderLiquidGlassPointer);
+          }, { passive: true });
+
+          window.addEventListener('pointerout', (event) => {
+            if (event.relatedTarget !== null) return;
+            latestPointer = null;
+            records.forEach(resetLiquidGlassPointer);
+          });
+
+          document.addEventListener('pointerdown', (event) => {
+            const candidate = event.target.closest?.('[data-liquid-glass]');
+            if (!candidate) return;
+            pressedHost?.classList.remove('is-glass-pressed');
+            pressedHost = candidate;
+            pressedHost.classList.add('is-glass-pressed');
+          });
+
+          const releasePressedGlass = () => {
+            pressedHost?.classList.remove('is-glass-pressed');
+            pressedHost = null;
+          };
+          document.addEventListener('pointerup', releasePressedGlass);
+          document.addEventListener('pointercancel', releasePressedGlass);
+          window.addEventListener('blur', releasePressedGlass);
+        }
+      } catch (error) {
+        document.documentElement.classList.remove('liquid-glass-enhanced');
+      }
+    }
+
+    const siteHeader = typeof document.querySelector === 'function' ? document.querySelector('header') : null;
+
+    function updateHeaderOffset() {
+      if (!siteHeader || !document.documentElement.style) return;
+      const headerHeight = Math.ceil(siteHeader.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--header-offset', `${headerHeight + 18}px`);
+    }
+
+    if (siteHeader) {
+      updateHeaderOffset();
+      if (typeof ResizeObserver === 'function') new ResizeObserver(updateHeaderOffset).observe(siteHeader);
+      else if (typeof window.addEventListener === 'function') window.addEventListener('resize', updateHeaderOffset, { passive: true });
+    }
+
+    function focusTarget(target) {
+      try { target.focus({ preventScroll: true }); }
+      catch (error) { target.focus(); }
+    }
+
+    if (document.documentElement.classList) document.documentElement.classList.add('js-smooth-scroll');
+    let activeScrollFrame = null;
+
+    function scrollToTarget(target, hash) {
+      if (activeScrollFrame !== null && typeof window.cancelAnimationFrame === 'function') {
+        window.cancelAnimationFrame(activeScrollFrame);
+        activeScrollFrame = null;
+      }
+
+      const headerHeight = siteHeader ? siteHeader.getBoundingClientRect().height : 0;
+      const startY = window.scrollY || window.pageYOffset || 0;
+      const endY = Math.max(0, target.getBoundingClientRect().top + startY - headerHeight - 18);
+      const distance = endY - startY;
+
+      const finish = () => {
+        try { window.history.replaceState(null, '', hash); } catch (error) { /* restricted file URL */ }
+        focusTarget(target);
+      };
+
+      if (prefersReducedMotion() || typeof window.requestAnimationFrame !== 'function') {
+        window.scrollTo(0, endY);
+        finish();
+        return;
+      }
+
+      const duration = Math.min(820, Math.max(380, Math.abs(distance) * .38));
+      const startTime = performance.now();
+      const easeInOutCubic = (progress) => progress < .5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      function animateScroll(now) {
+        const progress = Math.min(1, (now - startTime) / duration);
+        window.scrollTo(0, startY + distance * easeInOutCubic(progress));
+        if (progress < 1) activeScrollFrame = window.requestAnimationFrame(animateScroll);
+        else {
+          activeScrollFrame = null;
+          finish();
+        }
+      }
+
+      activeScrollFrame = window.requestAnimationFrame(animateScroll);
+    }
+
+    document.querySelectorAll('[data-smooth-scroll]').forEach((anchor) => {
+      anchor.addEventListener('click', (event) => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        const hash = anchor.getAttribute('href');
+        if (!hash?.startsWith('#')) return;
+        const target = typeof document.querySelector === 'function' ? document.querySelector(hash) : null;
+        if (!target) return;
+        event.preventDefault();
+        scrollToTarget(target, hash);
+      });
+    });
+
+    const backToTop = typeof document.querySelector === 'function' ? document.querySelector('[data-back-to-top]') : null;
+
+    function updateBackToTop() {
+      if (!backToTop) return;
+      const visible = (window.scrollY || window.pageYOffset || 0) > 480;
+      backToTop.classList.toggle('is-visible', visible);
+      backToTop.tabIndex = visible ? 0 : -1;
+      backToTop.setAttribute('aria-hidden', String(!visible));
+    }
+
+    if (backToTop && typeof window.addEventListener === 'function') {
+      updateBackToTop();
+      window.addEventListener('scroll', updateBackToTop, { passive: true });
+    }
+
+    initializeLiquidGlass();
   </script>
 </body>
 </html>
