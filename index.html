@@ -1745,18 +1745,18 @@
       isolation: isolate;
     }
 
-    .friend-mark--shima .friend-initials,
-    .friend-mark--shima .friend-crest {
+    .friend-mark--crest .friend-initials,
+    .friend-mark--crest .friend-crest {
       grid-area: 1 / 1;
       transition: opacity .24s ease, transform .34s cubic-bezier(.2, .8, .2, 1), filter .34s ease;
     }
 
-    .friend-mark--shima .friend-initials {
+    .friend-mark--crest .friend-initials {
       opacity: 1;
       transform: scale(1);
     }
 
-    .friend-mark--shima .friend-crest {
+    .friend-mark--crest .friend-crest {
       width: 100%;
       height: 100%;
       display: block;
@@ -1766,12 +1766,12 @@
       filter: blur(2px) saturate(.82);
     }
 
-    .friend-link:focus-visible .friend-mark--shima .friend-initials {
+    .friend-link:focus-visible .friend-mark--crest .friend-initials {
       opacity: 0;
       transform: scale(.82);
     }
 
-    .friend-link:focus-visible .friend-mark--shima .friend-crest {
+    .friend-link:focus-visible .friend-mark--crest .friend-crest {
       opacity: 1;
       transform: scale(1) rotate(0);
       filter: blur(0) saturate(1);
@@ -2336,12 +2336,12 @@
         transform: translateY(-2px);
       }
 
-      .friend-link:hover .friend-mark--shima .friend-initials {
+      .friend-link:hover .friend-mark--crest .friend-initials {
         opacity: 0;
         transform: scale(.82);
       }
 
-      .friend-link:hover .friend-mark--shima .friend-crest {
+      .friend-link:hover .friend-mark--crest .friend-crest {
         opacity: 1;
         transform: scale(1) rotate(0);
         filter: blur(0) saturate(1);
@@ -2670,8 +2670,8 @@
 
       .liquid-glass__warp { transform: none !important; }
 
-      .friend-mark--shima .friend-initials,
-      .friend-mark--shima .friend-crest { transition: none !important; }
+      .friend-mark--crest .friend-initials,
+      .friend-mark--crest .friend-crest { transition: none !important; }
     }
 
     @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
@@ -2994,14 +2994,14 @@
           <ul class="friend-grid" aria-label="Related academic links" data-copy-aria="linksAria">
             <li>
               <a class="friend-link" href="https://s-shima-lab.sakura.ne.jp/en/" target="_blank" rel="noopener noreferrer" aria-label="Visit Shima Lab in a new tab" data-copy-aria="shimaAria">
-                <span class="friend-mark friend-mark--shima" aria-hidden="true"><span class="friend-initials">SL</span><img class="friend-crest" src="assets/shima-lab-crest.png" alt="" aria-hidden="true"></span>
+                <span class="friend-mark friend-mark--crest friend-mark--shima" aria-hidden="true"><span class="friend-initials">SL</span><img class="friend-crest" src="assets/shima-lab-crest.png" alt="" aria-hidden="true"></span>
                 <span class="friend-copy"><strong data-copy="shimaName"><bdi dir="ltr">Shima Lab</bdi></strong><small data-copy="shimaDesc">Cloud microphysics research group</small></span>
                 <span class="icon icon-external" aria-hidden="true"></span>
               </a>
             </li>
             <li>
               <a class="friend-link" href="https://imanhal.github.io/" target="_blank" rel="noopener noreferrer" aria-label="Visit Dr. Manhal Alhilali's website in a new tab" data-copy-aria="manhalAria">
-                <span class="friend-mark" aria-hidden="true">MA</span>
+                <span class="friend-mark friend-mark--crest friend-mark--manhal" aria-hidden="true"><span class="friend-initials">MA</span><img class="friend-crest" src="assets/manhal-alhilali-crest.png" alt="" aria-hidden="true"></span>
                 <span class="friend-copy"><strong data-copy="manhalName"><bdi dir="ltr">Dr. Manhal Alhilali</bdi></strong><small data-copy="manhalDesc">Personal academic website</small></span>
                 <span class="icon icon-external" aria-hidden="true"></span>
               </a>
