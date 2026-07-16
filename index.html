@@ -30,8 +30,8 @@
     {
       "@context": "https://schema.org",
       "@type": "ProfilePage",
-      "dateCreated": "2026-07-10",
-      "dateModified": "2026-07-14",
+      "dateCreated": "2026-07-10T11:15:17+09:00",
+      "dateModified": "2026-07-14T13:17:44+09:00",
       "mainEntity": {
         "@type": "Person",
         "name": "Chongzhi Yin",
@@ -1713,6 +1713,8 @@
 
     .friend-grid li { min-width: 0; }
 
+    .friend-grid__featured { grid-column: 1 / -1; }
+
     .friend-link {
       min-height: 106px;
       height: 100%;
@@ -1727,6 +1729,16 @@
       box-shadow: 0 12px 34px rgba(31, 72, 90, .06);
       transition: border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease;
     }
+
+    .friend-link--placeholder {
+      grid-template-columns: 46px minmax(0, 1fr);
+      border-style: dashed;
+      background: color-mix(in srgb, var(--surface-raised) 86%, transparent);
+      box-shadow: 0 10px 28px rgba(31, 72, 90, .04);
+      cursor: default;
+    }
+
+    .friend-link--placeholder .friend-mark { opacity: .86; }
 
     .friend-mark {
       position: relative;
@@ -2329,7 +2341,7 @@
         transform: scale(1.05);
       }
 
-      .friend-link:hover {
+      .friend-link:not(.friend-link--placeholder):hover {
         border-color: color-mix(in srgb, var(--blue) 58%, var(--line));
         background: var(--surface-strong);
         box-shadow: 0 16px 38px rgba(31, 72, 90, .11);
@@ -2992,7 +3004,7 @@
             <p class="body-copy" data-copy="linksIntro">Research groups and colleagues whose work connects with this site.</p>
           </div>
           <ul class="friend-grid" aria-label="Related academic links" data-copy-aria="linksAria">
-            <li>
+            <li class="friend-grid__featured">
               <a class="friend-link" href="https://s-shima-lab.sakura.ne.jp/en/" target="_blank" rel="noopener noreferrer" aria-label="Visit Shima Lab in a new tab" data-copy-aria="shimaAria">
                 <span class="friend-mark friend-mark--crest friend-mark--shima" aria-hidden="true"><span class="friend-initials">SL</span><img class="friend-crest" src="assets/shima-lab-crest.png" alt="" aria-hidden="true"></span>
                 <span class="friend-copy"><strong data-copy="shimaName"><bdi dir="ltr">Shima Lab</bdi></strong><small data-copy="shimaDesc">Cloud microphysics research group</small></span>
@@ -3005,6 +3017,12 @@
                 <span class="friend-copy"><strong data-copy="manhalName"><bdi dir="ltr">Dr. Manhal Alhilali</bdi></strong><small data-copy="manhalDesc">Personal academic website</small></span>
                 <span class="icon icon-external" aria-hidden="true"></span>
               </a>
+            </li>
+            <li>
+              <div class="friend-link friend-link--placeholder friend-card--inyeob">
+                <span class="friend-mark" aria-hidden="true">IL</span>
+                <span class="friend-copy"><strong data-copy="inyeobName"><bdi dir="ltr">Dr. Inyeob La</bdi></strong><small data-copy="inyeobDesc">Academic website in preparation</small></span>
+              </div>
             </li>
           </ul>
         </div>
@@ -3094,6 +3112,7 @@
         honor3Title: 'China Scholarship Council Scholarship', honor3Detail: 'State-Sponsored Graduate Program for joint Ph.D. study in Japan.',
         linksKicker: 'Academic network', linksTitle: 'Related links', linksIntro: 'Research groups and colleagues whose work connects with this site.',
         shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: 'Cloud microphysics research group', manhalName: '<bdi dir="ltr">Dr. Manhal Alhilali</bdi>', manhalDesc: 'Personal academic website',
+        inyeobName: '<bdi dir="ltr">Dr. Inyeob La</bdi>', inyeobDesc: 'Academic website in preparation',
         contactKicker: 'Contact', contactTitle: 'Research conversations are welcome.', contactBody: 'For collaboration, seminars, or questions about SCALE-SDM and particle tracking, please get in touch by email.',
         emailLabel: 'Institutional email', addressLabel: 'Postal address', addressValue: '〒650-0047 7-1-28 Minatojima-minamimachi, Chuo-ku, Kobe, Hyogo, Japan',
         affiliationValue: 'Graduate School of Information Science, University of Hyogo',
@@ -3112,7 +3131,7 @@
         identityAria: '殷翀之，返回页面顶部', cinematicEggOpenAria: '播放 Shima Lab 开场动画', navAria: '主导航', languageAria: '语言选择', languageTriggerAria: '选择语言',
         themeSystemAria: '使用系统外观', themeLightAria: '使用亮色外观', themeDarkAria: '使用暗色外观',
         profilesAria: '学术主页与个人简历', orcidAria: 'ORCID 主页，在新标签页打开', scholarAria: 'Google Scholar 主页，在新标签页打开', researchGateAria: 'ResearchGate 主页，在新标签页打开', githubAria: 'GitHub 主页，在新标签页打开', cvAria: 'Google Drive 上的个人简历，在新标签页打开',
-        linksAria: '友情链接', shimaAria: '在新标签页访问 Shima Lab', manhalAria: '在新标签页访问 Dr. Manhal Alhilali 的个人主页', backTopAria: '返回页面顶部',
+        linksAria: '友情链接', shimaAria: '在新标签页访问 Shima Lab', manhalAria: '在新标签页访问 Manhal Alhilali 博士的个人主页', backTopAria: '返回页面顶部',
         fieldAria: '展示云滴到云尺度过程的抽象云微物理场示意图',
         navHome: '首页', navResearch: '研究', navAbout: '简介', navLinks: '友情链接', navConnect: '联系',
         themeLegend: '外观模式', themeSystem: '系统', themeLight: '亮色', themeDark: '暗色',
@@ -3143,11 +3162,12 @@
         honor2Title: '优秀口头报告奖', honor2Detail: '第七届全国中尺度气象学术研讨会。',
         honor3Title: '国家留学基金委奖学金', honor3Detail: '国家建设高水平大学公派研究生项目，赴日联合培养。',
         linksKicker: '学术网络', linksTitle: '友情链接', linksIntro: '与本站研究相关的实验室与同行主页。',
-        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: '云微物理研究团队', manhalName: '<bdi dir="ltr">Dr. Manhal Alhilali</bdi>', manhalDesc: '个人学术主页',
+        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: '云微物理研究团队', manhalName: '<bdi dir="ltr">Manhal Alhilali</bdi> 博士', manhalDesc: '个人学术主页',
+        inyeobName: '罗仁烨 博士', inyeobDesc: '个人学术主页筹备中',
         contactKicker: '联系', contactTitle: '欢迎交流云物理与数值模拟研究。', contactBody: '如需合作、邀请报告，或讨论 SCALE-SDM 与粒子追踪方法，欢迎通过机构邮箱联系。',
         emailLabel: '机构邮箱', addressLabel: '通讯地址', addressValue: '〒650-0047 日本兵库县神户市中央区港岛南町7-1-28',
         affiliationValue: '兵库县立大学大学院信息科学研究科',
-        ackBefore: '本网站在 ', ackAfter: ' 的协助下制作，并感谢 Dr. Manhal Alhilali 对个人主页提出的建议与启发。',
+        ackBefore: '本网站在 ', ackAfter: ' 的协助下制作，并感谢 Manhal Alhilali 博士对个人主页提出的建议与启发。',
         ackGlassBefore: 'Liquid Glass 效果参考了 ', ackGlassAfter: '。',
         cinematicEggTitle: 'Shima Lab 开场动画', cinematicEggCloseHint: '播放结束。点击任意位置返回。', cinematicEggPlaybackError: '无法播放视频。点击任意位置返回。',
         eggOpenAria: '打开 ChatGPT 彩蛋', eggCloseAria: '关闭图片', eggTitle: '一个小小的 ChatGPT 彩蛋',
@@ -3162,7 +3182,7 @@
         identityAria: '殷翀之、ホームへ', cinematicEggOpenAria: '島研究室のイントロ映像を再生', navAria: 'メインナビゲーション', languageAria: '言語選択', languageTriggerAria: '言語を選択',
         themeSystemAria: 'システムの外観を使用', themeLightAria: 'ライト表示を使用', themeDarkAria: 'ダーク表示を使用',
         profilesAria: '研究者プロフィールと履歴書', orcidAria: 'ORCID プロフィール、新しいタブで開きます', scholarAria: 'Google Scholar プロフィール、新しいタブで開きます', researchGateAria: 'ResearchGate プロフィール、新しいタブで開きます', githubAria: 'GitHub プロフィール、新しいタブで開きます', cvAria: 'Google Drive 上の履歴書、新しいタブで開きます',
-        linksAria: '関連リンク', shimaAria: '島研究室を新しいタブで開きます', manhalAria: 'Dr. Manhal Alhilali のウェブサイトを新しいタブで開きます', backTopAria: 'ページ上部へ戻る',
+        linksAria: '関連リンク', shimaAria: '島研究室を新しいタブで開きます', manhalAria: 'マンハル・アルヒラリ 博士のウェブサイトを新しいタブで開きます', backTopAria: 'ページ上部へ戻る',
         fieldAria: '雲粒から雲スケールまでを表す雲微物理場の抽象図',
         navHome: 'ホーム', navResearch: '研究', navAbout: 'プロフィール', navLinks: 'リンク', navConnect: '連絡先',
         themeLegend: '外観モード', themeSystem: 'システム', themeLight: 'ライト', themeDark: 'ダーク',
@@ -3193,11 +3213,12 @@
         honor2Title: '優秀口頭発表賞', honor2Detail: '第 7 回中国メソスケール気象学シンポジウム。',
         honor3Title: '中国国家留学基金管理委員会奨学金', honor3Detail: '「国家建設高水平大学公派研究生項目」により、兵庫県立大学で博士共同研究。',
         linksKicker: 'アカデミックネットワーク', linksTitle: '関連リンク', linksIntro: '本サイトの研究とつながる研究グループと研究者。',
-        shimaName: '島研究室', shimaDesc: '雲微物理研究グループ', manhalName: '<bdi dir="ltr">Dr. Manhal Alhilali</bdi>', manhalDesc: '個人学術ウェブサイト',
+        shimaName: '島研究室', shimaDesc: '雲微物理研究グループ', manhalName: 'マンハル・アルヒラリ 博士', manhalDesc: '個人学術ウェブサイト',
+        inyeobName: 'ラ・イニョプ 博士', inyeobDesc: '個人学術ウェブサイト準備中',
         contactKicker: '連絡先', contactTitle: '研究に関する交流を歓迎します。', contactBody: '共同研究、セミナー、SCALE-SDM や粒子追跡に関するご質問は、大学のメールアドレスまでお気軽にご連絡ください。',
         emailLabel: '大学メールアドレス', addressLabel: '住所', addressValue: '〒650-0047 兵庫県神戸市中央区港島南町7丁目1番28',
         affiliationValue: '兵庫県立大学大学院情報科学研究科',
-        ackBefore: '本サイトの制作には ', ackAfter: ' の協力を得ました。また、個人ホームページへの助言と着想をくださった Dr. Manhal Alhilali に感謝します。',
+        ackBefore: '本サイトの制作には ', ackAfter: ' の協力を得ました。また、個人ホームページへの助言と着想をくださったマンハル・アルヒラリ 博士に感謝します。',
         ackGlassBefore: 'Liquid Glass 表現は ', ackGlassAfter: ' を参考にしています。',
         cinematicEggTitle: '島研究室のイントロ映像', cinematicEggCloseHint: '再生が終了しました。画面のどこかをクリックして戻ります。', cinematicEggPlaybackError: '動画を再生できませんでした。画面のどこかをクリックして戻ります。',
         eggOpenAria: 'ChatGPT のイースターエッグを開く', eggCloseAria: '画像を閉じる', eggTitle: 'ChatGPT の小さなイースターエッグ',
@@ -3212,7 +3233,7 @@
         identityAria: '殷翀之，返回頁面頂端', cinematicEggOpenAria: '播放 Shima Lab 開場動畫', navAria: '主要導覽', languageAria: '語言選擇', languageTriggerAria: '選擇語言',
         themeSystemAria: '使用系統外觀', themeLightAria: '使用淺色外觀', themeDarkAria: '使用深色外觀',
         profilesAria: '學術主頁與個人履歷', orcidAria: 'ORCID 主頁，在新分頁開啟', scholarAria: 'Google Scholar 主頁，在新分頁開啟', researchGateAria: 'ResearchGate 主頁，在新分頁開啟', githubAria: 'GitHub 主頁，在新分頁開啟', cvAria: 'Google Drive 上的個人履歷，在新分頁開啟',
-        linksAria: '相關學術連結', shimaAria: '在新分頁開啟 Shima Lab', manhalAria: '在新分頁開啟 Dr. Manhal Alhilali 的個人主頁', backTopAria: '返回頁面頂端',
+        linksAria: '相關學術連結', shimaAria: '在新分頁開啟 Shima Lab', manhalAria: '在新分頁開啟 Manhal Alhilali 博士的個人主頁', backTopAria: '返回頁面頂端',
         fieldAria: '呈現雲滴至雲尺度過程的抽象雲微物理場示意圖',
         navHome: '首頁', navResearch: '研究', navAbout: '簡介', navLinks: '友情連結', navConnect: '聯絡',
         themeLegend: '外觀模式', themeSystem: '系統', themeLight: '淺色', themeDark: '深色',
@@ -3243,11 +3264,12 @@
         honor2Title: '優秀口頭報告獎', honor2Detail: '第七屆全國中尺度氣象學術研討會。',
         honor3Title: '國家留學基金管理委員會獎學金', honor3Detail: '國家建設高水平大學公派研究生計畫，赴日聯合培養。',
         linksKicker: '學術網絡', linksTitle: '友情連結', linksIntro: '與本站研究相關的實驗室及研究者主頁。',
-        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: '雲微物理研究團隊', manhalName: '<bdi dir="ltr">Dr. Manhal Alhilali</bdi>', manhalDesc: '個人學術主頁',
+        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: '雲微物理研究團隊', manhalName: '<bdi dir="ltr">Manhal Alhilali</bdi> 博士', manhalDesc: '個人學術主頁',
+        inyeobName: '羅仁燁 博士', inyeobDesc: '個人學術主頁籌備中',
         contactKicker: '聯絡', contactTitle: '歡迎交流雲物理與數值模擬研究。', contactBody: '如需合作、邀請演講，或討論 SCALE-SDM 與粒子追蹤方法，歡迎透過學校電子郵件聯絡。',
         emailLabel: '學校電子郵件', addressLabel: '通訊地址', addressValue: '〒650-0047 日本兵庫縣神戶市中央區港島南町7-1-28',
         affiliationValue: '兵庫縣立大學大學院資訊科學研究科',
-        ackBefore: '本網站在 ', ackAfter: ' 的協助下製作，並感謝 Dr. Manhal Alhilali 對個人網站提出的建議與啟發。',
+        ackBefore: '本網站在 ', ackAfter: ' 的協助下製作，並感謝 Manhal Alhilali 博士對個人網站提出的建議與啟發。',
         ackGlassBefore: 'Liquid Glass 效果參考了 ', ackGlassAfter: '。',
         cinematicEggTitle: 'Shima Lab 開場動畫', cinematicEggCloseHint: '播放結束。點擊任意位置返回。', cinematicEggPlaybackError: '無法播放影片。點擊任意位置返回。',
         eggOpenAria: '開啟 ChatGPT 彩蛋', eggCloseAria: '關閉圖片', eggTitle: '一個小小的 ChatGPT 彩蛋',
@@ -3262,7 +3284,7 @@
         identityAria: 'Chongzhi Yin, 홈으로', cinematicEggOpenAria: 'Shima Lab 인트로 영상 재생', navAria: '주요 탐색 메뉴', languageAria: '언어 선택', languageTriggerAria: '언어 선택',
         themeSystemAria: '시스템 설정에 따른 화면 모드 사용', themeLightAria: '라이트 모드 사용', themeDarkAria: '다크 모드 사용',
         profilesAria: '학술 프로필 및 이력서', orcidAria: 'ORCID 프로필, 새 탭에서 열림', scholarAria: 'Google Scholar 프로필, 새 탭에서 열림', researchGateAria: 'ResearchGate 프로필, 새 탭에서 열림', githubAria: 'GitHub 프로필, 새 탭에서 열림', cvAria: 'Google Drive의 이력서, 새 탭에서 열림',
-        linksAria: '관련 학술 링크', shimaAria: 'Shima Lab을 새 탭에서 열기', manhalAria: 'Dr. Manhal Alhilali의 웹사이트를 새 탭에서 열기', backTopAria: '페이지 맨 위로 이동',
+        linksAria: '관련 학술 링크', shimaAria: 'Shima Lab을 새 탭에서 열기', manhalAria: 'Manhal Alhilali 박사의 웹사이트를 새 탭에서 열기', backTopAria: '페이지 맨 위로 이동',
         fieldAria: '구름방울 규모에서 구름 규모까지의 구름미세물리 과정을 나타낸 추상화된 그림',
         navHome: '홈', navResearch: '연구', navAbout: '소개', navLinks: '관련 링크', navConnect: '연락처',
         themeLegend: '화면 모드', themeSystem: '시스템', themeLight: '라이트', themeDark: '다크',
@@ -3293,11 +3315,12 @@
         honor2Title: '우수 구두 발표상', honor2Detail: '제7회 중국 중규모기상학 학술 심포지엄.',
         honor3Title: '중국국가유학기금관리위원회(CSC) 장학금', honor3Detail: '일본 박사과정 공동연구를 위한 국가파견 대학원생 프로그램.',
         linksKicker: '학술 네트워크', linksTitle: '관련 링크', linksIntro: '이 사이트의 연구와 연관된 연구 그룹 및 연구자 웹사이트입니다.',
-        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: '구름 미세물리 연구 그룹', manhalName: '<bdi dir="ltr">Dr. Manhal Alhilali</bdi>', manhalDesc: '개인 학술 웹사이트',
+        shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: '구름 미세물리 연구 그룹', manhalName: '<bdi dir="ltr">Manhal Alhilali</bdi> 박사', manhalDesc: '개인 학술 웹사이트',
+        inyeobName: '라인엽 박사', inyeobDesc: '개인 학술 웹사이트 준비 중',
         contactKicker: '연락처', contactTitle: '연구 교류를 환영합니다.', contactBody: '공동연구, 세미나, SCALE-SDM 및 입자 추적에 관한 문의는 대학 이메일로 연락해 주십시오.',
         emailLabel: '대학 이메일', addressLabel: '우편 주소', addressValue: '〒650-0047 일본 효고현 고베시 주오구 미나토지마미나미마치 7-1-28',
         affiliationValue: '효고현립대학교 대학원 정보과학연구과',
-        ackBefore: '이 사이트는 ', ackAfter: '의 도움을 받아 제작했습니다. 또한 개인 홈페이지에 대한 조언과 영감을 주신 Dr. Manhal Alhilali께 감사드립니다.',
+        ackBefore: '이 사이트는 ', ackAfter: '의 도움을 받아 제작했습니다. 또한 개인 홈페이지에 대한 조언과 영감을 주신 Manhal Alhilali 박사께 감사드립니다.',
         ackGlassBefore: 'Liquid Glass 효과에는 ', ackGlassAfter: '의 구현을 참고했습니다.',
         cinematicEggTitle: 'Shima Lab 인트로 영상', cinematicEggCloseHint: '재생이 끝났습니다. 아무 곳이나 클릭하여 돌아가세요.', cinematicEggPlaybackError: '영상을 재생할 수 없습니다. 아무 곳이나 클릭하여 돌아가세요.',
         eggOpenAria: 'ChatGPT 이스터 에그 열기', eggCloseAria: '이미지 닫기', eggTitle: '작은 ChatGPT 이스터 에그',
@@ -3344,6 +3367,7 @@
         honor3Title: 'منحة مجلس المنح الدراسية الصيني <bdi dir="ltr">(CSC)</bdi>', honor3Detail: 'برنامج دراسات عليا ممول من الدولة لإجراء بحث مشترك ضمن مرحلة الدكتوراه في اليابان.',
         linksKicker: 'الشبكة الأكاديمية', linksTitle: 'روابط ذات صلة', linksIntro: 'مجموعات بحثية ومواقع باحثين ترتبط أعمالهم بموضوعات هذا الموقع.',
         shimaName: '<bdi dir="ltr">Shima Lab</bdi>', shimaDesc: 'مجموعة بحثية في الفيزياء الدقيقة للسحب', manhalName: 'د. منهل الهلالي', manhalDesc: 'موقع أكاديمي شخصي',
+        inyeobName: 'د. <bdi dir="ltr">Inyeob La</bdi>', inyeobDesc: 'الموقع الأكاديمي الشخصي قيد الإعداد',
         contactKicker: 'تواصل', contactTitle: 'أرحّب بالنقاشات البحثية.', contactBody: 'للتعاون أو دعوات الندوات أو الاستفسارات عن <bdi dir="ltr">SCALE-SDM</bdi> وتتبّع الجسيمات، يُرجى التواصل معي عبر البريد الإلكتروني الجامعي.',
         emailLabel: 'البريد الإلكتروني الجامعي', addressLabel: 'العنوان البريدي', addressValue: '<bdi dir="ltr">〒650-0047</bdi>، <bdi dir="ltr">7-1-28</bdi> ميناتوجيما-ميناميماتشي، حي تشو، كوبي، محافظة هيوغو، اليابان',
         affiliationValue: 'كلية الدراسات العليا في علوم المعلومات، جامعة هيوغو',
